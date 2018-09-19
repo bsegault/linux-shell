@@ -1,0 +1,568 @@
+\section{Découverte de Bash}
+
+\subsection{À propos des scripts}
+
+\textbf{\href{https://www.gnu.org/software/bash/}{Bash} est langage de script, aussi bien qu'un interpréteur en ligne de commande}, tout comme \href{https://www.zsh.org/}{ZSH} ou \href{https://docs.microsoft.com/en-us/powershell/}{PowerShell}. Tous sont open-source, libres et multi-plateforme.
+
+Chaque interpréteur a une syntaxe spécifique, qui varie parfois beaucoup. Python, Ruby et Node.js sont également des langages de script, plus génériques, dont le fonctionnement interne et l'interprétation diffère.
+
+\textbf{Un script est un fichier contenant une succession de commandes qui seront interprétées et exécutées directement} : on utilisera un interpréteur pour l’exécuter. Ce processus est différent pour des langages compilés tels que Scala, Java, ou C : le fichier contenant le code doit être compilé avant de pouvoir être exécuté.
+
+\subsection{Édition de texte}
+
+Afin de pouvoir créer un script, il suffit d'un éditeur de texte quelconque, mais pas un logiciel de traitement de texte tel que Word ou LibreOffice Writer.
+
+\paragraph{Avec environnement graphique}
+
+Si l'on dispose d'un environnement graphique, on pourra utiliser les éditeurs par défaut de l'environnement graphique : \texttt{gedit} \command{gedit} pour Gnome, \texttt{kate} \command{kate} pour KDE ou \cmdref{leafpad} \command{leafpad} pour LXDE/Xfce. \newline 
+Pour plus de flexibilité, on pourra également installer un logiciel externe et \textit{cross-platform} tel que \href{https://code.visualstudio.com}{Visual Studio Code},  \href{https://atom.io}{Atom},\href{http://brackets.io}{Brackets}. De nombreux autres éditeurs existent, mais sont moins adaptés pour Bash, spécifiques à une seule plateforme ou payants.
+
+\warning{Attention :} Bien que presque n'importe quel éditeur de texte peut être utilisé pour rédiger un script, il est fortement déconseillé d'utiliser \texttt{notepad.exe} sous Windows. Celui-ci pouvant causer des problèmes de compatibilité sur l'encodage des fichiers (voir \ref{sec:filetypes}).
+
+\paragraph{Avec environnement console}
+
+En mode console, il existe également plusieurs éditeurs de texte très utilisés. Le plus simple d'entre-eux est probablement \cmdref{nano}. Son principal avantage est que les raccourcis claviers nécessaires au différentes actions (enregistrer, quitter, annuler\dots) sont directement affichés sur l'interface. Par exemple, pour quitter l'éditeur, il est clairement affiché \texttt{\string^X}, ce qui signifie \texttt{Ctrl+X}. Une présentation plus détaillée figure en annexe \ref{appendix:nano}.
+
+D'autres éditeurs de texte tels que \cmdref{vim} ou \cmdref{emacs} existe, mais ils requièrent de connaître de nombreux raccourcis clavier. Bien que leur fonctionnement soit légèrement plus complexe, ils en sont d'autant plus puissants et une fois maîtrisés, ils permettent de gagner énormément en productivité. Il n'est pas nécessaire de connaître les deux, mais \texttt{vim} est très utilisé dans la communauté car souvent considéré comme plus simple d'apprentissage, même si moins intuitif au premier abord. Des présentations plus détaillées figurent en annexes \ref{appendix:vim} et \ref{appendix:emacs}. \cmdref{vim} et \cmdref{emacs} existent également en versions graphiques.
+
+\begin{nscenter}
+    \textbf{Les fichiers de scripts Bash sont enregistré avec l'extension \texttt{.sh}.}
+\end{nscenter}
+
+\subsection{\textit{Scripting}}
+
+Le principal avantage d'un script réside dans le fait que l'ensemble des commandes soient regroupés au sein d'un seul fichier. Il est ainsi plus facile d'exécuter une série de commandes, de les échanger ou de les sauvegarder. De plus, l'ensemble des modifications de l'environnement (voir partie \ref{sec:env}) n'affectent pas la session Bash en cours. Cependant, l'ensemble des actions réalisées dans un script peuvent l'être directement en ligne de commande, ce qui peut être utile pour un usage ponctuel.
+
+De plus, il est plus lisible et aisé de laisser des commentaires au sein d'un script, afin de mieux en saisir la structure et d'en détailler les opérations. En Bash, tout ce qui ce trouve derrière un \texttt{\#} (\textit{Sharp}, \textit{Number sign} ou signe numéro) est un commentaire.
+
+\subsubsection{Structure d'un script}
+\begin{center}
+    \warning{Un script doit \underline{toujours} commencer par une ligne particulière : le \textit{Shebang}.}
+\end{center}
+\vspace{-0.5cm}
+Concrètement, le \textit{Shebang} est une ligne de commentaire (elle commence par \texttt{\#}), suivie d'un point d'exclamation (\texttt{!}), suivi du chemin absolu de l'interpréteur (\texttt{/bin/bash} pour Bash), comme écrit dans le code \ref{code:script_intro}. Le rôle du \textit{Shebang} est de pouvoir exécuter le script avec le bon interpréteur. Sans cette ligne particulière, le système ne pourra pas deviner comment le script doit être exécuter et risque de mal exécuter le script.
+
+Cette ligne est souvent suivie d’un rapide commentaire décrivant le rôle du script (voir code \ref{code:script_intro}).
+
+\begin{code}
+    \begin{minted}{bash}
+#!/bin/bash     # Shebang to define that our script should be executed with bash
+# This script does this stuff. It expects X arguments as strings/integers
+
+set -e          # Stops execution at first error encountered
+set -x          # Writes each command that will be executed before doing so
+
+# Rest of the code
+
+exit 0          # Everything went smoothly, return 0 as error code
+    \end{minted}
+    
+    \vspace{-0.5cm}
+    \captionof{listing}{Shebang et exemple de commentaire de script}
+    \label{code:script_intro}
+\end{code}
+
+Afin de faciliter le \textit{debugging} d'un script, on peut utiliser la commande \cmdref{set} avec les paramètres \texttt{-e} ou \texttt{-x}, comme illustré dans le code \ref{code:script_intro}. Des informations détaillées concernant les erreurs de commandes figurent en partie \ref{sec:error}.
+
+
+\subsubsection{Exécution d'un script}
+Pour exécuter un script enregistré sous le nom \texttt{script.sh}, il suffit de le définir comme exécutable (avec \cmdref{chmod}), puis de taper le nom du script, préfixé par les caractères \texttt{./} (voir code \ref{code:exec}). Ce code signifie que l'on fait référence à \texttt{script.sh} dans le dossier courant (\texttt{.}) afin d'éviter que le système ne recherche une commande appelée \texttt{script.sh}
+
+\begin{code}
+    \begin{minted}{bash}
+# The file script.sh is in the current folder
+chmod u+x script.sh     # Allow owner to execute the script
+./script.sh             # Execute the script
+    \end{minted}
+    
+    \vspace{-0.5cm}
+    \captionof{listing}{Commandes d'exécution d'un script}
+    \label{code:exec}
+\end{code}
+
+\subsubsection{Mode d'exécution}
+
+\paragraph{\texttt{set}} \command{set}
+Permet de modifier le mode d'exécution de Bash. 
+\begin{itemize}
+    \item \texttt{-e} : Dès qu'une erreur est rencontrée dans un script (code de retour d'une commande différent de 0), l'interprétation du script s'arrête.
+    \item \texttt{-x} : Affiche l'invocation de chaque commande (avec expansion des valeurs de variables) avant exécution.
+    \item \texttt{-n} : Le Shell n'exécutera pas les commandes, mais vérifiera la justesse de la syntaxe.
+    \item \texttt{-u} : Cause une erreur en cas d'utilisation de variables non définies.
+\end{itemize}
+
+\subsubsection{Code d'erreur} \label{sec:error}
+Sous UNIX, chaque programme et chaque commande retourne un code d'erreur. Celui-ci est représenté sous la forme d'un entier. Il n'y a pas de règle particulière concernant la correspondance d'un entier donné avec une erreur particulière, cela dépend de chaque commande et programme. En revanche, \textbf{un code d'erreur de \texttt{0} signifie \say{aucune erreur} et donc l'exécution avec succès}.
+
+\paragraph{\texttt{\$?}}
+Sous Bash, on peut consulter la variable \texttt{\$?} pour connaître le code d'erreur de la commande précédente : \mintinline{bash}{echo $?}.
+
+\paragraph{\texttt{exit}}  \command{exit}
+Au sein d'un script, on utilisera la commande \cmdref{exit} suivie du code d'erreur voulu pour terminer le script courant. Sans paramètre, elle définit le code d'erreur à \texttt{\$?}.
+\cmdref{exit} peut également être utilisée dans une interface de commande afin de terminer l'exécution du Shell.
+
+
+\subsubsection{Paramètres d'un script}
+
+Lorsqu'un script est appelé avec des paramètres, ceux-ci sont accessibles via des variables spéciales, présentée dans le tableau \ref{tab:params}.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+        \textbf{Nom}    &  \textbf{Signification - Usage}                                               \\
+            \hline
+        \texttt{\$*}    &  Ensemble des paramètres, séparés par des espaces.                            \\
+            \hline
+        \texttt{\$@}    &  Similaire à \texttt{\$*}. Agi différemment au sein de \textit{double quotes} \\
+            \hline
+        \texttt{\$0}    &  Nom du script tel qu'invoqué (comprend \texttt{./} le cas échéant).          \\
+            \hline
+        \texttt{\$}n    &  Paramètre numéro n, pour n compris entre 1 et 9 (voir \cmdref{shift}).       \\
+            \hline
+        \texttt{\$\#}   &  Nombre de paramètres, hormis \texttt{\$0}.                                   \\
+            \hline
+        \texttt{\$-}    &  Corresponds aux \textit{flags} définis par \cmdref{set}.                     \\
+        \hline
+    \end{tabularx}
+    {\addtolength{\parskip}{-1cm}\caption{Présentation des principales variables spéciales}\label{tab:params}}
+\end{table}
+
+\paragraph{\texttt{shift}} \command{shift}
+Permet de décaler les paramètres afin de pouvoir tous les utiliser. Après un appel à \cmdref{shift} : 
+\begin{itemize}
+    \item \texttt{\$1} aura l'ancienne valeur de \texttt{\$2},
+    \item \texttt{\$2} aura l'ancienne valeur de \texttt{\$3},
+    \item Et ainsi de suite\dots
+    \item L'ancienne valeur de \texttt{\$1} est inaccessible,
+    \item \texttt{\$\#} est mis à jour.
+\end{itemize}
+
+\note{Note :} \texttt{\$0} n'est jamais modifié.
+
+\newpage
+
+
+\subsection{Variables et environnement}
+
+Comme dans tout langage de programmation, Bash permet la création de variable. \textbf{En Bash, une variable existe jusqu'à ce que le Shell soit terminé ou jusqu'à ce qu'elle soit supprimée.} Il existe cependant des variables particulières, définies dès l'initialisation du système : les variables d'environnement.
+
+Une fois définie, une variable s'utilise toujours en la préfixant du signe \texttt{\$}. Une variable n'a pas de type donné en Bash, la conversion d'un type à un autre se fait automatiquement et il n'y a pas de distinction entre caractères et chaîne de caractères.
+
+\subsubsection{Déclaration de variables} \command{unset}
+
+Une variable se déclare simplement en lui affectant une valeur. Pour supprimer une variable, on utilisera la commande \cmdref{unset} (voir \ref{code:variables}). Si on utilise une variable qui n'existe pas, elle sera remplacée (sans erreur visible par défaut, voir \cmdref{set}) par une chaîne vide.
+\begin{code}
+    \begin{minted}{bash}
+#!/bin/bash
+
+i=you               # Creates the i variable and gives it "you"
+a=1.5               # Creates the a variable and gives it 1.5
+echo $i $a          # Displays "you 1.5"
+
+a="Hello"           # Gives the string value "Hello" to a (quotes are ignored)
+d=$a                # Creates the d variable and gives it the value of the a variable
+
+echo "$a $d, $i!"   # Displays "Hello Hello, you!"
+unset a             # Deletes (unsets) the a variable
+echo "$a $d, $i!"   # Displays " Hello, you!" (note the leading space)
+unset -v "i"        # Deletes (unsets) the i variable
+echo "$a $d, $i!"   # Displays " Hello, !" (note the leading space)
+    \end{minted}
+
+    \vspace{-0.5cm}
+    \captionof{listing}{Affectation, utilisation et affichage de variables}
+    \label{code:variables}
+\end{code}
+%%TODO Arrays
+
+Il est également possible de créer une variable grâce aux commandes \cmdref{let} et \cmdref{read}.
+\paragraph{\texttt{let}} \command{let}
+Permet d'affecter à une variable le résultat d'une opération arithmétique.
+Chaque paramètre doit être une affectation valide. Le code \ref{code:let} montre des exemples de syntaxes valides.
+\begin{code}
+    \begin{minted}{bash}
+let a=3*5             # a=15
+let b=16/2 c=2+2      # b=8, c=4
+# c is not replaced in the computation of d
+let c=$a+5 "d = $c%3" # c=15+5=20, d= 4 mod 3 = 1
+echo $a $b $c $d      # Displays 15 8 20 1
+    \end{minted}
+    
+    \vspace{-0.5cm}
+    \captionof{listing}{Utilisation de \cmdref{let} pour le calcul et l'affectation de variables}
+    \label{code:let}
+\end{code}
+
+\paragraph{\texttt{read}} \command{read}
+Affecte à la variable, dont le nom est passé en paramètre, la ligne saisie au clavier
+\begin{itemize}
+    \item \texttt{-d <delim>} : Lit l'entrée clavier jusqu'à rencontrer le caractère \texttt{<delim>}.
+    \item \texttt{-n <count>} : Lit jusqu'à \texttt{<count>} caractères.
+    \item \texttt{-s} : Ce que saisit l'utilisateur ne sera pas affiché.
+\end{itemize}
+
+\newpage
+
+\subsubsection{Chaînes de caractères} \label{sec:string}
+En Bash, comme dans la plupart des autres langages de \textit{scripting}, on peut définir des chaînes de caractères grâce aux guillemets anglais simples ou double (\textit{quotes} et \textit{double quotes}), comme illustré dans le code \ref{code:string}. Il faut toutefois différencier les deux types de \textit{quotes} : 
+\begin{itemize}
+    \item \textbf{Les \textit{simple quotes} définissent la chaîne telle qu'elle est écrite, sans interprétation,}
+    \item \textbf{Les \textit{doubles quotes} sont perméables à l'interprétation} des variables : celles-ci seront remplacées dans la chaîne (voir code \ref{code:string}).
+\end{itemize}
+
+\vspace{5mm}
+\begin{code}
+    \begin{minted}{bash}
+#!/bin/bash
+s=string                       # $s is usable as a 'string'
+a='This is a simple-quoted $s' # no interpretation
+b="This is a double-quoted $s" # $s is interpreted, see syntax coloration
+    \end{minted}
+
+    \vspace{-0.5cm}
+    \captionof{listing}{Affectation et utilisation de chaînes de caractères}
+    \label{code:string}
+\end{code}
+
+Enfin, lors du lancement d'un script ou de l'appel d'une fonction, si l'on souhaite passer des paramètres qui contiennent des espaces, il faudra utiliser des chaînes de caractères : 
+\begin{nscenter}
+    \mintinline{bash}{./script.sh one 'second parameter' "third=$s"}
+\end{nscenter}
+
+\subsubsection{Environnement}
+
+\paragraph{Principales variables d'environnement} \label{sec:env}
+
+Les variables d'environnement sont des variables permettant d'obtenir des informations sur l'environnement ou de le configurer. Elles peuvent contenir toutes sorte d'information. Elles sont spécifiques à un utilisateur donné et sont définies au chargement de la session. Les variables d'environnement les plus communes sont détaillées dans le tableau \ref{tab:envvars}.
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| l | X |}
+        \hline
+        \textbf{Nom} &  \textbf{Signification - Usage}                                                 \\
+            \hline
+        \texttt{\$SHELL}                        &  Chemin vers le Shell préféré (par exemple : \texttt{/bin/bash}).\\
+            \hline
+        \texttt{\$HOME}                         &  Chemin du dossier personnel. \\
+            \hline
+        \texttt{\$USER}                         &  Nom de l'utilisateur courant. \\
+            \hline
+        \texttt{\$HOSTNAME}                     &  Nom de l'appareil courant. \\
+            \hline
+        \texttt{\$LANG}                         &  Langue utilisée pour l'affichage. \\
+            \hline
+        \raisebox{-\height}{\texttt{\$IFS}}   &  Séparateur de champs d'itération (\textit{Internal Field Separator}) qui modifie le comportement d'une boucle. (voir \cmdref{for}). Vaut "\texttt{ \textbackslash t\textbackslash n\textbackslash 0}" par défaut. \\
+            \hline
+        \texttt{\$PAGER}                        &  Chemin vers le programme utilisé, entre autres, pour afficher le manuel.\\
+            \hline
+        \texttt{\$EDITOR}                       &  Chemin vers l'éditeur de texte par défaut. \\
+        \hline
+    \end{tabularx}
+    {\addtolength{\parskip}{-1cm}\caption{Présentation des principales variables d'environnement}\label{tab:envvars}}
+\end{table}
+\newpage
+\paragraph{\texttt{\$PATH}}
+Le \texttt{\$PATH} est probablement la variable d'environnement la plus importante. C'est grâce à elle que l'on peut exécuter des commandes simplement dans un terminal.
+En effet, \texttt{\$PATH} contient une liste de dossiers, séparés par des deux-points (\texttt{:}). Cette liste correspond à tous les dossiers dans lesquels des programmes sont installés. Ainsi, lorsque l'on tape une commande telle que \texttt{git}, le terminal va en réalité parcourir cette liste et vérifier si le programme associé se trouve dans un des dossiers mentionné. Une fois trouvé, il exécutera se programme.
+
+Ainsi, si plusieurs programmes du même nom se trouvent dans des dossiers contenu dans le \texttt{\$PATH}, seul le premier pourra être exécuté. Pour exécuter les autres, il faudra alors exécuter explicitement le programme en mentionnant son chemin.
+
+\warning{Attention :} Bien que de très nombreuses commandes soient des programmes (\cmdref{ls}, \cmdref{mkdir}\dots), toutes ne le sont pas. Ainsi, \cmdref{echo} et \cmdref{cd} sont des commandes intégrée à l'interpréteur et ne sont pas concernées par ce mécanisme.
+
+\texttt{which} \command{which}
+Permet d'afficher la résolution effectuée par l'interpréteur de commande grâce au \texttt{\$PATH}.
+\begin{itemize}
+    \item \texttt{-a} : Affiche l'ensemble des programmes correspondants, pas uniquement le premier.
+\end{itemize}
+
+\paragraph{Afficher et modifier l'environnement}
+Deux commandes existent pour afficher et modifier l'environnement : \texttt{export}\command{export} et \texttt{env}\command{env}. La première est une commande interne à Bash tandis que la seconde est un programme existant. Le code \ref{code:export} illustre le changement d'environnement courant et spécifique à une commande.
+\begin{code}
+    \centering
+    \noindent\begin{minipage}{.475\textwidth}
+    \begin{minted}{bash}
+export LANG=fr_FR.UTF8 # Set LANG env var
+export -p      # Display all env vars
+export -n LANG # Unset LANG env var
+
+# Only for one command (man which here)
+LANG=fr_FR.UTF8 man which
+\end{minted}
+\end{minipage}\hfill
+\begin{minipage}{.475\textwidth}
+\begin{minted}{bash}
+env LANG=fr_FR.UTF8 # Set LANG env var
+env         # Display all env vars
+env -u LANG # Unset LANG env var
+
+# Only for one command (man which here)
+env LANG=fr_FR.UTF8 man which
+\end{minted}
+\end{minipage}\hfill
+    \caption{Utilisations de \cmdref{export} et \cmdref{env} pour modifier et afficher l'environnement}
+    \label{code:export}
+\end{code}
+
+Ainsi, aux lignes 6 du code \ref{code:export}, le changement de langue ne se fera que pour la commande \texttt{man which}. L'exemple de gauche est dédié à Bash tandis que l'exemple de droite doit fonctionner sur tout système et interpréteur compatible avec POSIX. On on pourrait donc considérer ce dernier comme plus \say{générique}. C'est la raison pour laquelle on peut parfois voir un Shebang utilisant \cmdref{env} : \mintinline{bash}{#!/usr/bin/env bash}.
+
+\paragraph{\texttt{source}} \command{source}
+Permet d'exécuter un fichier dans le Shell courant. Les modifications de l'environnement seront donc conservées. 
+
+\note{Note :} Les syntaxes \mintinline{bash}{source myfile.sh} et \mintinline{bash}{. myfile.sh} sont strictement identiques. La seconde est juste un reliquat de l'historique de Bash.
+
+\warning{Attention :} Il faut bien différentier l'utilisation de \cmdref{source} et l'exécution d'un fichier avec \mintinline{bash}{./myfile.sh} ou \mintinline{bash}{bash myfile.sh} ! Ces deux derniers exemples vont créer un nouveau processus avec un nouvel environnement. Toute modification faite dans ce nouvel environnement ne sera pas répercutée sur l'environnement du Shell appelant.
+
+\newpage
+\subsection{Commandes utiles}
+\vspace{-5mm}
+
+\paragraph{\texttt{date}} \command{date}
+Affiche ou définit la date et l'heure courante. La commande est affectée par la variable d'environnement \texttt{\$TZ} qui définit le fuseau horaire. 
+\begin{itemize}
+    \item \texttt{+<FORMAT>} : Permet de modifier le format d'affichage de la date. \mintinline{bash}{date +%m/%d/%y} affichera la date au format JJ/MM/AAAA.
+    \item \texttt{-s} : Permet de définir la date et l'heure courante. De nombreux formats sont acceptés.
+\end{itemize}
+
+%\paragraph{\texttt{expr}} \command{expr}
+%Permet d'affiche le retour d'une expression arithmétique ou alphanumérique. L'ensemble des opérations simples sont disponibles. On notera tout de même la possibilité d'effectuer les opérations suivantes : 
+%\begin{itemize}
+%    \item \texttt{index <caractère> <chaîne>} : Affiche l'indice de la première occurrence du caractère dans la chaîne.
+%    \item \texttt{length <chaine>} : Affiche la longueur de la chaîne de caractère.
+%    \item \texttt{substr <chaine> <pos> <longueur>} : Extrait une sous-chaîne de la chaîne donnée, à partir de la position donnée
+%\end{itemize}
+
+
+\subsubsection{Filtres de texte}
+
+\paragraph{\texttt{head} / \texttt{tail}} \command{head}\command{tail}
+Permet d'affiche le début (\cmdref{head}) ou la fin d'un fichier \cmdref{tail}. Utile pour afficher notamment les fichiers de \textit{logs}.
+\begin{itemize}
+    \item \texttt{-n <ligne>} : Permet de spécifier le nombre de lignes à afficher.
+    \item \texttt{-n +<ligne>} : Permet d'afficher toutes les lignes à partir de \cmdref{tail} ou jusqu'à (\cmdref{head}) la ligne mentionnée.
+\end{itemize}
+\note{Note :} La commande \texttt{multitail} (non installée par défaut) permet de surveiller l'ajout de lignes pour plusieurs fichiers simultanément. Elle est notamment utilisée pour l'analyse de fichiers journaux (\textit{logs}).
+
+\paragraph{\texttt{cut}} \command{cut}
+Permet de découper les les lignes du fichier donné en paramètre
+\begin{itemize}
+    \item \texttt{-d <delimiter>} : Définit le caractère à utiliser pour découper une ligne. La ligne sera segmentée en champs séparés par le délimiteur.
+    \item \texttt{-f <field>,<field>\dots} : Définit les numéro champs à afficher. 
+\end{itemize}
+
+\paragraph{\texttt{tr}} \command{tr}
+Permet de transformer la chaîne de caractères passée en premier paramètre par celle passée en second paramètre. Cette commande ne fonctionne que sur l'entrée et la sortie standard.
+\begin{itemize}
+    \item \texttt{-d} : Supprime toute les occurence du première paramètre (le second ne soit alors pas être mentionné).
+\end{itemize}
+
+\paragraph{\texttt{sort}} \command{sort}
+Permet de découper les les lignes du fichier donné en paramètre
+\begin{itemize}
+    \item \texttt{-d} : Le tri est insensible à la casse.
+    \item \texttt{-h} : Le tri de nombres se fait dans l'ordre naturel et non lexicographique. Permet de comparer \texttt{3M} et \texttt{1G} dans l'ordre croissant de leur valeur.
+    \item \texttt{-o <file>} : Ecrit dans le fichier \texttt{file} plutôt que sur la sortie standard.
+    \item \texttt{-r} : Inverse l'ordre du tri.
+    \item \texttt{-u} : N'affiche qu'une unique ligne si plusieurs sont identiques lors du tri.
+\end{itemize}
+
+\paragraph{\texttt{uniq}} \command{uniq}
+Permet de filtrer les lignes d'un fichier pour n'avoir que des lignes uniques. Les données doivent déjà être triées, il est donc courant d'utiliser \cmdref{sort} conjointement avec \cmdref{uniq} : \newline \mintinline{bash}{sort monfichier | uniq}
+\begin{itemize}
+    \item \texttt{-c} : Affiche le nombre d'occurrences de chaque ligne.
+    \item \texttt{-d} : N'affiche que les lignes en double.
+    \item \texttt{-i} : Le test d'unicité est insensible à la casse.
+\end{itemize}
+
+\newpage
+
+\subsubsection{Compresser et archiver des fichiers}
+
+\paragraph{\texttt{tar}} \command{tar}
+\note{Note :} Sous Linux, le format ZIP n'est pas standard (car historiquement, il était propriétaire). On utilise donc des archives au format \texttt{.tar.XX}. \texttt{.tar} correspond à l'archivage, c'est à dire le regroupement de plusieurs fichiers en un seul. \texttt{.XX} correspond à la compression des données. Il existe plusieurs types de compressions tels que :
+\begin{itemize}
+    \item \texttt{gz} - gzip : format très répandu, utilisant la compression DEFLATE, comme le format ZIP, sous licence BSD simplifiée ;
+    \item \texttt{bz} - bzip2 : format dont la compression est plus efficace, mais plus lente que \texttt{gz} sous licence BSD ;
+    \item \texttt{xz} : format utilisant la compression LZMA, encore plus efficace, notamment utilisé pour distribuer les noyaux Linux et d'autres logiciels.
+\end{itemize}
+\vspace{\baselineskip}
+La commande \cmdref{tar} permet de manipuler les archives compressées (aux formats \texttt{.tar.gz}, \\ \texttt{.tar.bz}, \texttt{.tar.xz}\dots) ou non (format \texttt{.tar}).
+\begin{itemize}
+    \item \texttt{-x} : Extrait une archive.
+    \item \texttt{-c} : Créé une archive.
+    \item \texttt{-f} : Permet de mention un fichier (à extraire ou créer) dans le paramètre suivant.
+    \item \texttt{-z} : Compression gzip.
+    \item \texttt{-j} : Compression bzip2.
+    \item \texttt{-J} : Compression xz.
+\end{itemize}
+
+Ainsi, pour extraire une archive dans le dossier courant, on utilisera : 
+\begin{nscenter}
+\mintinline{bash}{tar -xf monarchive.tar.gz # tar détecte la compression pour tous les formats mentionnés}
+\end{nscenter}
+Tandis que pour créer un fichier, on utilisera : 
+\begin{nscenter}
+\mintinline{bash}{tar -cxf mondossier.tar.gz mondossier/}
+\end{nscenter}
+\note{Note:} Par convention, les archives \texttt{tar} ne contiennent qu'un seul dossier à la racine, du même nom que l'archive. Ainsi l'extraction ne doit créer qu'un seul dossier.
+
+\warning{Attention:} \cmdref{tar} ne permet pas d'extraire ni de créer des fichiers \texttt{.zip}, qui est le format par défaut sous macOS et Windows. Il faudra pour cela utiliser les commandes \cmdref{zip} et \cmdref{unzip}.
+
+\paragraph{\texttt{zip}} \command{zip}
+Créé une archive au format ZIP. La syntaxe est la suivante : 
+\begin{nscenter}
+\mintinline{bash}{zip file.zip <files>}
+Par défaut, si l'archive existe déjà, \cmdref{zip} ajoutera l'ensemble des fichiers passés en paramètres et les remplacera s'ils existent déjà au sein de l'archive.
+\end{nscenter}
+\begin{itemize}
+    \item \texttt{-r} : Mode récursif. Ajoute tout le contenu d'un dossier plutôt que le dossier lui-même.
+    \item \texttt{-d <fichiers>} : Permet de supprimer un fichier d'une archive existante.
+    \item \texttt{-u <fichiers>} : Permet de remplacer (mettre à jour) un fichier déjà existant au sein de l'archive.
+\end{itemize}
+
+\paragraph{\texttt{unzip}} \command{unzip}
+Extrait une archive au format ZIP.
+\begin{itemize}
+    \item \texttt{-d <dossier>} : Permet d'extraire les fichiers dans un dossier donné.
+    \item \texttt{-x <fichiers>} : Permet de spécifier les fichiers à extraire de l'archive, plutôt que de tout extraire.
+\end{itemize}
+
+\newpage
+
+\subsubsection{Informations sur des fichiers}
+
+\paragraph{\texttt{wc}} \command{wc}
+Permet de compter le nombre de mots, de lignes ou de caractères du fichier passé en paramètre
+\begin{itemize}
+    \item \texttt{-l} : Affiche le nombre de ligne.
+    \item \texttt{-m} : Affiche le nombre de caractères.
+    \item \texttt{-w} : Affiche le nombre de mots.
+\end{itemize}
+
+\paragraph{\texttt{du}} \command{du}
+Affiche la taille de fichiers et dossiers.
+\begin{itemize}
+    \item \texttt{-c} : Affiche la somme des tailles de tous les fichiers.
+    \item \texttt{-h} : Affiche la taille de manière lisible pour un humain.
+    \item \texttt{-s} : N'affiche pas la taille de chacund des éléments d'un dossier, juste la somme de la taille des fichiers qu'il contient.
+\end{itemize}
+
+\subsection{Comparer des fichiers}
+
+\paragraph{\texttt{cmp}} \command{cmp}
+Compare deux fichiers (binaires ou texte) dont les chemins sont passés en paramètres. Le code de retour sera 0 si les fichiers sont identiques 1 en cas de différence. Par défaut, un message indique si les fichiers sont différents.
+\begin{itemize}
+    \item \texttt{-b} : Montre le premier octet différent.
+    \item \texttt{-l} : Montre les valeurs des fichiers octet par octet.
+    \item \texttt{-s} : N'affiche pas de message (incompatible avec les options précédentes).
+\end{itemize}
+
+\paragraph{\texttt{diff}} \command{diff}
+Affiche les différences entre deux fichiers textes passés en paramètres, ligne par ligne, en ne considérant que des ajouts et suppression. Chaque ligne modifiée est précédée d'un chevron :
+\begin{itemize}
+    \item \textcolor{green}{\texttt{>}} : pour un ajout,
+    \item \textcolor{red}{\texttt{<}} : pour une suppression.
+\end{itemize}
+\cmdref{diff} possède différents paramètres pour ajuster son comportement et affichage :
+\begin{itemize}
+    \item \texttt{-B} : Ignore les lignes vides.
+    \item \texttt{-i} : Ignore la casse (majuscule/Minuscule).
+    \item \texttt{-r} : Mode récursif. Compare tous les fichiers dans tous les sous-dossiers.
+    \item \texttt{-y} : Permet un affiche cote-à-cote plutôt que linéaire.
+    \item \texttt{-{}-color=auto} : Permet de forcer un affichage en couleur
+\end{itemize}
+
+\note{Note :} C'est une variante de \cmdref{diff} qui est utilisée conjointement avec \texttt{git} pour afficher les différences entre les fichiers et permettre la résolution de conflits. Lorsqu'une ligne est modifiée, on considère que la ligne est supprimée dans le premier fichier pour être ajoutée dans le second.
+
+\newpage
+
+\subsection{Gestion des tâches -- processus}
+
+Un processus représente un programme en cours d'exécution. Il dispose d'un identifiant, le PID, ainsi que d'un parent, représenté par son PID : le PPID. On peut donc établir une arborescence des processus.
+Sous Linux, les PID sont attribués par ordre croissant, et un PID donné ne peut jamais être réutilisé, sauf exceptions.
+
+Le premier processus est toujours \texttt{init} et il a toujours un PID de 1. C'est lui qui est en charge de démarrer les différents programmes requis pour l'initialisation du système : gestionnaire de disques, drivers, journaux systèmes\dots
+
+\subsubsection{Affichage des processus -- \texttt{top} et \texttt{ps}}
+
+\paragraph{\texttt{top}} \command{top}
+Permet de visualiser les processus qui sont les plus actifs, de façon dynamique, pour effectuer un diagnostique rapide. Il s'agit d'une sorte de gestionnaire de tâches en console.
+
+\note{Note:} La commande \texttt{htop} (non installée par défaut), fonctionne comme \cmdref{top}, mais dispose d'un affichage plus visuel et les actions possibles sont mises en évidence (recherche, tri, fin de tâche\dots)
+
+\paragraph{\texttt{ps}} \command{ps}
+Permet d'afficher les processus en cours d'exécution. \cmdref{ps} effectue une image des processus courants et l'affiche ensuite (d'où son nom, \textit{\textbf{P}rocessus \textbf{S}napshot}). De même que pour \cmdref{tar}, les tirets précédant les arguments courts ne sont pas obligatoire, mais leur effet varie quelque peut dans ce cas, à cause des différences entre l'implémentation BSD et standard POSIX.
+\note{Note :} On utilise générale \cmdref{top} conjointement avec \cmdref{grep} afin de facilement obtenir les informations voulues sur un processus donné.
+
+\begin{itemize}
+    \item \texttt{-f} : Affiche l'arborescence de chaque processus qui a un parent en cours d'exécution.
+    \item \texttt{-a} : Affiche les processus utilisant un terminal, pour tous les utilisateurs .
+    \item \texttt{-e} : Affiche tous les processus en cours de tous les utilisateurs.
+    \item \texttt{-u} : Affiche l'utilisateur de chaque processus.
+    \item \texttt{-x} : Affiche également les processus qui n'ont pas de terminal associé.
+\end{itemize}
+
+\begin{figure}[bh!]
+    \centering
+    \begin{minted}{text}
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+loginusr  5379  0.0  0.0  43608  5708 pts/1    Ss+  09:37   0:00 /usr/bin/zsh
+loginusr 13002  0.2  0.0  43608  5956 pts/2    Ss   10:31   0:00 /usr/bin/zsh
+loginusr 13056 33.6  0.0   5940   792 pts/2    S+   10:31   0:04 yes
+loginusr 13111  0.0  0.0  35896  3340 pts/1    R+   10:31   0:00 ps u
+loginusr 13112  0.0  0.0   5948   856 pts/1    S+   10:31   0:00 head
+\end{minted}
+    \vspace{-\baselineskip}\caption{Aperçu du rendu de \cmdref{ps} \texttt{-u}}
+    \label{fig:ps}
+\end{figure}
+Au sein de la figure \ref{fig:ps}, on pourra noter que : 
+\begin{itemize}
+    \item \texttt{VSZ} et \texttt{RSS} sont deux modes de calcul de la mémoire occupée par un processus,
+    \item \texttt{TTY} est le terminal utilisé (ici, terminaux graphiques),
+    \item \texttt{STAT} est le statut du processus (\texttt{+} pour un processus actif, \textit{\textbf{S}leeping}, \textit{\textbf{R}unning}, \textit{\textbf{D}isk blocked}\dots),
+    \item \texttt{START} est la heure de démarrage du processus,
+    \item \texttt{TIME} est le temps réel que le CPU a passé sur le processus,
+    \item \texttt{COMMAND} est la commande saisie au sein du terminal.
+\end{itemize}
+
+
+\newpage
+\subsubsection{Gestion des tâches -- \texttt{\&}, \texttt{jobs} et \texttt{kill}} \label{sec:tasks}
+
+Chaque commande entrée au sein du terminal créé un nouveau processus. La plupart du temps, il sera très difficile de voir ce processus avec \cmdref{top} ou \cmdref{ps}, car il s'exécute et se termine immédiatement. En revanche, si l'on souhaite utiliser un programme graphique, cela sera plus visible : le terminal sera inaccessible jusqu'à ce que, au choix : 
+\begin{itemize}
+    \item Le programme se termine,
+    \item On force l'arrêt du programme via \texttt{Ctrl+C},
+    \item On passe le programme en tache de fond avec \texttt{Ctrl+Z}.
+\end{itemize}
+
+Afin de pouvoir gérer les tâches plus facilement, Bash propose quelques outils et commandes. 
+
+\note{Note :} Lorsqu'un processus est suspendu, repris ou terminé, le terminal affiche un message qui peut parfois être placé au milieu de celui d'une autre commande.
+
+\paragraph{\texttt{\&}} \command{fork}
+Utilisé à la fin d'un commande, le symbole \texttt{\&} (\say{Et} commercial, esperluette ou \textit{ampersand} en anglais)) permet de faire passer cette commande en tâche de fond. L'effet est identique à celui d'utiliser \texttt{Ctrl+Z} puis \cmdref{bg}. Il est également possible d'enchaîner les commandes avec cet opérateur.
+
+
+\paragraph{\texttt{jobs}} \command{jobs}
+Permet d'afficher la pile tâches en cours d'exécution,  leur statut, leur PID et leur nom. Les programmes affichés par jobs sont uniquement ceux liés au terminal courant. Chaque tâche possède un identifiant dédié (son ordre d'arrivée dans la pile), commençant par 1, et pouvant être réutilisé par d'autres tâches plus tard.
+
+\paragraph{\texttt{bg}} \command{bg}
+Permet de reprendre en arrière-plan (\textit{\textbf{b}ack\textbf{g}round}) l'exécution de la dernière tâche suspendue par \texttt{Ctrl+Z}.
+
+\paragraph{\texttt{fg}} \command{fg}
+Permet de reprendre au premier plan (\textit{\textbf{f}ore\textbf{g}round}) l'exécution de la dernière tâche, quel que soit son état.
+
+
+
+\paragraph{\texttt{kill}} \command{kill}
+Permet d'envoyer un signal à un programme dont le PID est passé en paramètre. Par défaut, le signal demande au processus de se terminer.
+\begin{itemize}
+    \item \texttt{-l [<num>]} : Liste tous les signaux. Si le paramètre est mentionné, affiche le nom signal correspondant.
+    \item \texttt{-s <SIG>} : Spécifie le signal à envoyer par son numéro ou son nom
+    \item \texttt{-<SIG>} : Identique à \texttt{-s <SIG>}
+\end{itemize}
+
+\note{Note :} La notion de signal et de gestion de processus est abordée au sein du module de Réseaux et Systèmes (RS) de TELECOM Nancy, en 2A. 
+
+\paragraph{\texttt{nohup}} \command{nohup}
+Permet d'ignorer l'affichage d'une commande. Principalement utilisé avec \hyperref[cmd:fork]{\texttt{\&}} pour lancer une commande en arrière plan sans être perturbé par son affichage.

@@ -1,0 +1,336 @@
+\section{Syntaxe de Bash}
+
+\subsection{Blocs de test - \texttt{if} et \texttt{case}}
+
+\subsubsection{\texttt{if}} \command{if}
+La commande \cmdref{if} permet de créer un bloc de condition. La condition sera évaluée grâce aux doubles crochets (\texttt{[[} et \texttt{]]}). En effet, ceux-ci permettent l'utilisation des opérateurs de comparaison (voire partie \ref{sec:test}). Il est également possible de tester le succès d'une commande en l'appelant immédiatement (avec ses éventuels paramètres) après le \cmdref{if}, sans double crochets.
+
+\begin{nscenter}
+    \warning{Les doubles crochets doivent \textbf{TOUJOURS} être entourés d'espaces et jamais accolés au \cmdref{if} ou à la condition.}
+\end{nscenter}
+
+Un \cmdref{if} peut s'écrire de plusieurs manière (voire code \ref{code:if}), mais la condition doit toujours être suivie d'un \texttt{then}, et le bloc \texttt{else} est bien sûr optionnel.
+
+\begin{code}
+    \centering
+    \noindent\begin{minipage}{.5\textwidth}
+    \begin{minted}{bash}
+if [[ condition ]] ; then   # One-line if
+    # code if condition is evaluated as true
+elif command args ; then    # else if
+    # code if command succeeds
+fi
+\end{minted}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+\begin{minted}{bash}
+if [[  condition ]] # Two lines if
+then
+    # Code if condition evaluated true
+else                # Simple else
+    # Code if condition evaluated false
+fi
+\end{minted}
+\end{minipage}\hfill
+    \caption{Syntaxes possibles d'un \cmdref{if} en Bash}
+    \label{code:if}
+\end{code}
+
+
+\note{Note :} Vous pourrez parfois tomber sur une syntaxe avec des \cmdref{if} n'utilisant qu'un seul couple de crochets. Il s'agit d'une syntaxe de \textit{sh}, ancêtre de Bash. Cette syntaxe reste utilisable avec Bash, mais ne permet normalement pas d'utiliser les opérateurs de comparaison traditionnels avec les comparaison de variables (voir ci-dessous).
+\begin{nscenter}
+    \warning{De manière générale, les doubles crochets (syntaxe du Bash) sont à utiliser.}
+\end{nscenter}
+
+\paragraph{Opérateurs de comparaison - \texttt{test}} \label{sec:test} \command{test} 
+
+Différents opérateurs peuvent être utilisés pour faire des comparaisons dans un \cmdref{if} ou \cmdref{while} ou d'autres structures de contrôle (voir tableau \ref{tab:comp}). On peut les regrouper en deux catégories :
+\begin{enumerate}
+    \item Les opérateurs \say{traditionnels}, utilisés pour comparer des chaînes de caractères ;
+    \item Des opérateurs \say{paramétrisés}, utilisés pour comparer les autres types.
+\end{enumerate}
+
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| l | >{\centering\arraybackslash}X | >{\centering\arraybackslash}X | >{\centering\arraybackslash}X | >{\centering\arraybackslash}X | >{\centering\arraybackslash}X | >{\centering\arraybackslash}X |}
+        \hline
+        \raisebox{-1\height}{\textbf{Opération}}    & \raisebox{-1\height}{Égalité}      & \raisebox{-1\height}{Différence}    & Infériorité stricte   &   \raisebox{-1\height}{Infériorité} & Supériorité stricte   &   \raisebox{-1\height}{Supériorité} \\
+            \hline
+        \textbf{Chaînes}                            & \texttt{==}  & \texttt{!=}   & \texttt{<}            &               & \texttt{>}            &               \\
+            \hline
+        \textbf{Entiers}                            & \texttt{-eq} & \texttt{-ne}  & \texttt{-lt}          &  \texttt{-le} & \texttt{-gt}          &  \texttt{-gt} \\
+        \hline
+    \end{tabularx}
+    \vspace{-0.5\baselineskip}\caption{Différents opérateurs de comparaisons}\label{tab:comp}
+\end{table}
+\vspace{-0.2\baselineskip}
+
+De manière générale, lorsque l'on compare des variables, il faut les entourer de \textit{double quotes}. Ceci permet d'une part de gérer les cas où la variable n'existe pas (elle n'a jamais été définie ou a été \cmdref{unset}). D'autre part, cela peut éviter une mauvaise interprétation de la chaîne de caractère, notamment lorsque l'on utilise les simples crochets.
+
+Enfin, il est également possible de combiner plusieurs tests avec des \say{et} et \say{ou} binaires, représentés par les opérateurs \texttt{\&\&} et \texttt{||}.
+
+\paragraph{Tests des chaînes}
+Il est également possible de réaliser des tests plus spécifiques pour les chaînes de caractères, comme illustré dans le tableau \ref{tab:stringcomp}.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X | p{4.5cm} |}
+        \hline
+        \textbf{Opérateur}  & \textbf{Signification}                        & \textbf{Usage}                              \\
+            \hline
+        \texttt{-z}         & Teste si la chaîne est nulle (vide)           & \mintinline{bash}{if [[ -z "$a" ]] }       \\
+            \hline
+        \texttt{-n}         & Teste si la chaîne est non nulle              & \mintinline{bash}{if [[ -n "$a" ]] }       \\
+            \hline
+        \texttt{=\tilde}    & Teste une égalité partielle                   & \mintinline{bash}{if [[ "$a" =~ "test" ]] }\\
+            \cline{1-1}                                                       \cline{3-3}
+        \texttt{==}         & (le premier opérande contient le second)      & \mintinline{bash}{if [[ "$a" == *test* ]] }  \\
+        \hline
+    \end{tabularx}
+    \caption{Comparaison des opérateurs}\label{tab:stringcomp}
+\end{table}
+
+\note{Note :} Dans le cas de l'opérateur  \texttt{=\tilde}, le second opérande est en réalité une expression régulière (voir partie \ref{sec:regex}). Il est donc possible d'effectuer de nombreux tests différents, pas uniquement de tester une partie de la chaîne.
+
+
+\subsubsection{\texttt{case}} \command{case}
+Dans le but d'éviter l'enchaînement de \texttt{if} et de \texttt{else if}, il est possible d'utiliser la structure de contrôle \cmdref{case}. Elle permet de définir différents cas dans lesquels on peut tomber en testant le contenu d'une variable (voir code \ref{code:case}). L'intérêt du \cmdref{case} réside dans le fait que chaque cas peut être testé via une expression régulière (voir partie \ref{sec:regex}), permettant ainsi de gérer différents cas simultanément si besoin.
+
+\begin{code}
+    \centering
+    \begin{minted}{bash}
+#!/bin/bash
+
+case $1 in                              # We're testing the $1 variale
+    start)                              # If it contains "start"
+        echo "Starting..."              # Display the message
+        ;;                              # Done with the "start" case
+    stop)
+        echo "Stopping..."
+        ;;
+    pause|resume)                       # If it contains either "pause" or "resume"
+        echo "Can't pause/resume"       # Display specific message
+        exit 1                          # Exit
+        ;;                              # Still need ;; as we are done with this case
+    *)                                  # Otherwise (default case)
+        echo "Invalid parameter"
+        exit 2
+esac
+\end{minted}
+\vspace{-\baselineskip}
+    \caption{Exemple d'utilisation d'un case}
+    \label{code:case}
+\end{code}
+
+\subsubsection{Listes de commandes -- \texttt{\&\&}, \texttt{||} et \texttt{;}}
+
+Il est aussi possible de définir des listes de commandes pour pouvoir enchaîner plusieurs commandes selon certaines conditions. Trois opérateurs existent pour cela :
+\begin{itemize}
+    \item \mintinline{bash}{cmd1 && cmd2} : \texttt{cmd2} ne sera exécutée que si le code de retour de \texttt{cmd1} est \texttt{0}.
+    \item \mintinline{bash}{cmd1 || cmd2} : \texttt{cmd2} ne sera exécutée que si le code de retour de \texttt{cmd1} est différent de \texttt{0}.
+    \item \mintinline{bash}{cmd1 ; cmd2} : \texttt{cmd1} et \texttt{cmd2} seront toujours exécutées, inconditionnellement.
+\end{itemize}
+\note{Note :} Le \texttt{;} est utilisé lorsque l'on souhaite faire le \cmdref{if} et le \texttt{then} sur la même ligne pour la même idée : le \texttt{then} doit toujours être analysé après le \cmdref{if}.
+
+\newpage
+
+\subsection{Boucles -- \texttt{while} et \texttt{for}}
+\vspace{-5mm}
+\paragraph{\texttt{while}}  \command{while}
+La boucle \cmdref{while} permet de répéter une partie de code (voir code \ref{code:while}).
+
+\begin{code}
+    \centering
+    \noindent\begin{minipage}{.30\textwidth}
+    \begin{minted}{bash}
+while [[ condition ]]
+do
+    # Repeat code
+done
+\end{minted}
+\end{minipage}\hfill
+\begin{minipage}{.65\textwidth}
+\begin{minted}{bash}
+while read line                 # While read doesn't fail
+do
+    echo $line | cut -d' ' -f2  # Display the 2nd word
+done < list.txt                 # Read from list.txt
+\end{minted}
+\end{minipage}\hfill
+    \caption{Syntaxe du \cmdref{while} et lecture ligne par ligne avec \cmdref{read}}
+    \label{code:while}
+\end{code}
+
+La boucle \cmdref{while} est généralement utilisée pour lire une série d'entrées (au clavier ou via un fichier), conjointement avec la commande \cmdref{read}, illustré dans le code \ref{code:while}. Cette technique utilise les notions d'entrées et sorties évoquées partie \ref{sec:redirect}.
+
+\paragraph{\texttt{for}} \command{for}
+La boucle \cmdref{for} itère sur les champs donnés en paramètres, séparés par des espaces (voir code \ref{code:for}. Pour itérer sur une suite d’entiers, on utilisera la commande \texttt{seq} \command{seq} en la substituant en paramètre du \cmdref{for} (voir partie \ref{sec:backquotes}) : \mintinline{bash}{for i in $(seq 1 10)}.
+
+\begin{code}
+    \centering
+    \begin{minted}{bash}
+list="toto tata titi"   # Space-separated list
+for i in $list ; do     # do can be on the next line
+    echo "This is $i"
+done
+\end{minted}
+\vspace{-\baselineskip}
+    \caption{Syntaxe du \cmdref{for}}
+    \label{code:for}
+\end{code}
+
+Si l'on souhaite itérer sur l'ensemble des paramètres fournis au script, \cmdref{for} est approprié, mais il est nécessaire de prendre des précautions. Puisque les items de la liste passée a \cmdref{for} doivent être séparés par des espaces, la gestion des paramètres contenant des espaces est spécifiques.
+
+Une option simple est d'utiliser la variable \texttt{\$@} au lieu de \texttt{\$*}. En effet, cette dernière, lorsqu'elle est entourée de \textit{double quotes}, ne permettra qu'une seule itération tandis que la première agira comme attendu. Ce comportement est mis en avant dans le code \ref{code:forparams}.
+
+\vspace{\baselineskip}
+\begin{code}
+    \centering
+    \noindent\begin{minipage}{.475\textwidth}
+    \begin{minted}{bash}
+count=1
+for j in "$*" ; do
+    echo "Argument $count: '$j'"
+    count=$(expr $count + 1)
+done
+# ./for.sh one "two three" will display
+# Argument 1: 'one two three'
+\end{minted}
+\end{minipage}\hfill
+\begin{minipage}{.475\textwidth}
+\begin{minted}{bash}
+count=1
+for k in "$@" ; do
+    echo "Argument $count: '$k'"
+    count=$(expr $count + 1)
+done
+# ./for.sh one "two three" will display 
+# Argument 1: 'one'
+# Argument 2: 'two three'
+\end{minted}
+\end{minipage}\hfill
+\caption{Différences de comportement de \texttt{\$@} et \texttt{\$*} au sein de \cmdref{for}}
+    \label{code:forparams}
+\end{code}
+
+Le comportement des items de boucle est contrôlé par la variable d'environnement \texttt{\$IFS} (voir tableau \ref{tab:envvars}). Par défaut, elle contient l'espace, la tabulation, le saut de ligne et le caractère de code zéro. En la modifiant, on peut itérer sur des items séparés par d'autres caractères :
+\begin{code}
+\begin{minted}{bash}
+IFS=,
+for i in "item1,item2,item3" ; do echo -n $i ; done # Displays : "item1 item2 item3"
+\end{minted}
+\vspace{-2mm}
+\caption{Modification de l'\texttt{\$IFS} pour un \cmdref{for}}
+    \label{code:forifs}
+\end{code}
+
+\newpage
+
+\subsection{Redirections de données} \label{sec:redirect}
+Comme mentionné partie \ref{sec:directories} et partie \ref{sec:command}, sous Linux, tout est fichier. Les données qu'un processus peut lire et écrire pour interagir avec l’utilisateur sont représentées par une entrée et sortie dites standards. Il y a également une sortie d’erreur standard, utilisée uniquement pour des messages d’erreurs. Ces entrée et sortie sont considérées comme des fichiers particuliers, dédiés au processus courant de la commande. On les nomme souvent \texttt{stdin}, \texttt{stdout} et \texttt{stderr}.
+
+\paragraph{Redirections des entrées et sorties}
+
+Par défaut, l'entrée standard correspond aux données saisies au clavier tandis que la sortie standard correspond à l'affichage dans le terminal. Ces deux entrées et sorties peuvent être redéfinies grâce à des opérateurs particuliers (voir tableau \ref{tab:file_redirect}), que l'on appelle aussi opérateurs de redirection de fichiers.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X | X |}
+        \hline
+        \textbf{Opérateur}  &  \textbf{Signification}                     & \textbf{Exemple d'usage}                    \\
+            \hline
+        \texttt{<}          &  Redéfinit l'entrée standard                & \mintinline{bash}{read a < file.txt}        \\
+            \hline
+        \texttt{>}          &  Redirige la sortie                         & \mintinline{bash}{echo "Hello" > file.txt}  \\
+            \hline
+        \texttt{2>}         &  Redirige la sortie d'erreur                & \mintinline{bash}{echo "Hello" > error.txt} \\
+            \hline
+        \texttt{\&>}        &  Redirige toutes les sorties                & \mintinline{bash}{echo "Hello" > out.txt}   \\
+            \hline
+        \texttt{>{}>}       &  Redirige la sortie vers la fin du fichier  & \mintinline{bash}{echo "End" >> file.txt}   \\
+        \hline
+    \end{tabularx}
+    {\addtolength{\parskip}{-1cm}\caption{Présentation des différents opérateur de redirection de fichiers}\label{tab:file_redirect}}
+\end{table}
+
+\note{Note :} Si l'on souhaite totalement ignorer une sortie, on peut la rediriger vers le fichier spécial \texttt{/dev/null}.
+
+Il est bien évidemment possible de rediriger l'entrée et la sortie simultanément. En revanche \texttt{>} et \texttt{>{}>} sont bien évidemment incompatibles. De plus il est possible de fusionner la sortie d'erreur et la sortie simple : 
+\begin{nscenter}
+\mintinline{bash}{command > out.txt 2>&1 # 2>&1 should be after >}
+\end{nscenter}
+
+\paragraph{Chaînage de commandes - \textit{Pipes}} \label{sec:pipes}
+
+Le \textit{pipe} (\texttt{|}), ou tube en français, est un système qui permet de pouvoir enchaîner différentes commandes en définissant la sortie de la première comme étant l'entrée de la suivante. Les deux commandes seront exécutées simultanément, la seconde commande lisant son entrée au fur et à mesure que la première produit sa sortie.
+
+C'est un mécanisme particulièrement utile pour modifier ou filtrer l'affichage initial d'une commande ou le contenu d'un fichier (voir tableau \ref{tab:pipe}). La plupart des commandes qui prennent un nom de fichier en paramètre peuvent se trouver derrière un pipe. De plus, il est également possible d'enchaîner les \textit{pipes} sur plus de deux commandes.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| l | X |}
+        \hline
+        \textbf{Commande}                                 &  \textbf{Signification}                                               \\
+            \hline
+        \footnotesize{\texttt{ps -e | head}}              &  N'affiche que les premiers processus, pour voir les en-tête.         \\
+            \hline
+        \footnotesize{\texttt{ps | tail -n +2}}           &  N'affiche pas les en-tête (la première ligne) de \cmdref{ps}.        \\
+            \hline
+        \footnotesize{\texttt{ps -e | grep bash | wc -l}} &  Compte le nombre de processus de Bash en cours (voir \cmdref{grep}). \\
+        \hline
+    \end{tabularx}
+    {\addtolength{\parskip}{-1cm}\caption{Exemples courants d'utilisation du \textit{pipe}}\label{tab:pipe}}
+\end{table}
+
+\subsection{Substitution de commandes - \textit{Backquotes} et \texttt{\$()}} \label{sec:backquotes}
+
+
+Il est parfois utile de pouvoir récupérer immédiatement le résultat d’une commande pour l’utiliser dans une autre commande ou structure de contrôle. Cela peut être fait en entourant la commande de \textit{backquotes} (\texttt{``}) ou par \texttt{\$(} et \texttt{)} (voir code \ref{code:backquotes}).
+Les deux notations sont strictement équivalentes, même si la seconde est plus récente.
+
+\begin{code}
+\begin{minted}{bash}
+export PATH=$PATH:`pwd`             # Adds current directory to path
+ls -l $(which gcc)                  # Displays details about the gcc command
+if [[ "$(head f.txt)" == "title" ]] # Tests if the first line of f.txt is "title"
+\end{minted}
+\vspace{-5mm}
+\caption{Exemple d'utilisation de la substitution de commande}
+    \label{code:backquotes}
+\end{code}
+
+\warning{Attention :} Cette syntaxe permet la substitution d'une commande mais est également perméable à l'interprétation des variables. Il faut donc ne pas confondre quand utiliser les \textit{double quotes} ou les \textit{simple quotes} (voir partie \ref{sec:string}) et les \textit{backquotes} !
+
+\note{Note :} En fonction du contexte dans lequel elle est utilisée, il est parfois nécessaire d'entourer la substitution de commande de \textit{double quotes}. Par exemple, dans le code \ref{code:backquotes}, si jamais le fichier \texttt{f.txt} est vide, \cmdref{head} ne retournera rien, et la ligne sera alors interprétée comme \mintinline{bash}{if [[ "" == "title" ]]}. \textbf{Sans les \textit{doubles quotes}, il y aurait une erreur de syntaxe.}
+
+\vspace{-1cm}
+\subsection{Fonctions} \label{sec:functions}
+\vspace{-2mm}
+
+\subsubsection{Définition de fonction}
+Il est possible de définir des fonction en Bash, pour pouvoir réutiliser du code et mieux l'organiser. La définition d'une fonction passe par le mot clé \texttt{function} et ressemble à la définition de fonction de plusieurs autres langages (voir code \ref{code:function}). La définition d'une fonction doit impérativement être réalisée avant son utilisation.
+
+\begin{code}
+\begin{minted}{bash}
+function my_function() { # Optional "function" keyword here
+    # code here
+    # $1, $2 and so on can be used, they are the function parameters
+    return 0 # As for script, the return is optional
+}
+\end{minted}
+\vspace{-5mm}
+\caption{Déclaration d'une fonction}
+    \label{code:function}
+\end{code}
+
+\warning{Attention :} En Bash, \textbf{on ne précise pas les paramètres attendus de la fonction entre les parenthèses}. On utilise les variables \texttt{\$}n pour représenter les paramètres de la fonction, à la manière des paramètres du script.
+
+Une fois déclarée, une fonction s'utilise comme toute autre commande, sans parenthèses, et en donnant ses arguments séparés par des espaces.
+
+Enfin on utilise \texttt{\cmdref{unset} -f} pour supprimer la fonction dont le nom est passé en dernier paramètre.
+
+
+\subsubsection{Portée des variables}
+\textbf{Au sein des fonctions Bash, les variables sont globales par défaut}. Une variable déclarée dans le corps d'une fonction pourra être utilisée après, tant qu'elle n'a pas été \cmdref{unset}.
+Afin de s'assurer que la variable n'ai pas une portée globale, on peut la préfixer de \texttt{local} lors de sa déclaration \textbf{au sein d'une fonction} : \mintinline{bash}{local a=3}

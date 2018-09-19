@@ -1,0 +1,290 @@
+\section{Commandes avancées}
+
+\subsection{Rechercher des fichiers -- \texttt{find}} \command{find}
+\cmdref{find} permet de rechercher des fichiers à partir d'un dossier donné et selon plusieurs critères, voire d'agir sur ceux-ci.
+
+La structure de \cmdref{find} est la suivante : 
+\begin{nscenter}
+\texttt{find <directory> [-filter [value] -filter [value] ...] [-action -action [parameters...] ...]}
+\end{nscenter}
+Le dossier peut être donné de façon relative ou absolue, voire même être le résultat d'une autre commande grâce à la substitution de commandes. Il existe de nombreux filtres, qui permettent de rechercher les fichiers selon le critère voulu.
+
+\subsubsection{Filtres de recherche}
+Il est possible d'utiliser plusieurs filtres à la suite pour n'obtenir que les fichiers désirés. \cmdref{find} cherchera alors les fichiers qui vérifient l'ensemble des filtres, à la manière d'un \say{et} logique.
+Si l'on souhaite des conditions plus précises, on peut utiliser les paramètres \texttt{-o} (pour \textit{or}) ou \texttt{-a} (pour \textit{and}) entre les filtres:
+\begin{nscenter}
+\texttt{find . -filter <valeur> -o -filter2 -a -filter3 value}
+\end{nscenter}
+
+\begin{tabularx}{\textwidth}{| l | X |}  \hline
+    \textbf{Filtre} & \textbf{Description}
+    \\ \hline
+    \texttt{-amin <n>}  &
+        Le fichier a été \textbf{a}ccédé il y a \texttt{n} minutes.
+    \\ \hline
+    \texttt{-atime <n>} & 
+        Le fichier a été \textbf{a}ccédé dans les dernières $\texttt{n}\times24$ heures.
+    \\ \hline
+    \texttt{-cmin <n>} &
+        Le statut du fichier a été \textbf{c}hangé il y a \texttt{n} minutes. 
+    \\ \hline
+    \texttt{-ctime <n>} & 
+        Le statut du fichier a été \textbf{c}hangé dans les dernières $\texttt{n}\times24$ heures.
+    \\ \hline
+    \texttt{-empty}     & 
+        Le fichier est vide.
+    \\ \hline
+    \texttt{-executable}&
+        Le fichier est exécutable pour l'utilisateur courant.
+    \\ \hline
+    \texttt{-group <gid>}&
+        L'identifiant du groupe propriétaire du fichier est \texttt{gid}.
+    \\ \hline
+    \texttt{-mmin <n>}&
+        Le fichier a été \textbf{m}odifié il y a \texttt{n} minutes. 
+    \\ \hline
+    \texttt{-mtime <n>}&
+        Le fichier a été \textbf{m}odifié dans les dernières $\texttt{n}*24$ heures.
+    \\ \hline
+    \texttt{-name <pattern>}&
+        Le nom du fichier valide le \textit{pattern} donné \newline \textbf{qui n'est pas une expression régulière}.
+    \\ \hline
+    \texttt{-iname <pattern>}&
+        Comme \texttt{-name}, exceptée que la correspondance ignore la casse.
+    \\ \hline
+    \texttt{-path <pattern>}&
+        Le chemin du fichier valide le \textit{pattern} donné  \newline \textbf{qui n'est pas une expression régulière}.
+    \\ \hline
+    \texttt{-ipath <pattern>}&
+        Comme \texttt{-path}, excepté que la correspondance ignore la casse.
+    \\ \hline
+    \texttt{-perm <permissions>}&
+        \textbf{Toutes} les permissions du fichier correspondent au filtre. La permission peut être donné sous la forme octale ou symbolique : \texttt{310} est équivalent à \texttt{u=rw,g=x}. \warning{Par défaut, il faut que les permissions soient toutes exactement validées}.
+        
+        Il existe plusieurs variante pour ce filtre :
+        \begin{itemize}
+            \item \texttt{-perm -<permissions>} : Toutes les permissions données sont validées par le fichier. Il est possible de ne valider qu'une partie des permissions du fichier. 
+            \item \texttt{-perm /<permissions>} : Les permissions du fichier correspondent à n'importe laquelle des permissions données.
+        \end{itemize}
+    \\ \hline
+\end{tabularx}
+\newpage
+\begin{tabularx}{\textwidth}{| l | X |}  \hline    
+    \texttt{-regex <regex>}&
+        Le nom du fichier valide l'expression régulière \texttt{regex}
+    \\ \hline
+    \texttt{-size <s>}&
+        La taille du fichier correspond à \texttt{s}, qui peut être donnée : 
+        \begin{itemize}
+            \item en nombre de blocs de 512 octets (par défaut, suffixe \texttt{b}),
+            \item en octets (suffixe \texttt{c}),
+            \item en kilo-octets (suffixe \texttt{k}),
+            \item en méga-octets (suffixe \texttt{M}),
+            \item en giga-octets (suffixe \texttt{G}).
+        \end{itemize}\vspace{-\baselineskip}
+    \\ \hline
+    \texttt{-type <t>}&
+        Le fichier est du type \texttt{t}. Le type est tel qu'affiché par \texttt{\cmdref{ls} -l}.
+    \\ \hline
+    \texttt{-user <uid>}&
+        L'identifiant de l'utilisateur propriétaire du fichier est \texttt{uid}.
+    \\ \hline
+\end{tabularx}
+
+\subsubsection{Actions}
+
+Les actions sont des paramètres de \cmdref{find} permettant d'agir sur les résultats de la commande.
+
+\begin{tabularx}{\textwidth}{| l | X |}  \hline
+    \textbf{Action} & \textbf{Description}
+    \\ \hline
+    \texttt{-delete}  &
+        Supprime le fichier trouvé.
+    \\ \hline
+    \texttt{-execdir <command> \textbackslash;}  &
+        Permet d'exécuter la commande passée en paramètre. La commande sera exécutée pour chaque fichier trouvé, dans le sous-dossier du fichier en question. Afin de préciser la fin de la commande à exécuter, pour ne pas confondre ses arguments avec ceux de \cmdref{find}, on utilise le marqueur \texttt{\textbackslash;}.
+        
+        Afin de pouvoir spécifier le résultat de \cmdref{find} en paramètre de la commande, on utilise le marqueur \texttt{\{\}}.
+        Il existe plusieurs variante de ce marqueur : 
+        \begin{itemize}
+            \item \texttt{\{\}} : Le marqueur sera remplacé par le fichier courant (la commande sera appelée à chaque fois que \cmdref{find} trouve un fichier).
+            \item \texttt{\{\}+} : Les arguments de la commande sont construits au fur et à mesure. Ainsi, la commande sera appelée moins de fois : une fois pour chaque sous-dossier contenant au moins un fichier trouvé par \cmdref{find}
+        \end{itemize}
+        
+    \\ \hline
+    \texttt{-print}  &
+        Affiche le fichier trouvé (comportement par défaut).
+    \\ \hline
+\end{tabularx}
+
+\subsubsection{Exemples}
+Trouver tous les fichiers \texttt{.c} et \texttt{.h} dans le dossier courant :
+\begin{nscenter}
+\mintinline{bash}{find . -name "*.c" -o -name "*.h"}
+\end{nscenter}
+
+Trouver les fichiers de configuration lus il y a moins d'une minute, qui sont modifiables par ses propriétaires :
+\begin{nscenter}
+\mintinline{bash}{find /etc -amin -1 -o -perm -u=w,g=w}
+\end{nscenter}
+
+Créer une archive \texttt{.tar.gz} contenant tous les fichiers \texttt{.h} :
+\begin{nscenter}
+\mintinline{bash}{find . -type f -name "*.h" -exec tar czf includes.tar.gz {} +}
+\end{nscenter}
+
+Ajouter à \texttt{git} tous les fichiers dans un sous-dossier \texttt{resource} modifiés il y a 24 heures
+\begin{nscenter}
+\mintinline{bash}{git add $(find . -type f -path "*/resource/*" -atime 1)}
+\end{nscenter}
+
+\newpage
+\subsection{Rechercher dans du texte -- \texttt{grep}} \command{grep}
+\cmdref{grep} permet de rechercher les lignes correspondant à un motif donné sous la forme d'expression régulière. Dans son comportement par défaut, \cmdref{grep} affiche les lignes contenant le motif recherché dans le fichier non le nom est passé en paramètre.
+
+La structure de \cmdref{grep} est la suivante : 
+\begin{nscenter}
+\texttt{grep [<options>] <regex> [<fichier>]}
+\end{nscenter}
+Le fichier est optionnel car \cmdref{grep} lit depuis son entrée standard lorsqu'il n'est pas spécifié. Il est ainsi possible de \textit{piper} l'affichage d'une autre commande dans \cmdref{grep}.
+
+\begin{itemize}
+    \item \texttt{-E} : Permet de spécifier que l'on utilise une expression régulière étendue.
+    \item \texttt{-r} : Mode récursif. Si un dossier est passé en paramètre de \cmdref{grep}, la recherche est effectuée dans tous les fichiers contenu dans ce dossier.
+\end{itemize}
+
+\subsubsection{Contrôle de l'affichage}
+\begin{itemize}
+    \item \texttt{-i} : Rend la recherche insensible à la casse (majuscule/minuscule).
+    \item \texttt{-v} : Inverse les résultats de recherche.
+    \item \texttt{-c} : Compte le nombre de lignes trouvées.
+    \item \texttt{-o} : N'affiche que le contenu du fichier validé par la regex.
+    \item \texttt{-s} : Mode silencieux. Pas de message d'erreur si le fichier ne peux pas être lu.
+    \item \texttt{-n} : Affiche les numéro de ligne.
+    \item \texttt{-A <n>} : Affiche \texttt{n} lignes de contexte après (\textit{\textbf{A}fter}) la ligne trouvée.
+    \item \texttt{-B <n>} : Affiche \texttt{n} lignes de contexte avant (\textit{\textbf{B}efore}) la ligne trouvée.
+    \item \texttt{-C <n>} : Affiche \texttt{n} lignes de contexte avant et après la ligne trouvée.
+\end{itemize}
+
+\note{Note :} Différentes commandes dérivées de \cmdref{grep} existent parfois : 
+\begin{itemize}
+    \item \texttt{rgrep}\command{rgrep} : Équivalent à \texttt{grep -r}
+    \item \texttt{egrep}\command{egrep} : Équivalent à \texttt{grep -E}
+\end{itemize}
+
+\subsubsection{Exemples}
+
+Voir l'activité du système quant aux périphériques USB :
+\begin{nscenter}
+\mintinline{bash}{dmesg | grep USB}
+\end{nscenter}
+
+Compter le nombre de fonctions retournant un \texttt{int} déclarée dans le fichier \texttt{programme.h}
+\begin{nscenter}
+\mintinline{bash}{grep -E "int \w \((\w\** \w)*\);" programme.h | wc -l}
+\end{nscenter}
+
+Lister l'ensemble des cartes graphiques du système :
+\begin{nscenter}
+\mintinline{bash}{lspci | grep "VGA"}
+\end{nscenter}
+
+\newpage
+\subsection{Modifier du texte à la volée -- \texttt{sed}} \command{sed}
+\cmdref{sed} (\textit{\textbf{s}tream \textbf{ed}itor}) permet de modifier du texte selon certains critères. Il fonctionne en parcourant le fichier et en appliquant les opérations au fur et à mesure.
+
+L'usage le plus courant de \cmdref{sed} est la substitution, mais cette commande permet d'effectuer de nombreuses autres opérations avec un paramétrage précis. C'est un véritable couteau-suisse du traitement de texte !
+
+Pour permettre cette polyvalence, \cmdref{sed} utilise une syntaxe particulière : 
+\begin{nscenter}
+\texttt{sed [<options>] '<programme>'}
+\end{nscenter}
+Pour \cmdref{sed}, un programme est une suite de caractères définissant les actions à effectuer, ainsi que leurs éventuels paramètres. Le programme devra être entouré de \textit{quotes} afin d'être bien délimité par Bash. Certains programmes pouvant parfois être très complexes, il est possible de les charger à partir d'un fichier, pour simplifier la rédaction de la commande.
+
+Les principaux types programmes \cmdref{sed} sont composés d'au moins une expression régulière ainsi que d'un code d'un caractère permettant d'identifier l'action à réaliser. Afin de pouvoir les écrire en ligne simplement, \cmdref{sed} utilise un délimiteur. On voit très souvent ce délimiteur comme étant un \textit{slash} (\texttt{/}), car il est courant d'entourer les expressions régulières par ce caractère. Cependant, \textbf{\cmdref{sed} permet d'utiliser n'importe quel caractère comme délimiteur}. Dans les exemples suivants (avec des \textit{slashes}), il est ainsi possible d'utiliser un \textit{underscore} (\texttt{\_}) ou un point d'exclamation (\texttt{!}) comme délimiteur.
+
+\subsubsection{Options simples}
+\begin{itemize}
+    \item \texttt{-E} : Permet de spécifier que l'on utilise une expression régulière étendue.
+    \item \texttt{-e <programme>} : Évalue le programme donné. Utile et nécessaire si on effectue plusieurs programme simultanément.
+    \item \texttt{-i} : Modifie directement le fichier en cours de traitement (\textit{\textbf{i}n-place edit}).
+    \item \texttt{-f <file>} : Charge le programme \cmdref{sed} depuis le fichier donné.
+\end{itemize}
+
+\subsubsection{Substitution -- \texttt{s/search/replace/}}
+
+Voici la syntaxe du programme de substitution :
+\begin{nscenter}
+\mintinline{bash}{sed 's/<searchregex>/<replacement>/'}
+\end{nscenter}
+
+La recherche s'effectue à partir d'une simple expression régulière. Le texte de remplacement (qui peut être vide) peut contenir n'importe quelle chaîne de caractère. Enfin, si jamais la regex dispose d'un groupe de capture, le texte de remplacement peut faire référence au i-ème groupe de capture grâce à la notation \texttt{\textbackslash i}.
+
+\warning{Attention :} \textit{slashes} (\texttt{/}) étant utilisés pour délimiter la regex et le texte de remplacement, ils ne peuvent pas être utilisés au sein de ceux-ci sans être échappés par un \textit{antislash} : \texttt{\textbackslash /}.
+
+\subsubsection{Suppression -- \texttt{/delete/d}}
+La suppression permet de supprimer entièrement chaque ligne d'un fichier qui valide l'expression régulière. Voici la syntaxe du programme de suppression :
+\begin{nscenter}
+\mintinline{bash}{sed '/<searchregex>/d'}
+\end{nscenter}
+
+Les règles et le fonctionnement sont semblables à la substitution.
+
+\subsubsection{Translittération -- \texttt{y/source/dest/}}
+La translittération permet simplement de transformer une série de caractères en une autre, à la manière de \cmdref{tr}.
+Ainsi, \mintinline{bash}{sed 'y/Aa/aA/'} transformera tous les \texttt{A} en \texttt{a} et vice-versa.
+
+\subsubsection{Insertion de lignes -- \texttt{/search/i text} et \texttt{/search/a text}}
+Afin de pouvoir insérer une ligne dans le fichier, on pourra utiliser les syntaxes suivantes. Ainsi, pour chaque ligne validant l'expression régulière, le texte sera ajouté à la ligne précédent ou suivante.
+
+\subsubsection{Notion d'adresses}
+
+\cmdref{sed} permet de définir certaines zones de texte que l'on souhaite modifier, plutôt que d'appliquer le programme à l'ensemble du fichier donné. On parle de donner l'adresse, qui est composée des délimiteurs de cette zone. Ainsi, on donnera la première borne, puis la seconde en les séparant par une virgule. Il est également possible d'exclure une zone à traiter en la faisant suivre d'un point d'exclamation. L'adresse devra se trouver devant le programme \cmdref{sed} : 
+\begin{nscenter}
+\mintinline{bash}{sed '<upper_bound>,<lower_bound> [!] <programm>'}
+\end{nscenter}
+
+Plusieurs format d'adresses existent : 
+\begin{itemize}
+    \item Par numéro de ligne : On donne simplement les numéros de la première et de la dernière ligne à prendre en compte : 
+        \begin{nscenter}
+            \mintinline{bash}{sed 'N,M <programm>'}
+        \end{nscenter}
+    \item Par expression régulière : On donne une expression régulière validant la première ligne, puis une second validant la dernière ligne :
+        \begin{nscenter}
+            \mintinline{bash}{sed '/begin/,/end/ <programm>'}
+        \end{nscenter}
+    \item \textbf{GNU \cmdref{sed} uniquement} Par première ligne et nombre de ligne. L'adresse peut être donnée par un numéro de ligne ou une expression régulière tandis que le nombre de ligne est forcément un entier.
+        \begin{nscenter}
+            \mintinline{bash}{sed '<address>,+N <programm>'}
+        \end{nscenter}
+    \item \textbf{GNU \cmdref{sed} uniquement} Par première ligne, périodiquement.  Le programme sera appliqué à partir de la ligne donnée, puis sur toutes les lignes dont le numéro est multiple de \texttt{N}. L'adresse peut être donnée par un numéro de ligne ou une expression régulière tandis que le nombre de ligne est forcément un entier.
+        \begin{nscenter}
+            \mintinline{bash}{sed '<address>,~N <programm>'}
+        \end{nscenter}
+\end{itemize}
+
+\subsubsection{Exemples}
+
+Supprimer toutes les lignes du fichier \texttt{test.log} commençant par le mot \texttt{ERROR} ; stockant le résultant dans le fichier \texttt{cleantest.log} :
+\begin{nscenter}
+    \mintinline{bash}{sed -E '/^ERROR/d' test.log > cleantest.log}
+\end{nscenter}
+
+Renommer la variable \texttt{t}, dans la fonction \texttt{print\_t()} du fichier \texttt{main.c} :
+\begin{nscenter}
+    \mintinline{bash}{sed -i '/^int print_t() \{/,/^\}/ s/ t / table /g' main.c}
+\end{nscenter}
+
+Modifier le format des dates de la commande \cmdref{ls} : 
+\begin{nscenter}
+    \mintinline{bash}{ls --time-style=+%D | sed -E 's/([0-9]{2})\/([0-9]{2})\/([0-9]{2})/\2-\1-\3/g'}
+\end{nscenter}
+
+Remplace tous les commentaires d'une ligne (\texttt{//}) par des blocs de commentaires (\texttt{/**/}) en conservant l'indentation, pui en supprimant toutes les lignes contenant \texttt{TODO}
+\begin{nscenter}
+    \mintinline{bash}{sed -i -e 's/^([[:space:]]*)\/\/([^\n]*)\$//\1\/\*\2\*\//g' -e '/TODO/d' file.c}
+\end{nscenter}
+
+%\newpage
+%\subsection{Récupérer des parties de texte - \texttt{awk}} \command{awk}

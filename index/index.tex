@@ -1,0 +1,20 @@
+\setlength{\parskip}{0.5em}
+\listoffigures
+
+\listoftables
+
+\newpage
+
+\addcontentsline{toc}{section}{\lstlistlistingname}
+\lstlistoflistings
+
+\newpage
+\setlength{\parskip}{1em}
+% Because index uses plain style page
+\fancypagestyle{plain}{%
+    \fancyhf{}
+    \fancyhead[L]{\footnotesize\nouppercase{Index}}
+    \fancyhead[R]{\footnotesize\nouppercase{\Title{} - \LongTitle{}}}
+    \fancyfoot[R]{\footnotesize\thepage}
+}
+\printindex

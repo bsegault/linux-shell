@@ -1,0 +1,60 @@
+\section{\texttt{nano} Cheat Sheet} \label{appendix:nano} \command{nano}
+\vspace{-7mm}
+Si \cmdref{nano} est un éditeur en ligne de commande simple à aborder, c'est parce-que les touches habituelles de déplacement de curseur son disponibles et qu'il présente les raccourcis disponible directement en bas du terminal.
+
+\cmdref{nano} dispose également d'arguments en ligne de commande :
+\begin{itemize}
+    \item \texttt{-A} : La touche \texttt{Home} ignorera les tabulations et espaces du début de ligne.
+    \item \texttt{-E} : Convertit automatique les tabulations en espaces.
+    \item \texttt{-w} : Désactive le retour à la ligne automatique pour les grandes lignes.
+\end{itemize}
+\vspace{2mm}
+La liste de raccourcis du le tableau \ref{tab:nano} n'est pas exhaustive, mais présente les raccourcis nécessaires à une utilisation avancée. On notera que \cmdref{nano} les exprime sous la forme contractée : 
+\begin{itemize}
+    \item \texttt{\^}\textit{Touche} : Correspond à la combinaison \texttt{Ctrl +} \textit{Touche}
+    \item \texttt{M-}\textit{Touche} : Correspond à l'enchaînement \texttt{Alt +} \textit{Touche} ou \texttt{Echap}, puis \textit{Touche}.
+\end{itemize}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+            \multicolumn{2}{|c|}{\textbf{Contrôle de l'éditeur}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Ctrl + G}      & Affiche l'aide complète. \\ \hline
+        \texttt{Ctrl + X}      & Quitte \cmdref{nano}. Demande pour enregistrer avant. \\ \hline
+        \texttt{Ctrl + O}      & Enregistre sans quitter. \\ \hline
+        \texttt{Alt + D}        & Compte le nombre de lignes, mots, caractères.\\ \hline
+        \texttt{Alt + U \textit{ou} Alt + E}        & Annule \textit{ou} refait la dernière opération. \\ \hline
+        \texttt{Ctrl + R, Alt + F}  & Ouvre un nouveau fichier. \\ \hline
+        \texttt{Alt + <} \textit{ou} \texttt{Alt + >}        & Passe au fichier précédent \textit{ou} suivant.\\ \hline
+        
+            \nocell{2}
+            \multicolumn{2}{|c|}{\textbf{Comportement}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Alt + X}        & Affiche/Masque l'aide rapide (Raccourcis en bas du terminal). \\ \hline
+        \texttt{Alt + M}        & Active/désactive le support de la souris. \\ \hline
+        \texttt{Alt + I}        & Active/désactive l'indentation automatique. \\ \hline
+        
+            \nocell{2}
+            \multicolumn{2}{|c|}{\textbf{Recherche et copie}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Ctrl + W}      & Recherche d'une chaîne \\ \hline
+        \texttt{Alt + R}        & Recherche et remplace une chaîne. \\ \hline
+            \hline
+        \texttt{Alt + A}        & Passe en mode sélection de texte. \\ \hline
+        \texttt{Alt + A, Alt + \^}   & Copie le texte sélectionné. \\ \hline
+        \texttt{Alt + A, Ctrl + K}  & Coupe le texte sélectionné. \\ \hline
+        \texttt{Ctrl + K}      & Coupe la ligne courante. \\ \hline
+        \texttt{Ctrl + U}      & Colle le texte copié. \\ \hline
+        
+            \nocell{2}
+            \multicolumn{2}{|c|}{\textbf{Déplacement du curseur}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Ctrl + C}      & Affiche la position du curseur. \\ \hline
+        \texttt{Ctrl + \_}     & À la ligne et colonne voulues.\\ \hline
+        \texttt{Alt + ]}        & À la parenthèse, l'accolade ou le crochet associé.\\ \hline
+    \end{tabularx}
+    \vspace{-1mm}
+    \caption{Différents raccourcis clavier de \cmdref{nano}}\label{tab:nano}
+\end{table}

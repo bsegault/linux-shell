@@ -1,0 +1,34 @@
+\def\maketitle{%
+    \pagestyle{empty}
+    
+    \begin{center}
+    
+    \begin{tabular}{L{0.475\columnwidth} R{0.475\columnwidth}}
+    \includegraphics[height=1.8cm]{cover/school-logo.pdf} & \includegraphics[height=1.8cm]{cover/university-logo.pdf}
+    \end{tabular}
+    
+    \vfill
+    
+    \rule{0.95\columnwidth}{1pt}
+    \smallskip
+    
+    \huge{\Title{}} \\
+    \Large{\LongTitle{}}
+    
+    \smallskip
+    \rule{0.95\columnwidth}{1pt}
+    
+    \vfill
+    \normalsize
+    \begin{tabular}{L{0.475\columnwidth} R{0.475\columnwidth}}
+    \Date{}     & \Author{} \\
+    \Context{}  & \AuthorEmail{} \\
+    \Module{}   & \AuthorSource{} \\
+    
+    \end{tabular}
+    
+    \end{center}
+    
+    \cleardoublepage
+    \setcounter{page}{1}
+}

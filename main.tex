@@ -1,0 +1,259 @@
+\documentclass[12pt,french]{article}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Layout
+\usepackage[a4paper, portrait, margin=2cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% French encoding
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage[
+    left = \flqq~,
+    right = ~\frqq,
+    leftsub = \flqq,
+    rightsub = \frqq
+]{dirtytalk}
+
+
+% Captions, Figures, Tables & Listings/Codes
+\usepackage[font=small]{caption}
+
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[edges]{forest}
+
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{colortbl}
+\usepackage{multirow}
+
+\usepackage{listings}
+\usepackage[newfloat]{minted}
+
+
+% Other stuff
+\usepackage{color}
+\usepackage{multicol}
+
+% ToC Stuff
+\usepackage{titlesec}
+\usepackage[nottoc,notbib]{tocbibind}
+\usepackage{imakeidx}
+\usepackage[toc,page]{appendix}
+
+
+\usepackage{hyperref} % Should be last imported!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Colors & stuff
+\definecolor{warning}{RGB}{204, 0, 0}
+\definecolor{note}{RGB}{5, 94, 153}
+\definecolor{ilink}{RGB}{78,126,144}
+\definecolor{elink}{RGB}{85,0,255}
+\definecolor{dirblue2}{RGB}{92,144,192}
+\definecolor{dirblue3}{RGB}{125,191,92}
+\definecolor{dirblue4}{RGB}{92,191,158}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=ilink,
+    filecolor=elink,      
+    urlcolor=elink,
+}
+
+\newcommand{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
+\newcommand{\cmdref}[1]{\hyperref[cmd:#1]{\texttt{#1}}}
+\newcommand{\warning}[1]{\textbf{\textcolor{warning}{#1}}}
+\newcommand{\note}[1]{\textbf{\textcolor{note}{#1}}}
+
+\renewcommand{\tilde}{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}
+
+\setminted{
+    frame=single,
+    fontsize=\footnotesize,
+    linenos=true,
+    style=tango,
+    stripnl=true,
+    tabsize=4
+}
+
+\makeindex[columns=3, title=Liste des commandes, intoc,
+           options= -s index/idx.ist]
+\newcommand{\command}[1]{%
+    \label{cmd:#1}%
+    \index{\texttt{#1}}
+}
+
+
+\renewcommand{\listfigurename}{Liste des figures}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tables
+
+\SetupFloatingEnvironment{table}{name=Tableau}
+
+\newcommand\nocell[1]{
+    \multicolumn{#1}{c}{}\\[-2ex]\hline
+}
+
+% Column types for header/footer
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% New environments
+
+\renewcommand{\lstlistlistingname}{Liste des codes}
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Code}
+
+\makeatother
+\newenvironment{nscenter}
+ {\parskip=0pt\par\nopagebreak\centering}
+ {\par\noindent\ignorespacesafterend}
+    
+\newenvironment{boxed}
+{\begin{nscenter}\begin{tabular}{|p{.95\textwidth}|}\hline \\}
+{\\\hline\end{tabular}\end{nscenter}}
+\makeatletter
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Variables
+\def\Title{SHELL}
+\def\LongTitle{Prise en main de GNU/Linux et de Bash}
+\def\Author{Benjamin SÉGAULT}
+\def\AuthorEmail{\email{benjamin.segault@telecomnancy.net}}
+\def\AuthorSource{\href{https://github.com/bsegault/linux-shell}{\raisebox{-0.2\height}{ \includegraphics[height=0.8\baselineskip]{res/GitHub-Mark.pdf}} \texttt{github.com/bsegault/linux-shell}}}
+\def\Date{Septembre 2018}
+\def\Module{Module Shell}
+\def\Context{TELECOM Nancy 1A}
+
+\title{%
+  \Title{} - \LongTitle{} \\
+  \large}
+
+\author{\Author{}}
+\date{\Date{}}
+
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title - Cover
+\input{cover/cover.tex}
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ToC
+\setlength{\parskip}{0.3em}
+\setcounter{tocdepth}{3}
+\tableofcontents
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Non title or ToC configuration
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\renewcommand{\baselinestretch}{1.15}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\nouppercase{\rightmark}}
+\fancyhead[R]{\footnotesize\nouppercase{\Title{} - \LongTitle{}}}
+\fancyfoot[R]{\footnotesize\thepage/\pageref*{end}}
+
+\titleformat{\paragraph}{\normalfont\normalsize\bfseries}{}{0em}{}
+\titlespacing{\paragraph}{15pt}{-5pt}{-12pt}
+\titlespacing*{\subsubsection}{0pt}{1ex plus 0ex minus 1ex}{-.5ex plus .1ex minus .5ex}
+
+
+\fancyfoot[R]{}
+\input{sections/intro.tex}
+\newpage
+
+\fancyfoot[R]{\footnotesize\thepage/\pageref*{end}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{sections/gnu_linux.tex}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{sections/terminal_shell.tex}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{sections/discover_bash.tex}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{sections/syntax.tex}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{sections/regex.tex}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{sections/advanced.tex}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{sections/ssh.tex}
+
+\paragraph{}\label{end} % Hack to have last content page number
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagenumbering{Roman}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\nouppercase{Index}}
+\fancyhead[R]{\footnotesize\nouppercase{\Title{} - \LongTitle{}}}
+\fancyfoot[R]{\footnotesize\thepage}
+
+\input{index/index.tex}
+\newpage
+
+\appendix
+
+\pagenumbering{Alph}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\nouppercase{Annexes}}
+\fancyhead[R]{\footnotesize\nouppercase{\Title{} - \LongTitle{}}}
+\fancyfoot[R]{\footnotesize\thepage}
+
+
+\input{appendix/nano.tex}
+\newpage
+
+\input{appendix/vim.tex}
+\newpage
+
+\input{appendix/emacs.tex}
+\newpage
+
+\input{appendix/prompt.tex}
+
+\end{document}

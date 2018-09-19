@@ -1,0 +1,90 @@
+\section{\texttt{vim} Cheat Sheet} \label{appendix:vim}\command{vim}
+
+\cmdref{vim} est un éditeur de texte en ligne de commande puissant. Il dispose notamment d'outils tels que la recherche et remplacement de texte ou de \textit{patterns}, la coloration syntaxique.
+
+\cmdref{vim} est une version améliorée de l'éditeur \texttt{vi} : son nom signifie \textit{\textbf{V}i \textbf{IM}proved}. Il se base sur le même concept d'optimisation de déplacement du curseur. C'est la raison pour laquelle on peut penser que \cmdref{vim} dispose de raccourcis non intuitifs.
+
+En effet, contrairement aux autres éditeurs de texte, \cmdref{vim} \textbf{ne permet pas de directement éditer le texte. Il d'abord faut passer en mode d'édition}, en appuyant sur \texttt{i}. On appuie sur \texttt{Echap} pour quitter le mode.
+
+\cmdref{vim} dispose de plusieurs modes. Le fonctionnement est toujours identique : \textbf{une touche pour rentrer dans le mode, \texttt{Echap} pour le quitter}.
+
+Enfin, \cmdref{vim} permet d'effectuer des commandes. Une commande doit être saisie en appuyant sur deux-points (\texttt{:}) puis en saisissant la commande donnée.
+
+Les raccourcis essentiels pour prendre cet éditeur en main sont présentés dans le tableau \ref{tab:vim}. Des raccourcis plus avancés, mais plus puissants, sont présentés dans le tableau \ref{tab:vim_advanced}.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+
+            \multicolumn{2}{|c|}{\textbf{Contrôle de l'éditeur - Changement de modes}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{i}  & Passe en mode insertion, \textbf{avant} le curseur. \\ \hline
+        \texttt{a}  & Passe en mode insertion, \textbf{après} le curseur. \\ \hline
+        \texttt{I}  & Passe en mode insertion, \textbf{au début} de la ligne. \\ \hline
+        \texttt{A}  & Passe en mode insertion, \textbf{à la fin} de la ligne. \\ \hline
+        \texttt{v}  & Passe en mode visuel, pour sélectionner du texte. \\ \hline
+            \hline
+        \texttt{O}  & Insère une ligne \textbf{avant} la ligne courante et passe en mode insertion. \\ \hline
+        \texttt{o}  & Insère une ligne \textbf{après} la ligne courante et passe en mode insertion. \\ \hline
+        
+            \nocell{2}
+            \multicolumn{2}{|c|}{\textbf{Commandes}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{:w}       & Enregistre le fichier. Peut être combiné avec \texttt{:q} : \texttt{:wq} \\ \hline
+        \texttt{:q}       & Quitte \cmdref{vim}. Ajouter \texttt{!} pour forcer. \\ \hline
+        \texttt{:e <file>}& Édite le fichier \texttt{file}. L'auto-complétion est active.\\ \hline
+        \texttt{:pwd}     & Affiche le dossier courant.\\ \hline
+        \texttt{:shell}   & Ouvre un terminal. Quitter le terminal avec \texttt{Ctrl+D} ou \texttt{exit} revient vers \cmdref{vim} \\ \hline
+    \end{tabularx}
+    \caption{Raccourcis clavier essentiels de \cmdref{vim}} \label{tab:vim}
+\end{table}
+
+\newpage
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+            \multicolumn{2}{|c|}{\textbf{Déplacement du curseur}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{h}  & Vers la gauche, équivalent de \texttt{\textleftarrow}. \\ \hline
+        \texttt{j}  & Vers le bas, équivalent de \texttt{\textdownarrow}. \\ \hline
+        \texttt{k}  & Vers le haut, équivalent de \texttt{\textuparrow}. \\ \hline
+        \texttt{l}  & Vers la droite, équivalent de \texttt{\textrightarrow}. \\ \hline
+            \hline
+        \texttt{0}  & Au début de la ligne, équivalent de \texttt{Home}. \\ \hline
+        \texttt{\^} & Au 1\textsuperscript{er} caractère de la ligne qui n'est pas un espace. \\ \hline
+        \texttt{\$} & Déplace le curseur à la fin de la ligne, équivalent de \texttt{End}. \\ \hline
+        \texttt{W} (\textit{\texttt{w}}) & Au début du mot suivant \textit{(Ponctuation incluse)}. \\ \hline
+        \texttt{E} (\textit{\texttt{e}}) & À la fin du mot suivant \textit{(Ponctuation incluse)}. \\ \hline
+        \texttt{B} (\textit{\texttt{b}}) & Au mot précédent \textit{(Ponctuation incluse)}. \\ \hline
+        
+            \nocell{2}
+            \multicolumn{2}{|c|}{\textbf{Édition de texte}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{dd} & Coupe la ligne courante. \\ \hline
+        \texttt{D}  & Supprime la fin de la ligne à partir du curseur. \\ \hline
+            \hline
+        \texttt{u}  & Annule la dernière opération. \\ \hline
+        \texttt{r}  & Refait la dernière opération annulée. \\ \hline
+        
+            \nocell{2}
+            \multicolumn{2}{|c|}{\textbf{Recherche}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{/<regex>} & Recherche d'une chaîne ou d'un regex. \\ \hline
+        \texttt{n} & Déplace le curseur à l'occurrence de recherche suivante. \\ \hline
+        \texttt{p} & Déplace le curseur à l'occurrence de recherche précédente. \\ \hline
+        \texttt{:\%s/<search>/<replace/g} & Remplace toutes les occurrences de \texttt{<search>} par \texttt{<replace>} \\ \hline
+        
+            \nocell{2}
+            \multicolumn{2}{|c|}{\textbf{Copie}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{y} & \textbf{En mode visuel} Copie le texte sélectionné. \\ \hline
+        \texttt{p} & Colle le texte copié \textbf{après} le curseur. \\ \hline
+        \texttt{P} & Colle le texte copié \textbf{avant} le curseur. \\ \hline
+    \end{tabularx}
+    \caption{Raccourcis clavier avancés de \cmdref{vim}} \label{tab:vim_advanced}
+\end{table}
+
+Bien que ces raccourcis soient présentés comme étant \say{avancés}, il ne s'agit que d'un aperçu des possibilités de \cmdref{vim}. De nombreux conseils et explications figurent sur le \textit{\href{http://vim.wikia.com/wiki/Vim_Tips_Wiki:Community_Portal}{Vim Tips Wiki}}.

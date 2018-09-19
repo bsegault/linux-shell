@@ -1,0 +1,124 @@
+\section{Authentification et connexion à distance - SSH} \label{sec:ssh}
+
+SSH est l'abréviation de \textit{\textbf{S}ecure \textbf{SH}ell}. Il s'agit d'un système permettant de se connecter à distance à d'autres machines en utilisant un protocole de communication sécurisé. La sécurité de SSH repose sur l'utilisation de cryptographie asymétrique. Bien que ses fondements soient assez complexe, l'utilisation de SSH est extrêmement simple.
+
+Nous ne détaillerons ici qu'une introduction à SSH et un bref aperçu de son fonctionnement.
+\note{Note :} Il existe plusieurs implémentation de du protocole SSH. Nous utiliserons \href{https://www.openssh.com/}{OpenSSH} pour cette partie.
+
+\subsection{Cryptographie}
+La cryptographie est une discipline centrée sur la sécurité de l'échange de messages ou données, à l'aide de clés. Les clés sont les moyens de pouvoir chiffrer ou déchiffrer un message, afin de préserver leur intégrité (que personne ne les modifie), mais aussi  confidentialité (que personne ne puisse les lire, hormis les lecteurs désirés).
+
+Pour échanger des messages chiffrés, on peut distinguer deux méthodes : la cryptographie symétrique et la cryptographie asymétrique.
+
+La première est relativement simple : l'émetteur du message crypte le contenu avec une clé que le destinataire connaît, et qui est utilisée pour déchiffrer le message. Ainsi, la même clé est utilisée pour chiffrer et déchiffrer un message. L'inconvénient est que le destinataire et l'émetteur doivent s'échanger leur clé au préalable. On parle aussi de secret.
+
+La cryptographie asymétrique, quant à elle, utilise un système différent, basé sur une paire de clés. Chaque utilisateur du système dispose ainsi d'une clé privée et d'une clé publique. Ces clés vont toujours par paire, car l'une sans l'autre est inutile.
+
+La clé publique à pour vocation d'être donnée publiquement. Son rôle est de permettre de pouvoir chiffrer un message que seul son propriétaire pourra déchiffrer. Pour cela, le propriétaire, destinataire du message utilisera sa clé privée.
+
+La sécurité du système est donc bien plus simple à conserver, puisqu'il suffit de garder secrète la clé privée, sans nécessité de la transmettre. Cependant, le chiffrement et le déchiffrement est plus coûteux. C'est la raison pour laquelle, au sein de SSH, le mode asymétrique est uniquement utilisé pour authentifier l'utilisateur et échanger la clé de chiffrement symétrique. Le reste de la connexion est chiffré en utilisant un système symétrique.
+
+Plusieurs algorithmes de cryptographie asymétrique existent. Le plus connu et utilisé de nos jours est RSA. Le détail de fonctionnement de RSA et de la cryptographie asymétrique sont étudiés au sein du cours de Cryptographie de 2A ISS.
+
+\newpage
+\subsection{Usages}
+SSH est généralement utilisé de deux manières :
+\begin{itemize}
+    \item Pour l'authentification : L'utilisateur prouvera son identité en utilisant sa clé privée, après avoir donné sa clé publique au serveur, service ou autre tiers;
+    \item Pour la connexion à distance : l'utilisateur n'a pas nécessairement besoin d'avoir pré-généré une paire de clés. Le protocole s'en chargera avant la connexion et automatiquement. L'utilisateur devra cependant valider l'identité de la machine distante.
+\end{itemize}
+
+\subsection{Génération de clés -- \texttt{ssh-keygen}}
+
+\paragraph{\texttt{ssh-keygen}} \command{ssh-keygen}
+Permet de générer une paire de clé privée-publique, ou de les modifier.
+Par défaut, \cmdref{ssh-keygen} génère une paire de clés de de 2048 bits, utilisant le protocole RSA, qui seront stockées dans les fichiers \texttt{\tilde/.ssh/id\_rsa} et \texttt{\tilde/.ssh/id\_rsa.pub}.
+
+Ainsi pour commencer à utiliser SSH, il suffit uniquement de générer une paire de clé avec \mintinline{bash}{ssh-keygen} et de se laisser guider par le programme.
+
+\note{Note :} Une clé SSH peut disposer d'un mot de passe ou non. En fonction de l'usage qui en est fait, il peut être pratique de ne pas avoir de mot de passe. \textbf{Cependant, de manière générale, il faut lui donner un mot de passe sûr.}
+
+\subsection{Utilisation}
+
+Afin de se connecter sur une machine distante (on parle aussi d'hôte ou de \textit{Host}), il faut spécifier à SSH en tant que quel utilisateur on souhaite se connecter, et la machine en question. Pour cela, la syntaxe générique est la suivante est
+\begin{nscenter}
+    \texttt{user@host}
+\end{nscenter}
+\begin{itemize}
+    \item \texttt{user} : le nom d'utilisateur avec lequel on veut se connecter. L'utilisateur doit exister sur la machine distante. \newline
+    Cette mention est optionnelle, par défaut, SSH utilisera le nom d'utilisateur courant.
+    \item \texttt{host} : le nom de la machine distante ou son adresse IP.
+\end{itemize}
+L'hôte devra bien entendu avoir le service SSH démarré (on parle aussi de serveur ou de démon).
+
+\subsubsection{Connexion à distance -- \texttt{ssh}}
+
+\paragraph{\texttt{ssh}} \command{ssh}
+Permet de se connecter à distance sur une machine ayant un serveur SSH installé.
+Le dernier argument est la cible \texttt{user@host}.
+\begin{itemize}
+    \item \texttt{-G} : Affiche la configuration.
+    \item \texttt{-i <private\_key>} : Force l'utilisation de \texttt{<private\_key>} comme clé privée.
+    \item \texttt{-l <username>} : Spécifie l'utilisateur pour la connexion distante.
+    \item \texttt{-P <port>} : Spécifie le port pour la connexion distante. Par défaut, utilise le port 22.
+\end{itemize}
+
+\subsubsection{Copie de fichiers distants -- \texttt{scp}}
+
+\paragraph{\texttt{scp}} \command{scp}
+Permet de copier des fichiers d'une machine distante à une autre.
+La syntaxe générique de \cmdref{scp} est semblabe à celle de \cmdref{cp} :
+\begin{nscenter}
+    \mintinline{bash}{scp <source-host-path> [<source-host-path>...] <destination-host-path>}
+\end{nscenter}
+Lorsqu'un élément (source ou destination) est sur la machine distante, il faudra utiliser la syntaxe de connexion d'une machine distante, suivie de deux-points (\texttt{:}) et du chemin vers le fichier. Les chemins (locaux ou sur la machine distante) peuvent être relatifs ou absolus.
+Ainsi, pour copier un fichier distant sur la machine courante, on utilisera :  
+\begin{nscenter}
+    \mintinline{bash}{scp usr1@host1:~/file.sh /path/to/downloads/file.sh}
+\end{nscenter}
+Tandis que pour copier un fichier local sur la machine distante, on utilisera :  
+\begin{nscenter}
+    \mintinline{bash}{scp file.sh usr1@host1:/mnt/data/file.sh}
+\end{nscenter}
+
+
+\note{Note :} À l'exception de \texttt{-G}, les paramètres mentionnés pour \cmdref{ssh} sont applicables à \cmdref{scp}.
+\begin{itemize}
+    \item \texttt{-r} : Mode récursif. Si la source est un dossier, copie l'intégralité du dossier.
+    \item \texttt{-p} : Mode préservatif. Préserve les droits d'accès, temps d'accès et de modification.
+\end{itemize}
+
+\subsection{Configuration}
+
+Le fichier \texttt{\tilde/.ssh/config} contient des paramètres pré-définis pour une connexion SSH. Il permet ainsi de définir des raccourcis rapides évitant de saisir la commande entièrement. Ces paramètres sont utilisés par toutes les commandes utilisant SSH. \newline
+Sa structure est la suivante est exposée dans la figure \ref{fig:sshconf}.
+\begin{figure}[h!]
+\centering
+\begin{minted}{text}
+Host host1
+    Hostname 1.2.3.4
+    Port 2222
+    User usr1
+    IdentityFile ~/.ssh/usr1_prv_key
+Host myroot
+    Hostname mymachine
+    User root
+\end{minted}
+\vspace{-\baselineskip}\caption{Exemple de fichier \texttt{.ssh/config}} \label{fig:sshconf}
+\end{figure}
+
+Le fichier est divisé en une ou plusieurs sections \texttt{Host}. L'identifiant suivant la mention \texttt{Host} est libre et sera le nom de la configuration. Chaque élément de section est optionnel, sur une seule ligne et précédé d'une tabulation. Ils correspondent aux paramètres donnés à \cmdref{ssh} ou \cmdref{scp}.
+
+Ainsi, avec le fichier présenté en figure \ref{fig:sshconf}, on peut se connecter à la machine d'adresse IP \texttt{1.2.3.4} au port \texttt{2222} en tant que l'utilisateur \texttt{usr1} et en utilisant la clé privée \texttt{\tilde/.ssh/usr1\_prv\_key} avec la commande : 
+\begin{nscenter}
+    \mintinline{bash}{ssh host1}
+\end{nscenter}
+Il est également possible de changer le port pour cette même connexion : 
+\begin{nscenter}
+    \mintinline{bash}{ssh -p 22 host1}
+\end{nscenter}
+
+Ou d'utiliser l'utilisateur courant plutôt que \texttt{usr1} :
+\begin{nscenter}
+    \mintinline{bash}{ssh $(whoami)@host1}
+\end{nscenter}

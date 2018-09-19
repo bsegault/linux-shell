@@ -1,0 +1,238 @@
+\section{Expressions régulières} \label{sec:regex}
+
+Les expressions régulières (regex ou regexp) sont un outil très utilisé en programmation. Elles permettent de valider la structure d'une chaîne de caractère (\textit{match} en anglais) simplement voire d'en extraire une partie. En d'autres mots elles permettent de décrire des motifs (\textit{pattern}) dans une chaîne de caractères. En Bash, elle sont souvent utilisées en conjonction avec des commandes recherchant ou manipulant du texte, telles que \cmdref{grep} ou \cmdref{sed}.
+
+Il existe plusieurs types d'expressions régulières : atomiques, simples et étendues. Les plus courantes et connues sont les expressions régulières simples, car plus d'outils les acceptent par défaut. C'est le cas de \cmdref{grep} en Bash.
+
+
+\subsection{Expressions régulières atomiques (ERA)}
+Une expression régulière atomique ne \textit{matchera} qu'un seul caractère. Il existe plusieurs catégories d'ERA, détaillées dans le tableau \ref{tab:ERA}.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+        \textbf{Exemple}                                    &   \textbf{Signification}                                                                                                  \\
+            \hline
+        \raisebox{-.8\height}{\texttt{a}, \texttt{b}, \texttt{0}, \texttt{1}...}   &   Le caractère donné (sauf s'il s'agit du point '\texttt{.}' ou d'un espace '\texttt{ }') \newline 
+                                                                Les caractères sont sensibles à la casse, sauf si spécifié autrement.                                                   \\
+            \nocell{2}
+        \texttt{\textbackslash n}                           &   Saut de ligne (\textit{Line Feed})                                                                                      \\
+            \hline
+        \raisebox{-.8\height}{\texttt{\textbackslash r}}    &   Retour la ligne (\textit{Carriage Return}) \newline 
+                                                                Sous Windows, une fin de ligne est matérialisée par  \texttt{\textbackslash r\textbackslash n}                          \\
+            \hline
+        \texttt{\textbackslash t}                           &   Tabulation horizontale                                                                                                  \\
+            \hline
+        \texttt{\textbackslash xYYY}                        &   Le caractère dont le code ASCII en hexadécimal correspond à \texttt{YYY}                                                \\
+            \nocell{2}
+        \raisebox{-3\height}{\texttt{.}}                   &   N'importe quel caractère, une fois, hormis un saut de ligne \texttt{\textbackslash n}. Si on veut matcher un point, il suffit de l'échapper avec un \textit{backslash} : \texttt{\textbackslash .}                                                                                                                               \\
+            \nocell{2}
+        \texttt{[aBc0]}                                     &   Tout caractère caractère, une fois, parmi ceux entre crochets (ici, \texttt{a}, \texttt{B}, \texttt{c} ou \texttt{0}).  \\
+            \hline
+        \texttt{[\string^ae]}                               &   Tout caractère, une fois, sauf ceux entre crochets (ici, tout sauf \texttt{a} ou \texttt{e}).                           \\
+            \hline
+       \raisebox{-1.8\height}{\texttt{[a-z]}}                &   N'importe quel caractère compris entre \texttt{a} et \texttt{z}, une fois. Le tiret est interprété comme marqueur d'intervalle entre deux caractères, sauf s'il est le premier ou dernier caractère entre crochets. \\
+        \hline
+    \end{tabularx}
+    \caption{Présentation des différentes Expressions régulières Atomiques}\label{tab:ERA}
+\end{table}
+
+\warning{Attention:} Entre crochets, les caractères '\texttt{.}', '\texttt{\$}' et '\texttt{\textbackslash}' ne sont pas interprétés.
+
+\newpage
+\subsection{Expressions régulières simples (ERS)}
+
+Une ERS est une concaténation d'ERA ou une combinaison avec les quantificateurs (\textit{quantifiers}). Un quantifier ne s'applique que sur l'ERA qu'elle précède. Bien entendu, si la chaîne de caractères sur laquelle on applique l'ERS valide l'expression régulière, mais contient des caractères additionnels, l'ERS sera quand même validée. Pour s'apercevoir de la différence, on peut, par exemple tester d'utiliser la commande \cmdref{grep} avec l'argument \texttt{--color=auto}.
+
+\subsubsection{\textit{Quantifiers}}
+
+Ainsi, pour une expression régulière atomique R\textsubscript{ERA} donnée, les exemples du tableau \ref{tab:ERS} préciseront la validation d'une chaîne complète.
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+        \textbf{Utilisation de \textit{quantifier}} & \textbf{Signification}                                                \\
+            \hline
+        \texttt{R\textsubscript{ERA}*}      &   \texttt{R\textsubscript{ERA}} zéro, une fois, ou plus.                      \\
+            \hline
+        \texttt{R\textsubscript{ERA}+}      &   \texttt{R\textsubscript{ERA}} une fois, ou plus                             \\
+            \hline
+        \texttt{R\textsubscript{ERA}?}      &   \texttt{R\textsubscript{ERA}} zéro ou une fois                              \\
+            \hline
+        \texttt{R\textsubscript{ERA}\{n\}}  &   \texttt{R\textsubscript{ERA}} exactement \texttt{n} fois                    \\
+            \hline
+        \raisebox{-\height}{\texttt{R\textsubscript{ERA}\{n,m\}}} &   \texttt{R\textsubscript{ERA}} entre \texttt{n} et \texttt{m} fois. \newline
+                                                Si \texttt{m} n'est pas défini, cela signifie au moins \texttt{n} fois.     \\
+        \hline
+    \end{tabularx}
+    \caption{Présentation des différents \textit{quantifiers} dans des Expressions Régulières Simples}\label{tab:ERS}
+\end{table}
+\vspace{-1cm}
+
+\subsubsection{Exemples}
+\vspace{-0.2cm}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}[c]{| c | l | l | l | l | l | l |}
+        \hline
+            \textbf{ERA}  & \multicolumn{3}{|c|}{\textbf{\textit{Total match}}}  & \multicolumn{3}{|c|}{\textbf{\textit{Partial match}}}  \\
+            \hline
+        \texttt{A*}                 & \footnotesize{\textit{(chaîne vide)}} &   \texttt{{\color{red}A}}     &  \texttt{{\color{red}AAAAA}}   &    \texttt{B}                     &   \texttt{B{\color{red}AAA}}  &   \texttt{NON}                   \\
+            \hline
+        \texttt{abba*}              & \texttt{{\color{red}abb}}             &   \texttt{{\color{red}abba}}  &  \texttt{{\color{red}abbaaa}}  &    \texttt{{\color{red}abbaa}bba} &   \texttt{{\color{red}abb}b}  &   \texttt{e{\color{red}abb}-}    \\
+            \hline
+        \texttt{[a-z]+}             & \texttt{{\color{red}a}}               &   \texttt{{\color{red}r}}     &  \texttt{{\color{red}erjomjh}} &    \textit{(chaîne vide)}         &   \texttt{{\color{red}a}-z}   &   \texttt{{\color{red}a} t}      \\
+            \hline
+        \texttt{abc\{2,3\}}         & \texttt{{\color{red}abcc}}            &   \texttt{{\color{red}abcc}}  &                                &    \texttt{abcabc}                &   \texttt{ab}                 &   \texttt{{\color{red}abccc}c}   \\
+            \hline
+        \texttt{ab\{2,\}}           & \texttt{{\color{red}abb}}             &   \texttt{{\color{red}r}}     &  \texttt{{\color{red}erjomjh}} &    \texttt{ab}                    &   \texttt{a}                  &   \texttt{at}                    \\
+        \hline
+    \end{tabular}
+    \caption{Applications d'ERS sur des chaînes d'exemples}\label{tab:ERS_examples}
+\end{table}
+
+Avec les exemples du tableau \ref{tab:ERS_examples}, on constate qu'une chaîne peut être matchée partiellement :
+
+\begin{itemize}
+    \item Si elle est matchée en partie, l'expression régulière définit la chaîne comme matchée tout de même (il y a du texte en rouge dans les exemples). Dans \cmdref{grep}, la ligne sera affichée.
+    \item Dans le cas ou l'expression régulière peut valider le mot vide (\texttt{A*}), alors toute chaîne sera matchée partiellement par le mot vide, même si aucun caractère de la chaîne n'est validé (rien n'est en rouge).
+    \item Ainsi, \texttt{A*} \textit{matchera} toute les lignes de n'importe quel fichier, sans retenir aucun caractère.
+\end{itemize}
+
+
+De plus, en fonction des paramètres de la regex, elle peut être validée plusieurs fois pour une même chaîne de caractère (les matches supplémentaires sont en violet dans l'exemple). On dit alors qu'elle est appliquée globalement. D'autres modes existent et permettent de paramétrer la recherche. Ils font, normalement, partie de l'expression régulière et s'appellent \textit{flags}. Les plus courants sont :
+\begin{itemize}
+    \item \texttt{m} - \textit{\textbf{m}ulti-line match} : la regex sera appliquée sur chaque ligne,
+    \item \texttt{g} - \textit{\textbf{g}lobal} : la regex sera appliquée sur toute la chaîne et ne s'arrêtera pas au premier \textit{matching},
+    \item \texttt{i} - \textit{case \textbf{i}nsensitive} : la regex sera insensible à la casse (majuscules/minuscules ignorées).
+\end{itemize}
+
+
+\newpage
+\subsection{Expressions régulières étendues (ERE)}
+
+Une expression régulière étendue est une concaténation d'ERS (ou d'ERA) ou une combinaison avec les marqueurs de groupes.
+
+\subsubsection{Marqueurs}
+
+Ainsi, pour deux ERS \texttt{R\textsubscript{ERS1}} et \texttt{R\textsubscript{ERS2}} données, et un \textit{quantifier} \texttt{Q} donné, les différents marqueurs sont présentés dans le tableau \ref{tab:ERE}.
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+        \textbf{Utilisation de marqueur}                             &  \textbf{Signification}                                                 \\
+            \hline
+        \raisebox{-\height}{\texttt{\string^R\textsubscript{ERS1}}}&  \texttt{R\textsubscript{ERS1}} au début de la ligne(\string^ est le marqueur de début de ligne) \newline
+                                                                        \warning{Attention :} Cette signification est différente entre crochets !  \\
+            \hline
+        \raisebox{-\height}{\texttt{R\textsubscript{ERS1}\$}}      &  \texttt{R\textsubscript{ERS1}} a la fin de la ligne(\$ est le marqueur de fin de ligne) \newline
+                                                                    \warning{Attention :} Cette signification est différente entre crochets !       \\
+            \hline
+        \texttt{R\textsubscript{ERS1}|R\textsubscript{ERS2}}         &  \texttt{R\textsubscript{ERS1}} ou \texttt{R\textsubscript{ERS2}}           \\
+            \hline
+        \texttt{(R\textsubscript{ERS1})Q}                            &  \texttt{R\textsubscript{ERS1}} répétée en fonction du \textit{quantifier}  \\
+        \hline
+    \end{tabularx}
+    {\addtolength{\parskip}{-1cm}\caption{Présentation des différents \textit{quantifiers} dans des Expressions Régulières Étendues}\label{tab:ERE}}
+\end{table}
+
+Il existe de nombreuses autres notations permettant de simplifier les expressions régulières lorsqu'elles sont trop complexes. Cependant, plusieurs implémentations existent et elles ne prennent pas toutes en compte les mêmes notations. Il s'agit généralement de caractères échappés (comme \texttt{\textbackslash s}, qui match tout caractère d'espacement) ou de classes de caractères, comme \texttt{[[:space:]]}, qui a le même rôle.
+
+La plupart du temps, les expressions régulières étendues ne sont pas activées par défaut dans les commandes Bash. Il faudra ajouter le paramètre \texttt{-E} pour les activer. Dans le cas contraire, les caractères spécifiques aux ERE ne seront pas interprétés.
+
+
+\subsubsection{Groupes de capture}
+
+Lorsqu'on utilise les parenthèses, on créé ce que l'on appel un groupe de capture. Un groupe de capture permet d'une part d'appliquer un \textit{quantifier} à une ERE ou une ERS, mais également de récupérer (extraire) la partie de la chaîne de caractère correspondant au contenu du groupe de capture. Elle pourra ainsi être réutilisée lorsque nécessaire.
+
+En Bash, c'est utilisé notamment avec \cmdref{sed}, lors de la substitution :
+
+\begin{code}
+    \begin{minted}[mathescape=true]{bash}
+#!/bin/bash
+# Change la date du format américain (MM/DD/YYYY) au format européen (DD-MM-YYYY)
+date +\%D | sed -E 's/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/\2-\1-\3/g'
+    \end{minted}
+    \vspace{-0.5cm}
+    \captionof{listing}{Substitution avec \texttt{sed} et des groupes de capture}
+    \label{code:regex_groups}
+\end{code}
+
+\newpage
+
+
+\subsection{\textit{Shorthands} et classes de caractères}
+\vspace{-4mm}
+Au sein d'une ERA, on peut également utiliser des séquences particulières qui permettent de symboliser plus simplement des ensembles de caractères. Il s'agit des \textit{shorthands} ou \textit{meta sequence} et des classes de caractères. Ils sont illustrés dans les tableaux \ref{tab:meta} et \ref{tab:charclass}.
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+        \textbf{\textit{Shorthand}}         & \textbf{Signification}                                                                                \\
+            \hline
+        \texttt{\textbackslash s}   & N'importe quel espace, équivalent à \texttt{[\textbackslash t \textbackslash r\textbackslash n]}.       \\
+            \hline
+        \texttt{\textbackslash S}   & Inverse de \texttt{\textbackslash s}.                                                                 \\
+            \hline
+        \texttt{\textbackslash d}   & Nombre, équivalent à \texttt{[0-9]}.                                                                  \\
+            \hline
+        \texttt{\textbackslash D}   & Inverse de \texttt{\textbackslash d}.                                                                 \\
+            \hline
+        \texttt{\textbackslash w}   & Mot séparé par un espace (inclu \textit{underscore}), équivalent à \texttt{[A-Za-z0-9\_]}.  \\
+            \hline
+        \texttt{\textbackslash W}   & Inverse de \texttt{\textbackslash w}.                                                                 \\
+        \hline
+    \end{tabularx}
+    {\addtolength{\parskip}{-13mm}\caption{Différents raccourcis de caractères}\label{tab:meta}}
+\end{table}\vspace{-5mm}
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+        \textbf{Classe de caractère}& \textbf{Signification}                                                                    \\
+            \hline
+        \texttt{[[:alnum:]]}        & N'importe quel lettre ou chiffre, équivalent à \texttt{[A-Za-z0-9]}.                      \\
+            \hline
+        \texttt{[[:alpha:]]}        & N'importe quel lettre, équivalent à \texttt{[A-Za-z]}.                                    \\
+            \hline
+        \texttt{[[:blank:]]}        & Caractère d'espacement (espace ou tabulation), équivalent à \texttt{[\textbackslash t ]}. \\
+            \hline
+        \texttt{[[:digit:]]}        & N'importe quel chiffre, équivalent à \texttt{[0-9]}.                                      \\
+            \hline
+        \texttt{[[:lower:]]}        & Lettre minuscule, équivalent à \texttt{[a-z]}.                                            \\
+            \hline
+        \texttt{[[:space:]]}        & Espace entre caractères, équivalent à \texttt{\textbackslash s}.                          \\
+            \hline      
+        \texttt{[[:upper:]]}        & Lettre majuscule, équivalent à \texttt{[A-Z]}.                                            \\
+            \hline
+        \texttt{[[:word:]]}         & Mot séparé par un espace, équivalent à \texttt{\textbackslash w}.                         \\
+        \hline
+    \end{tabularx}
+    {\addtolength{\parskip}{-13mm}\caption{Classes de caractères}\label{tab:charclass}}
+\end{table}
+
+\vspace{-11mm}
+\subsection{Utilisation des regex en Bash}
+
+%\subsubsection{Commandes et regex}
+
+En Bash, l'utilisation des expressions régulières se fait très souvent conjointement avec les commandes \cmdref{grep} et \cmdref{sed}. De plus, les tests d'égalité partielle (voir partie \ref{cmd:if}) permettent également l'utilisation d'expressions régulières. Bien entendu, toutes sortes de commandes peuvent utiliser des expressions régulières et celles-ci ne sont pas limitées à Bash. 
+
+%\subsubsection{Cas particuliers sans regex}
+
+Il faut bien différencier les commandes qui acceptent une véritable expression régulières de celles qui prennent uniquement un \textit{pattern} simple, dont le fonctionnement se rapproche des regex mais est plus limité. Le manuel précise toujours lorsqu'il ne s'agit pas de regex. Typiquement, le \texttt{-name} de \cmdref{find} n'accepte pas d'expressions régulières.
+
+Indépendamment, il y a ce qu'on appelle l'\textbf{expansion du terminal}. Par exemple, \cmdref{ls} ne prend pas une expression régulière, même simple en paramètre. Si la commande \texttt{ls a*} affiche bien tous les fichiers commençant par '\texttt{a}', c'est uniquement parce-que l'interpréteur de commandes sait matcher '\texttt{a*}' avec tous les fichiers commençant par '\texttt{a}'. Ce que \cmdref{ls} reçoit en paramètre est en réalité la liste des fichiers commençant par '\texttt{a}'. On peut le vérifier grâce à ce petit script :
+
+
+\begin{code}
+    \begin{minted}{bash}
+#!/bin/bash
+echo $* # ./script.sh a* will display the list of files of which name starts with an 'a'
+    \end{minted}
+    
+    \vspace{-0.5cm}
+    \captionof{listing}{Mise en avant de la différence entre expression régulière et expansion du terminal}
+    \label{code:expansion}
+\end{code}
