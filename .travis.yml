@@ -1,0 +1,21 @@
+sudo: required
+language: generic
+services: docker
+
+
+before_install:
+# texlive image from https://hub.docker.com/r/sumdoc/texlive-2018/
+ - docker pull sumdoc/texlive-2018
+
+
+script:
+# Running inside the docker container
+ - docker run -t -v $TRAVIS_BUILD_DIR:/home -w /home sumdoc/texlive-2018 /bin/sh -c "pdflatex -shell-escape -synctex=1 -interaction=nonstopmode --jobname=linux_shell main.tex"
+
+deploy:
+  provider: releases
+  api_key: "7cf30769a070e73685a9261baec22af657d61dae"
+  file: linux_shell.pdf"
+  skip_cleanup: true
+  on:
+    tags: true
