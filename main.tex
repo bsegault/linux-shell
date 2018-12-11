@@ -35,7 +35,7 @@
 \usepackage{multirow}
 
 \usepackage{listings}
-\usepackage[newfloat]{minted}
+\usepackage[cache=false, newfloat]{minted}
 
 
 % Other stuff
@@ -64,7 +64,7 @@
 \hypersetup{
     colorlinks=true,
     linkcolor=ilink,
-    filecolor=elink,      
+    filecolor=elink,
     urlcolor=elink,
 }
 
@@ -121,7 +121,7 @@
 \newenvironment{nscenter}
  {\parskip=0pt\par\nopagebreak\centering}
  {\par\noindent\ignorespacesafterend}
-    
+
 \newenvironment{boxed}
 {\begin{nscenter}\begin{tabular}{|p{.95\textwidth}|}\hline \\}
 {\\\hline\end{tabular}\end{nscenter}}
