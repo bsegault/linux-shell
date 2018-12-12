@@ -9,7 +9,7 @@
 \usepackage{lastpage}
 
 % French encoding
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{babel}
 \usepackage[
@@ -73,6 +73,8 @@
 \newcommand{\warning}[1]{\textbf{\textcolor{warning}{#1}}}
 \newcommand{\note}[1]{\textbf{\textcolor{note}{#1}}}
 
+\newcommand{\utfcode}[1]{\small{\texttt{\textbf{[U+#1]}}}}
+
 \renewcommand{\tilde}{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}
 
 \setminted{
@@ -135,9 +137,10 @@
 \def\Author{Benjamin SÉGAULT}
 \def\AuthorEmail{\email{benjamin.segault@telecomnancy.net}}
 \def\AuthorSource{\href{https://github.com/bsegault/linux-shell}{\raisebox{-0.2\height}{ \includegraphics[height=0.8\baselineskip]{res/GitHub-Mark.pdf}} \texttt{github.com/bsegault/linux-shell}}}
-\def\Date{Septembre 2018}
+\def\Date{Décembre 2018}
 \def\Module{Module Shell}
 \def\Context{TELECOM Nancy 1A}
+\def\Version{v1.0.1}
 
 \title{%
   \Title{} - \LongTitle{} \\
@@ -244,6 +247,8 @@
 \fancyhead[R]{\footnotesize\nouppercase{\Title{} - \LongTitle{}}}
 \fancyfoot[R]{\footnotesize\thepage}
 
+\input{appendix/shortcuts.tex}
+\newpage
 
 \input{appendix/nano.tex}
 \newpage
@@ -251,7 +256,7 @@
 \input{appendix/vim.tex}
 \newpage
 
-%\input{appendix/emacs.tex}
+\input{appendix/emacs.tex}
 \newpage
 
 
