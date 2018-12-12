@@ -1,1 +1,90 @@
 \section{\texttt{emacs} Cheat Sheet} \label{appendix:emacs} \command{emacs}
+
+Emacs est un éditeur de texte en ligne de commande aux fonctionnalités très riches. Il dispose de tous les outils que l'on peut s'attendre à trouver sur un éditeur de texte avancé, et plus encore. Il fait partie du projet GNU et est donc maintenu par la fondation du même nom.
+
+Son fonctionnement est souvent considéré comme plus intuitif que \cmdref{vim} car, dès son lancement, il permet de saisir du texte au clavier, sans avoir à passer dans un mode d'édition. Il dispose de nombreux raccourcis claviers, mais ceux-ci diffèrent totalement des raccourcis usuels.
+
+Un autre aspect particulier d'\cmdref{emacs} est qu'il dispose d'un système de \textit{plugins}. De nombreux paquets sont référencés sur \href{https://github.com/emacs-tw/awesome-emacs}{un dépôt tiers}. Ceux-ci permettent de rajouter des fonctionnalités diverses et variés, qui peuvent étendre le logiciel à bien plus qu'un éditeur de texte. Des plugins pour la gestion de tâches, de \textit{playlists} musicales voire de navigateur Internet existent !
+
+\note{Notation des raccourcis :} La notation des raccourcis de ce document est naturelle et française. Elle n'est donc que rarement utilisée dans des documentations, supports ou aide en ligne. L'annexe \ref{appendix:shortcuts} évoque les différentes notations.
+
+Les raccourcis essentiels pour prendre cet éditeur en main sont présentés dans le tableau \ref{tab:emacs}.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+            \multicolumn{2}{|c|}{\textbf{Contrôle de l'éditeur}} \\ \hline
+            \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Ctrl + X, Ctrl + F}  & Ouvrir un fichier. \\ \hline
+        \texttt{Ctrl + X, Ctrl + S}  & Sauvegarder le fichier courant. \\ \hline
+        \texttt{Ctrl + X, S}  & Sauvegarder tous les fichiers ouverts. \\ \hline
+        \texttt{Ctrl + Z}  & Mettre Emacs en pause pour reprendre plus tard (voir \cmdref{fg}). \\ \hline
+        \texttt{Ctrl + X, Ctrl + C}  & Quitter Emacs. \\ \hline \hline
+        
+        \texttt{Ctrl + X, 2}  & Divise la fenêtre courante en deux, verticalement. \\ \hline
+        \texttt{Ctrl + X, 3}  & Divise la fenêtre courante en deux, horizontalement. \\ \hline
+        \texttt{Ctrl + X, 1}  & Ferme les autres mini-fenêtres Emacs. \\ \hline \hline
+        
+        \texttt{Ctrl + X, U} ou \texttt{Ctrl+ \_}  & Annule les dernier changement. \\ \hline
+        \texttt{Echap, X, revert-buffer}  & Annule tous les changements effectués. \\ \hline
+        
+        \nocell{2}
+        \multicolumn{2}{|c|}{\textbf{Déplacements}} \\ \hline
+        \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Echap, G, G}  &  Aller à une ligne spécifique. \\ \hline
+        \texttt{Alt + B}  &  Aller au mot suivant. \\ \hline
+        \texttt{Alt + F}  &  Aller au mot précédent. \\ \hline
+        \texttt{Alt + M}  &  Aller au début de la ligne (prend en compte l'indentation).\\ \hline
+        \texttt{Echap, G, G}  &  Aller à une ligne spécifique\\ \hline
+        
+    \end{tabularx}
+    \caption{Raccourcis clavier essentiels de \cmdref{emacs}} \label{tab:emacs}
+\end{table}
+
+\newpage
+Sous Emacs, un fichier ouvert est appelé un \textit{Buffer}. Les commandes tapées sont visibles dans une zone dédiée (similaire à celle de \cmdref{vim}) qui s'appelle le \textit{minibuffer}. Commencer une combinaison de touches active le \textit{minibuffer}, qui dispose de règles particulières.
+
+Le tableau \ref{tab:emacs_advanced} référence des commandes utiles qui font usage du \textit{minibuffer}.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{| c | X |}
+        \hline
+        \multicolumn{2}{|c|}{\textbf{Aide}} \\ \hline
+        \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Ctrl + H, ?} & Affiche l'aide générale d'Emacs \\ \hline
+        \texttt{Ctrl + H a} \textit{T} & Permet d'afficher l'aide de la commande associée à la touche \textit{T}. \\ \hline
+        
+        \multicolumn{2}{|c|}{\textbf{Recherche}} \\ \hline
+        \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Ctrl + S} & Recherche de texte. Répéter déplace à l'occurrence suivante. \\ \hline
+        \texttt{Ctrl + R} & Recherche de texte en arrière. Répéter déplace à l'occurrence précédente. \\ \hline
+        \texttt{Ctrl + Alt + S} & Recherche une regex. Répéter déplace à l'occurrence suivante. \\ \hline
+        \texttt{Ctrl + Alt + R} & Recherche une regex en arrière. Répéter déplace à l'occurrence précédente. \\ \hline
+        \texttt{Alt + P}  & Reprend le terme de recherche précédent. \\ \hline
+        \texttt{Alt + N}  & Reprend le terme de recherche suivant. \\ \hline
+        \texttt{Entrée}  & Quitte le mode de recherche (et le \textit{minibuffer}). \\ \hline
+        
+        \nocell{2}
+        \multicolumn{2}{|c|}{\textbf{Remplacement}} \\ \hline
+        \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Alt + \%} & Recherche d'une chaîne pour la remplacer. \newline
+            Taper la chaîne à remplacer, \texttt{Enter}, puis la chaîne de remplacement. \\ \hline
+        \texttt{Espace} ou \texttt{Y} & Remplace la chaîne sélectionnée, passe à la suivante. \\ \hline
+        \texttt{Suppr} ou \texttt{N} & Ignore la chaîne sélectionnée, passe à la suivante. \\ \hline
+        \texttt{Entrée}  & Quitte le mode de recherche (et le \textit{minibuffer}). \\ \hline
+        
+        \nocell{2}
+        \multicolumn{2}{|c|}{\textbf{Copie}} \\ \hline
+        \textbf{Raccourci}& \textbf{Signification} \\ \hline
+        \texttt{Maj+ \texttt{\textleftarrow} \texttt{\textdownarrow} \texttt{\textuparrow} \texttt{\textrightarrow}} & Séléction de texte\\ \hline
+        \texttt{Alt + W} & Copie le texte sélectionné. \\ \hline
+        \texttt{Ctrl + W}& Coupe le texte sélectionné. \\ \hline
+        \texttt{Ctrl + Y}& Colle le texte copié. \\ \hline
+            
+    \end{tabularx}
+    \caption{Raccourcis clavier avancés de \cmdref{emacs}} \label{tab:emacs_advanced}
+\end{table}
+
+Les raccourcis présentés ici ne sont qu'un condensé des possibilités d'Emacs. Une présentation plus complète peut être trouvée sur la \href{https://www.gnu.org/software/emacs}{page officielle du logiciel}, tandis qu'un résumé moins succinct des raccourcis clavier se trouve sur \href{https://www.gnu.org/software/emacs/refcards/pdf/refcard.pdf}{référence d'utilisation}.
