@@ -319,26 +319,40 @@ Permet d'exécuter un fichier dans le Shell courant. Les modifications de l'envi
 \paragraph{\texttt{date}} \command{date}
 Affiche ou définit la date et l'heure courante. La commande est affectée par la variable d'environnement \texttt{\$TZ} qui définit le fuseau horaire. 
 \begin{itemize}
-    \item \texttt{+<FORMAT>} : Permet de modifier le format d'affichage de la date. \mintinline{bash}{date +%m/%d/%y} affichera la date au format JJ/MM/AAAA.
+    \item \texttt{+<FORMAT>} : Permet de modifier le format d'affichage de la date. \\
+    \mintinline{bash}{date +%m/%d/%y} affichera la date au format JJ/MM/AAAA.
     \item \texttt{-s} : Permet de définir la date et l'heure courante. De nombreux formats sont acceptés.
 \end{itemize}
 
-%\paragraph{\texttt{expr}} \command{expr}
-%Permet d'affiche le retour d'une expression arithmétique ou alphanumérique. L'ensemble des opérations simples sont disponibles. On notera tout de même la possibilité d'effectuer les opérations suivantes : 
-%\begin{itemize}
-%    \item \texttt{index <caractère> <chaîne>} : Affiche l'indice de la première occurrence du caractère dans la chaîne.
-%    \item \texttt{length <chaine>} : Affiche la longueur de la chaîne de caractère.
-%    \item \texttt{substr <chaine> <pos> <longueur>} : Extrait une sous-chaîne de la chaîne donnée, à partir de la position donnée
-%\end{itemize}
+\paragraph{\texttt{expr}} \command{expr}
+Affiche le résultat du calcul d'une expression arithmétique ou alphanumérique composée des paramètres donnés. L'ensemble des opérations simples sont disponibles : opérandes binaires arithmétiques, logiques et de comparaison. Les expression peuvent être groupées et composées avec des parenthèses. On notera, de plus, la possibilité d'effectuer les opérations suivantes : 
+\begin{itemize}
+    \item \texttt{index <caractère> <chaîne>} : Affiche l'indice de la première occurrence du caractère dans la chaîne.
+    \item \texttt{length <chaine>} : Affiche la longueur de la chaîne de caractère.
+    \item \texttt{substr <chaine> <pos> <longueur>} : Extrait une sous-chaîne de la chaîne donnée, à partir de la position donnée
+\end{itemize}
+
+\paragraph{\texttt{bc}} \command{bc}
+Calcule l'expression donnée sur l'entrée standard ou depuis un fichier donné en paramètre. Son comportement général se rapproche plus d'une calculatrice programmable.
+\cmdref{bc} supporte les mêmes opérations que \cmdref{expr}, mais également les structures de contrôles (\texttt{if}, \texttt{for}, \texttt{while}...) ainsi que la notion de fonction.
+Certaines fonctions prédéfinies existent, telles que :
+\begin{itemize}
+    \item \texttt{length(<expression>)} : Retourne le nombre de chiffres significatifs de l'expression.
+    \item \texttt{scale(<expression>)} : Affiche le nombre de chiffres décimaux de l'expression.
+    \item \texttt{sqrt(<expression>)} : Calcule la racine carrée du résultat de l'expression.
+\end{itemize}
+
+\newpage
 
 
 \subsubsection{Filtres de texte}
 
 \paragraph{\texttt{head} / \texttt{tail}} \command{head}\command{tail}
-Permet d'affiche le début (\cmdref{head}) ou la fin d'un fichier \cmdref{tail}. Utile pour afficher notamment les fichiers de \textit{logs}.
+Permet d'affiche le début (\cmdref{head}) ou la fin d'un fichier (\cmdref{tail}). Utile pour afficher notamment les fichiers de \textit{logs}.
 \begin{itemize}
-    \item \texttt{-n <ligne>} : Permet de spécifier le nombre de lignes à afficher.
-    \item \texttt{-n +<ligne>} : Permet d'afficher toutes les lignes à partir de \cmdref{tail} ou jusqu'à (\cmdref{head}) la ligne mentionnée.
+    \item \texttt{-n <ligne>} : Spécifie le nombre de lignes à afficher.
+    \item \texttt{-n +<ligne>} : Afficher toutes les lignes à partir de (\cmdref{tail}) ou jusqu'à (\cmdref{head}) la ligne mentionnée.
+    \item (\cmdref{tail} uniquement) \texttt{-f} : Suit (\textit{\textbf{f}ollow} les modifications du fichiers directement, sans avoir à relancer la commande.
 \end{itemize}
 \note{Note :} La commande \texttt{multitail} (non installée par défaut) permet de surveiller l'ajout de lignes pour plusieurs fichiers simultanément. Elle est notamment utilisée pour l'analyse de fichiers journaux (\textit{logs}).
 

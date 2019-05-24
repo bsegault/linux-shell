@@ -5,7 +5,9 @@ On entend souvent parler de Linux en tant que système d'exploitation, en opposi
 \subsection{L'ère UNIX - Début de l'informatique moderne}
 
 \subsubsection{Généalogie des systèmes UNIX}
-\textbf{UNIX est un des premiers systèmes d'exploitation} et est devenu public en 1971. Sa conception et son développement ont commencé en 1969, grâce à Ken Thompson, Dennis Ritchie, Brian Kernighan, Douglas McIlroy et Joe Ossanna, alors employés des laboratoires Bell. Le code source d'UNIX est alors privé. À partir de 1975, les universités peuvent acheter le code source pour l'utiliser, le modifier ou l'étudier. Les premiers systèmes basés sur UNIX apparaissent alors, comme l'illustre la figure \ref{fig:unix}.
+\textbf{UNIX est un des premiers systèmes d'exploitation}. Il est devenu public en 1971, mais sa conception et son développement ont commencé en 1969, notamment grâce à Ken Thompson et Dennis Ritchie, employés des laboratoires Bell. Le langage C a d'ailleurs été inventé pour écrire UNIX. Mais UNIX n'est pas le premier système d'exploitation : sa conception a été influencée par \textit{Multics} (issus de Bell Labs et du MIT), qui est également inspiré de \textit{CTSS} (développé par le MIT), dont la première version date de 1961, soit dix ans avant UNIX !
+
+À sa sortie, le code source d'UNIX est alors privé. À partir de 1975, les universités peuvent acheter le code source pour l'utiliser, le modifier ou l'étudier. Les premiers systèmes basés sur UNIX apparaissent alors, comme l'illustre la figure \ref{fig:unix}.
 
 \begin{figure}[hb!]
 \includegraphics[width=\textwidth]{res/unix_genealogy.pdf}
@@ -14,7 +16,7 @@ On entend souvent parler de Linux en tant que système d'exploitation, en opposi
 \label{fig:unix}
 \end{figure}
 
-La figure \ref{fig:unix} montre deux choses : de nombreux systèmes encore utilisés aujourd'hui, sont basés sur UNIX ou ses descendants et qu'il existe de très forts liens entre les différents systèmes, qui s'inspirent et s'influencent mutuellement au cours du temps et pour leur création. De plus, ceci peut souvent être mis en relation avec le fait que certains systèmes ont des sources fermées, ouvertes ou mixtes.
+La figure \ref{fig:unix} montre que de nombreux systèmes encore utilisés aujourd'hui sont basés sur UNIX ou ses descendants et qu'il existe de très forts liens entre les différents systèmes, qui s'inspirent et s'influencent mutuellement au cours du temps. Ceci peut souvent être mis en relation avec le fait que certains systèmes ont des sources fermées, ouvertes ou mixtes.
 
 \newpage
 
@@ -24,14 +26,14 @@ Bien que UNIX ait été créé à la fin des années 60, on considère que l'èr
 
 Un autre aspect de l'importance d'UNIX réside dans les traces qu'il a laissé dans les systèmes d'exploitation, dont certains sont encore fortement utilisés aujourd'hui.
 
-\paragraph{\href{https://www.apple.com/macos}{macOS}}
-Anciennement nommé Mac OS X, ce système grand public bien connu et développé par Apple, est fourni gratuitement avec les ordinateurs de son concepteur depuis 2001. Auparavant, Apple distribuait son système propriétaire Macintosh OS depuis 1984. Ce double héritage, issu des différents acquisitions d'Apple, explique qu'une partie des sources sont ouvertes, mais pas libres, tandis que l'autre reste fermée.
-
 \paragraph{\href{https://www.openbsd.org}{OpenBSD} et \href{https://www.freebsd.org}{FreeBSD}}
-Ces deux descendants directs de BSD, créés en 1996 et 1993, sont libres et \textit{open source}, avec un fort accent mis sur la fiabilité du système. OpenBSD mise cependant plus sur la sécurité tandis que FreeBSD, de par sa volonté d'être un système multi-usages, est le système BSD le plus utilisé aujourd'hui. De nombreux éléments de FreeBSD sont d'ailleurs utilisés dans des systèmes dédiés à certains appareils tels que des consoles de jeux (Nintendo Switch, PlayStation 3 et 4\dots).
+Ces deux descendants directs de BSD, créés en 1996 et 1993, sont libres et \textit{open source}, avec un fort accent mis sur la fiabilité du système. OpenBSD est très centré sur la sécurité tandis que FreeBSD, de par sa volonté d'être un système multi-usages, est le système BSD le plus utilisé aujourd'hui. De nombreux éléments de FreeBSD sont d'ailleurs utilisés dans des systèmes dédiés à certains appareils tels que des consoles de jeux (Nintendo Switch, PlayStation 3 et 4\dots).
 
 \paragraph{\href{https://www.ibm.com/power/operating-systems/aix}{AIX}}
 Système développé par IBM en 1986, à partir de System V, et inspiré de BSD pour ses serveurs et \textit{mainframes}.
+
+\paragraph{\href{https://www.apple.com/macos}{macOS}}
+Anciennement nommé Mac OS X, ce système grand public bien connu et développé par Apple, est fourni gratuitement avec les ordinateurs de son concepteur depuis 2001. Auparavant, Apple distribuait son système propriétaire Macintosh OS depuis 1984. Ce double héritage, issu des différents acquisitions d'Apple, explique qu'une partie des sources sont ouvertes, mais pas libres, tandis que l'autre reste fermée.
 
 \paragraph{\href{http://www.oracle.com/technetwork/server-storage/solaris}{Oracle Solaris}}
 Suite à son rachat de Sun, développeur d'OpenSolaris, en 2009 Oracle a décidé de garder ses développements fermés pour créer son propre système propriétaire, dédiés pour ses serveurs.
@@ -39,16 +41,16 @@ Suite à son rachat de Sun, développeur d'OpenSolaris, en 2009 Oracle a décid�
 \paragraph{\href{https://www.illumos.org}{Ilumos}}
 Afin de conserver l'aspect open source d'OpenSolaris, la communauté a décidé, en 2010, de créer Ilumos, successeur libre d'OpenSolaris.
 
-En revanche, on notera qu'\textbf{aucun lien entre UNIX et Linux ou GNU n'existe}. L'explication se retrouve tout naturellement dans les raisons de la naissance du projet GNU.
+En revanche, on notera qu'\textbf{aucun lien hiérarchique entre UNIX et Linux ou GNU n'existe}. Linux et GNU ne sont donc pas des dérivés d'UNIX comme on peut le lire parfois. En revanche, il est indéniable qu'UNIX a influencé la naissance du projet GNU et la conception de Linux.
 
 \newpage
 
 \subsubsection{Le projet GNU}
-Parallèlement, le \href{https://www.gnu.org/}{projet GNU} est initié en 1983 par Richard Stallman, qui souhaitait alors \textbf{créer un système d'exploitation complet et libre.} À l'époque, UNIX est très répandu, mais reste propriétaire, son code source est n'est pas complètement ouvert, ni libre d'utilisation.
+Parallèlement, le \href{https://www.gnu.org/}{projet GNU} est initié en 1983 par Richard Stallman, qui souhaitait alors \textbf{créer un système d'exploitation complet et libre.} À l'époque, UNIX est assez répandu, mais reste propriétaire, son code source est n'est pas complètement ouvert, ni libre d'utilisation.
 Le nom du projet GNU vient directement d'UNIX. Il s'agit d'un acronyme récursif : \textit{GNU's Not UNIX}. En utilisant directement le nom de son concurrent au sein de son projet, Stallman veut montrer la différence qui existe entre les deux systèmes malgré leur similitudes apparentes. C'est en effet en reprenant une partie des concepts d'UNIX, notamment en ce qui concerne son utilisation, que Stallman a construit GNU.
 
 \subsubsection{Logiciel Libre}
-Peut-être plus encore que ces bases techniques, la notion de logiciel libre de Stallman ainsi que sa volonté de le répandre et d'en faciliter l'accès sont encore très présents aujourd'hui. En effet, qu'il s'agisse de système d'exploitation entier ou de logiciels plus élémentaires, nombreux sont les projets ouverts et libres d'accès, d'utilisation, de partage et de modification.
+Si Richard Stallman a posé ces bases techniques, c'est surtout par la notion de logiciel libre et sa volonté de le répandre et d'en faciliter l'accès qu'il a impacté l'informatique d'aujourd'hui. En effet, qu'il s'agisse de système d'exploitation entier ou de logiciels plus élémentaires, nombreux sont les projets ouverts et libres d'accès, d'utilisation, de partage et de modification.
 
 C'est dans cette optique que Stallman a fondé la \href{https://www.fsf.org}{\textbf{Free Software Foundation}} en 1985, afin de pouvoir gérer les aspects administratifs, juridiques et organisationnels que demandaient le Projet GNU. Ainsi plusieurs licences sont issues de cette fondation, telles que la \href{https://www.gnu.org/licenses/quick-guide-gplv3.html}{\textit{General Public License} (GPL)} ou la \href{https://www.gnu.org/licenses/lgpl-3.0.en.html}{\textit{Lesser Public General License} (LGPL)}, qui sont devenues deux des licences de logiciel libre les plus utilisées. Si un code ou logiciel est distribué sous ces licences, alors toute personne peut est garantie des libertés suivantes : 
 \begin{enumerate}
@@ -57,18 +59,18 @@ C'est dans cette optique que Stallman a fondé la \href{https://www.fsf.org}{\te
     \item la liberté de redistribuer des copies du programme,
     \item la liberté d’améliorer le programme et de distribuer ces améliorations au public, pour en faire profiter toute la communauté.
 \end{enumerate}
-Elle doit cependant toujours notifier les éventuelles modifications du code et laisser ce dernier accessible. De plus, la GPL impose de redistribuer toute modification avec la même licence. On dit alors que GPL est contaminante (on parle aussi de \textit{copyleft}).
+Elle doit cependant toujours notifier les éventuelles modifications du code et laisser ce dernier accessible. De plus, la GPL impose de redistribuer toute modification avec la même licence. On dit alors que GPL est contaminante. Le terme \textit{copyleft}, popularisé par Stallman, est d'ailleurs un jeu de mot utilisé pour décrire la GPL, en opposition au \textit{copyright}.
 
-Il existe de nombreuses autres licences de logiciels libres, créées par des universités ou des fondations impliquées dans le logiciel libre, qui respectent généralement ces libertés, mais précisent d'autres éléments.
+Il existe de nombreuses autres licences de logiciels libres, créées par des universités ou des fondations impliquées dans le logiciel libre, qui respectent généralement ces libertés, mais précisent d'autres éléments. Le site TLDRLegal\footnote{\textit{Software Licenses in Plain English} - \href{https://tldrlegal.com}{https://tldrlegal.com}} permet de simplifier la compréhension de ces licences.
 On pourra citer, notamment : 
 \begin{itemize}
     \item \href{https://opensource.org/licenses/MIT}{Licence MIT} (du \textit{Massachusetts Institute of Technology}), qui n'est pas contaminante.
-    \item Licences BSD (initiative de \textit{Berkeley Software Distribution}), proches de la licence MIT et utilisées à l'origine pour le système BSD. Il en existe plusieurs variantes, toujours non contaminante.
+    \item Licences BSD (initiative de \textit{Berkeley Software Distribution}), proches de la licence MIT et établies pour le système BSD. Il en existe plusieurs variantes, toujours non contaminante.
     \item \href{https://www.apache.org/licenses}{Licence Apache}, initiée par la fondation Apache, n'est pas contaminante.
     \item \href{https://www.mozilla.org/en-US/MPL}{Licence Publique Mozilla}, initié par la fondation Mozilla, qui est n'est pas totalement contaminante, mais impose quelques restrictions.
-    \item \href{https://creativecommons.org}{Licences Creative Commons}, ensemble de licences prédéfinies et simplifiées permettant à un auteur de définir les libertés ou restrictions sur son oeuvre : paternité, usage non commercial, contaminante ou sans modification.
+    \item \href{https://creativecommons.org}{Licences \textit{Creative Commons}}, ensemble de licences prédéfinies et simples pour définir les libertés ou restrictions sur une œuvre.
 \end{itemize} \vspace{\baselineskip}
-\note{Note :} \textbf{Un logiciel peut être open-source sans pour autant être considéré comme libre si sa licence ne donne pas d'autorisations explicites.}
+\note{Note :} \textbf{Un logiciel peut être \textit{open-source} sans pour autant être considéré comme libre s'il est distribué sans licence ou qu'elle ne donne pas d'autorisations explicites.}
 
 \newpage
 
@@ -80,7 +82,14 @@ Un système d'exploitation (\textit{Operating System} ou \textit{OS} en anglais)
 
 \subsubsection{Noyau}
 
-Le noyau est véritablement le coeur du système d'exploitation. C'est lui permet d'orchestrer l'ensemble du matériel (RAM, clavier, disque dur...). Il permet ainsi à d'autres programmes d'accéder à ces composants et de les utiliser. Il propose ainsi une interface unique aux applications pour leur permettre d'interagir avec le matériel. Elles seront ainsi libres d'utiliser le processeur pour effectuer des calculs, l'interface réseau pour contacter d'autres appareil du réseau voire accéder à Internet, ou encore utiliser le disque dur pour stocker des fichiers... Le noyau est généralement servi avec toute une série de programmes permettant à l'utilisateur de véritablement utiliser son ordinateur (interface graphique ou en ligne de commande, éditeurs de texte, utilitaires divers...) formant ainsi un système complet et utilisable.
+Le noyau est véritablement le coeur du système d'exploitation. On peut regrouper ses missions en deux catégories : 
+\begin{itemize}
+    \item Faire l'interface entre le matériel et le logiciel,
+    \item Gestion des ressources et des utilisateurs,
+    \item Ordonnancement des tâches.
+\end{itemize}
+
+C'est donc lui qui permet d'orchestrer l'ensemble du matériel (RAM, clavier, disque dur...). Il permet ainsi à d'autres programmes d'accéder à ces composants et de les utiliser, par une interface unique, qui ne dépend pas du matériel. Les programmes sont ainsi libres d'utiliser le processeur pour effectuer des calculs, l'interface réseau pour contacter d'autres appareil du réseau voire accéder à Internet, ou encore utiliser le disque dur pour stocker des fichiers\dots Le noyau est généralement servi avec toute une série de programmes permettant à l'utilisateur de véritablement utiliser son ordinateur (interface graphique ou en ligne de commande, éditeurs de texte, utilitaires divers, etc.) formant ainsi un système complet et utilisable.
 
 \begin{figure}[hb!]
 \includegraphics[width=\textwidth]{res/os_architecture.pdf}
@@ -114,13 +123,13 @@ Il existe plusieurs systèmes utilisant un noyau Linux. La plupart sont regroup�
 
 \paragraph{Distributions basées sur Debian}
 
-Il existe de nombreuses distributions basées sur \href{https://www.debian.org}{Debian}. Il s'agit d'une des distributions les plus anciennes, qui est la seule qui ne soit pas gérée par une entreprise. Debian met en avant la stabilité de son système, ce qui en a fait le favori des serveurs. Cependant, cette stabilité implique une longue période de test des mise-à-jour, retardant l'arrivée des nouveautés et des correctifs de sécurité.
+Il existe de nombreuses distributions basées sur \href{https://www.debian.org}{Debian}. Il s'agit d'une des distributions les plus anciennes, qui est la seule qui ne soit pas gérée par une entreprise. Debian met en avant la stabilité de son système, ce qui en a fait le favori des serveurs. Il existe plusieurs versions maintenue en parallèle, afin d'équilibrer entre stabilité et nouvelles fonctionnalités.
 
-\href{https://www.ubuntu.com}{Ubuntu} a été créée, quant à elle, afin de faciliter l'utilisation de Linux par le grand public, ce qui en fait une des distributions les plus connues. Elle dispose de plusieurs variantes (\href{https://kubuntu.org}{Kubuntu}, \href{https://xubuntu.org}{Xubuntu} ou \href{https://lubuntu.net/}{Lubuntu}) qui proposent un gestionnaire de bureau et des applications différentes, ainsi que d'autres variantes dédiées à des utilisations particulières. Il existe également des versions d'Ubuntu dédiée pour les téléphones : Ubuntu Touch. Le projet a été abandonné par Canonical mais repris par des développeurs indépendants.
+La variante la plus connue de Debian est \href{https://www.ubuntu.com}{Ubuntu}. Elle été créée afin de faciliter l'utilisation de Linux par le grand public. Elle dispose de plusieurs variantes (\href{https://kubuntu.org}{Kubuntu}, \href{https://xubuntu.org}{Xubuntu} ou \href{https://lubuntu.net/}{Lubuntu}) qui proposent un gestionnaire de bureau et des applications différentes, ainsi que d'autres variantes dédiées à des utilisations particulières. Il existe également des versions d'Ubuntu dédiée pour les téléphones : Ubuntu Touch. Le projet a été abandonné par Canonical mais repris par des développeurs indépendants.
 
 \href{https://www.raspberrypi.org/downloads/raspbian/}{Raspbian} est une variante de Debian dédiée aux mini-ordinateurs Raspberry Pi. Elle est optimisée pour être exécutée sur ce système aux performances restreintes.
 
-Les distributions basées sur Debian utilisent le système de paquets \texttt{.deb}.
+Les distributions basées sur Debian utilisent le système de paquets éponyme, avec les utilitaires \texttt{dpkg}\command{dpkg} pour gérer les paquets \texttt{.deb}, et \texttt{apt}\command{apt} pour gérer les dépendances et mises-à-jour de paquets.
 
 \paragraph{Distributions basées sur Red Hat}
 
@@ -128,10 +137,10 @@ Red Hat (Entreprise Linux) est une des plus anciennes distribution, et est maint
 
 Mandriva a été maintenue par une équipe française et se voulait simple d'utilisation. Elle est, depuis peu, reprise par la communauté sous le nom \href{https://www.openmandriva.org}{OpenMandriva}.
 
-\href{https://www.centos.org}{CentOS}, basée sur \href{https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux}{Red Hat Entreprise Linux} (RHEL), est devenue en juin 2010 la distribution Linux préférée pour les serveurs Web.
+\href{https://www.centos.org}{CentOS} est le pendant libre de  \href{https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux}{Red Hat Entreprise Linux} (RHEL). Dédiée aux serveurs, c'est une des distributions Linux les plus utilisées.
 
 \href{https://getfedora.org/}{Fedora} est une autre distribution basée sur Red Hat. Elle propose des programmes libres et sous d'autres licences. Les nouveautés intégrées dans Fedora le sont a \textit{posteriori} dans Red Hat, ce qui en fait une des distributions les plus actualisées.
-Les distributions basée sur Red Hat utilisent le système de paquets \texttt{.rpm}.
+Les distributions basées sur Debian utilisent le système de paquets \textit{RPM} pour \textit{RPM Package Manager} (Anciennement \textit{Redhat Package Manager}. Le programme \texttt{yum}\command{yum} permet de gérer les paquets et leurs dépendances. Il a été remplacé par \texttt{dnf}\command{dnf} dans Fedora.
 
 \paragraph{Distributions indépendantes}
 

@@ -98,7 +98,7 @@ Les premières commandes essentielles à apprendre permettent d'obtenir des info
         \texttt{apropos} \command{apropos}& Recherche les commandes relatives au mot-clé passé en premier paramètre.                            \\ \hline
         \texttt{history} \command{history}& Affiche les commandes récentes (le nombre est passé en paramètre).                                  \\ \hline
         \cmdref{man}                      & Affiche le manuel d'utilisation de la commande passée en paramètre.                                 \\ \hline
-        \texttt{info} \command{info}      & Alternative à \cmdref{man} proposée par GNU, disposant de liens symboliques.                        \\ \hline
+        \texttt{info} \command{info}      & Alternative à \cmdref{man} proposée par GNU, basée sur des sections navigables.                        \\ \hline
         \texttt{help} \command{help}      & Affiche l'aide pour les commandes internes de Bash sans page de manuel.                             \\ \hline
     \end{tabularx}
     \caption{Commandes basiques permettant d'obtenir des informations sur le système.}
@@ -112,7 +112,7 @@ Hormis quelques rares exceptions, les commandes sont toutes des programmes. Cela
 
 Le manuel regroupe la documentation de toutes les commandes installées sur le système. Il existe plusieurs sections de manuel, allant de 1 à 9. Chaque section contient les pages de manuel pour la commande ou fonction appartenant à la section en question. Le manuel de la commande \cmdref{man} explicite ces sections, on peut le consulter grâce à la commande \mintinline{bash}{man man}. La section \texttt{1} contient les pages de manuel des commandes Bash. Dans le cas ou une page de manuel a des homonymes dans d'autres sections, on peut forcer la section \texttt{X} : \mintinline{bash}{man X command}
 
-La plupart des pages de manuel comportent une présentation succinte de la commande (le synopsis) ainsi qu'une description de la commande, de ses cas d'usages et de ses paramètres. Il y a généralement une partie explicitant les cas d'erreurs et parfois certains exemples.
+La plupart des pages de manuel comportent une présentation succincte de la commande (le synopsis) ainsi qu'une description de la commande, de ses cas d'usages et de ses paramètres. Il y a généralement une partie explicitant les cas d'erreurs et parfois certains exemples.
 
 En général, lorsqu'on utilise le manuel, on dispose d'une interface dédiée. On peut naviguer dans le manuel avec les flèches directionnelles et les touches \texttt{PageUp} et \texttt{PageDown}. Pour effectuer une recherche, on tapera un \textit{slash} (\texttt{/}) suivi du mot clé à rechercher, puis \texttt{Entrée}. \texttt{N} passer à la prochaine occurrence et \texttt{P} à l'occurrence précédente. \texttt{Q} permet de quitter.
 
@@ -201,7 +201,7 @@ Ajouté à cela, il existe deux dossiers spéciaux (ou relatifs), présents dans
 
 Ainsi, si l'on se trouve dans le dossier \texttt{/bin}, le chemin relatif vers le dossier \texttt{/home/usr1} sera \texttt{../home/usr1}.
 
-\note{Note :} Bien qu'un chemin absolu puisse utiliser les dossiers \texttt{.} et \texttt{..} en restant absolu, le chemin en est rallongé (il contient plus de dossier). On dira qu'\textbf{un chemin absolu est canonique lorsqu'il ne contient aucun dossier relatif}.
+\note{Note :} Bien qu'un chemin absolu puisse utiliser les dossiers \texttt{.} et \texttt{..} en restant absolu, le chemin en est rallongé (il contient plus de dossier). On dit qu'\textbf{un chemin absolu est canonique lorsqu'il ne contient aucun dossier relatif}.
 
 \paragraph{Dossier personnel}
 
@@ -417,7 +417,7 @@ Il est à noter qu'il existe plusieurs types de fichiers simples. On distingue g
 
 Les fichiers textes sont composés de chaînes de caractères, écrites lignes par lignes, et peuvent être lus dans n'importe quel afficheur ou éditeur de texte. Il faut cependant noter que les lignes sont séparés par un caractère spécial, invisible par défaut, que l'on appelle saut de ligne (\textit{Line Feed} en anglais). Souvent abrégé en \textit{LF}, on le voit très régulièrement sous la notation \texttt{\textbackslash n}.
 
-Il existe plusieurs encodages du texte. Le plus ancien est le code ASCII, qui définit un encodage des caractères sur 8 bits dans sa version étendue, mais ne permet d'encoder que 255 caractères. La plupart des encodages dédiés à notre alphabet tentent de respecter le code ASCII, pour des raisons historiques de compatibilité. Aujourd'hui, on rencontre plus communément l'encodage UTF-8 (pour \textit{\textbf{U}niversal coded character set \textbf{T}ransformation \textbf{F}ormat - 8 bits}). UTF (ou Unicode) permet de coder la quasi totalité des caractères utilisés dans le monde, y compris les emojis.
+Il existe plusieurs encodages du texte. Le plus ancien est le code ASCII, qui définit un encodage des caractères sur 8 bits dans sa version étendue, mais ne permet d'encoder que 255 caractères. La plupart des encodages dédiés à notre alphabet tentent de respecter le code ASCII, pour des raisons historiques de compatibilité. On rencontre également l'encodage UTF-8 (pour \textit{\textbf{U}niversal coded character set \textbf{T}ransformation \textbf{F}ormat - 8 bits}). UTF (ou Unicode) permet de coder la quasi totalité des caractères utilisés dans le monde, y compris les emojis.
 
 Les fichiers binaires, quant à eux, sont stockés purement sous forme binaire et n'ont pas vocation à être lus comme un fichier texte. Ils peuvent contenir toute sorte d'information. Le plus souvent, il s'agit de code compilé, prévu pour être exécuté (dans le cas d'un exécutable) ou utilisé au sein de programmes (dans le cas de bibliothèques).
 

@@ -139,7 +139,7 @@ Ajouter à \texttt{git} tous les fichiers dans un sous-dossier \texttt{resource}
 \end{nscenter}
 
 \newpage
-\subsection{Rechercher dans du texte -- \texttt{grep}} \command{grep}
+\subsection{Rechercher dans du texte -- \texttt{grep} et \texttt{ack}} \command{grep}
 \cmdref{grep} permet de rechercher les lignes correspondant à un motif donné sous la forme d'expression régulière. Dans son comportement par défaut, \cmdref{grep} affiche les lignes contenant le motif recherché dans le fichier non le nom est passé en paramètre.
 
 La structure de \cmdref{grep} est la suivante : 
@@ -149,7 +149,8 @@ La structure de \cmdref{grep} est la suivante :
 Le fichier est optionnel car \cmdref{grep} lit depuis son entrée standard lorsqu'il n'est pas spécifié. Il est ainsi possible de \textit{piper} l'affichage d'une autre commande dans \cmdref{grep}.
 
 \begin{itemize}
-    \item \texttt{-E} : Permet de spécifier que l'on utilise une expression régulière étendue.
+    \item \texttt{-E} : Spécifie l'utilisation d'une expression régulière étendue.
+    \item \texttt{-E} : Spécifie l'utilisation d'une expression régulière POSIX.
     \item \texttt{-r} : Mode récursif. Si un dossier est passé en paramètre de \cmdref{grep}, la recherche est effectuée dans tous les fichiers contenu dans ce dossier.
 \end{itemize}
 
@@ -166,28 +167,33 @@ Le fichier est optionnel car \cmdref{grep} lit depuis son entrée standard lorsq
     \item \texttt{-C <n>} : Affiche \texttt{n} lignes de contexte avant et après la ligne trouvée.
 \end{itemize}
 
-\note{Note :} Différentes commandes dérivées de \cmdref{grep} existent parfois : 
+\note{Note :} Différentes alias de commandes dérivées de \cmdref{grep} existent parfois : 
 \begin{itemize}
-    \item \texttt{rgrep}\command{rgrep} : Équivalent à \texttt{grep -r}
-    \item \texttt{egrep}\command{egrep} : Équivalent à \texttt{grep -E}
+    \item \texttt{rgrep} : Équivalent à \texttt{grep -r}
+    \item \texttt{egrep} : Équivalent à \texttt{grep -E}
 \end{itemize}
 
 \subsubsection{Exemples}
 
-Voir l'activité du système quant aux périphériques USB :
-\begin{nscenter}
-\mintinline{bash}{dmesg | grep USB}
-\end{nscenter}
+Voir l'activité du système liée aux périphériques USB : \mintinline{bash}{dmesg | grep USB}
 
-Compter le nombre de fonctions retournant un \texttt{int} déclarée dans le fichier \texttt{programme.h}
-\begin{nscenter}
+Compter le nombre de fonctions retournant un \texttt{int} déclarée dans le fichier \texttt{programme.h} :
 \mintinline{bash}{grep -E "int \w \((\w\** \w)*\);" programme.h | wc -l}
-\end{nscenter}
 
-Lister l'ensemble des cartes graphiques du système :
-\begin{nscenter}
-\mintinline{bash}{lspci | grep "VGA"}
-\end{nscenter}
+Lister l'ensemble des cartes graphiques du système : \mintinline{bash}{lspci | grep "VGA"}
+
+\subsubsection{\texttt{ack}\command{ack}}
+Une alternative à \cmdref{grep}, souvent non disponible par défault, est \cmdref{ack}. Son fonctionnement est identique, hormis quelques subtilités :
+\begin{itemize}
+    \item Lorsqu'aucun fichier n'est mentionné, \cmdref{ack} cherche par défaut dans le dossier courant,
+    \item \cmdref{ack} sait rechercher dans un dossier sans fournir d'option particulière,
+    \item Lors d'une recherche dans un dossier, \cmdref{ack} ignore certains fichiers par défaut (fichiers de sauvegarde, fichiers générés, fichiers binaires, dossiers des gestionnaires de versions...),
+    \item L'affichage des résultats est coloré par défaut.
+\end{itemize}
+
+
+\cmdref{ack} peut être utilisé en remplacement de \cmdref{grep} la majeure partie du temps. En revanche, pour une recherche par expression régulière dans de gros fichiers, \cmdref{grep} es plus performant.
+
 
 \newpage
 \subsection{Modifier du texte à la volée -- \texttt{sed}} \command{sed}
