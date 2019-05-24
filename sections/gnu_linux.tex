@@ -146,7 +146,7 @@ Les distributions basées sur Debian utilisent le système de paquets \textit{RP
 
 \href{https://www.gentoo.org}{Gentoo} a été créé avec la conception que chaque programme doit être compilé avant d'être installé, ce qui permet de personnaliser l'installation et surtout d'optimiser la compilation pour le type d'ordinateur, permettant des performances légèrement meilleures.
 
-\href{https://www.archlinux.org}{Arch Linux} est un système minimaliste, encourageant une forte implication de sa communauté. Ainsi, une installation Arch Linux est très légère car ne distribue que très peu de programmes supplémentaires. La prise en main s'en retrouve en revanche légèrement plus longue. Arch Linux dispose de son propre gestionnaire de paquets (\texttt{pacman}), et surtout une documentation extrêmement complète et détaillée. Elle dispose d'un pendant qui se veut facile à prendre en main : \href{https://manjaro.org}{Manjaro}.
+\href{https://www.archlinux.org}{Arch Linux} est un système minimaliste, encourageant une forte implication de sa communauté. Ainsi, une installation Arch Linux est très légère car ne distribue que très peu de programmes supplémentaires. La prise en main s'en retrouve en revanche plus longue. Arch Linux dispose de son propre gestionnaire de paquets,\texttt{pacman}, et d'une documentation extrêmement complète et détaillée. Il existe une variante qui se veut facile à prendre en main : \href{https://manjaro.org}{Manjaro}.
 
 \href{https://openwrt.org}{OpenWRT} est un système dédié pour les routeur WiFi et allégé de tous les composants non nécessaires pour cet usage particulier.
 
@@ -156,12 +156,13 @@ Les distributions basées sur Debian utilisent le système de paquets \textit{RP
 
 \subsection{Interfaces de contrôle}\vspace{-4mm}
 
-Quel que soit le système d'exploitation, il dispose toujours d'une interface de contrôle (voir figure \ref{fig:interface}. Celle-ci peut être graphique ou en console. Dans le second cas, on parle de lignes de commandes, d'émulateur de terminal ou de terminal voire, en anglais, de \textit{CLI} pour \textit{Command Line Interface} et plus souvent de TTY (pour \textit{TeleTYpewriter}).
-Le mode graphique varie grandement entre les systèmes d'exploitation et ce même pour des systèmes GNU/Linux. Il y cependant toujours un gestionnaire de bureau (\textit{desktop manager}) qui permet de gérer les fenêtres et programmes en cours d'exécution. Sous macOS, Windows et iOS, il n'existe qu'un seul gestionnaire de bureau possible.
+Quel que soit le système d'exploitation, il dispose toujours d'une interface de contrôle (voir figure \ref{fig:interface}. Celle-ci peut être graphique ou en console. Dans le second cas, on parle aussi de lignes de commandes, d'émulateur de terminal ou de terminal voire, en anglais, de \textit{CLI} pour \textit{Command Line Interface} et plus souvent de TTY (pour \textit{TeleTYpewriter}). L'interface graphique d'un système est gérée par un gestionnaire de bureau (\textit{desktop manager}), qui va afficher et présenter les différents programmes en cours d'exécution, et permettre à l'utilisateur de les gérer.
 
-En revanche, il existe une multitude de gestionnaire de bureau sous GNU/Linux, qui reposent sur différentes philosophies. C'est d'ailleurs souvent pour proposer un environnement graphique spécifique que des distributions Linux sont crées. Tous ces environnements sont cependant basés sur une couche logicielle standardisée, qui se nomme \href{https://www.x.org}{X}. Récemment, une nouvelle couche d'affichage graphique, \href{https://wayland.freedesktop.org}{Wayland}, a fait son apparition, mais son utilisation par les gestionnaire de bureau reste restreinte et difficile.
+Le mode graphique varie grandement entre les systèmes d'exploitation. Sous iOS, macOS et Windows, il n'existe qu'un seul gestionnaire de bureau. Sous GNU/Linux, celui-ci est totalement optionnel. Il existe une multitude de gestionnaires de bureau pour GNU/Linux, qui reposent sur différentes philosophies. C'est d'ailleurs souvent pour proposer un gestionnaire de bureau spécifique que des distributions Linux sont créées.
 
-Généralement, il est possible d'utiliser une interface en ligne de commande à partir d'une interface graphique et cela offre plusieurs avantages. Premièrement, on peut bénéficier des fonctionnalités du mode graphique telles que la souris ou le \textit{multitasking} (utilisation de plusieurs applications simultanément) via l'utilisation de fenêtres pour les programmes. Mais lorsqu'aucun gestionnaire de bureau n'est installé, la ligne de commande pure (sans fenêtre, ni souris, uniquement du texte) est incontournable.
+Tous ces environnements sont cependant basés sur une couche logicielle standardisée, qui se nomme \href{https://www.x.org}{X}. En 2008, une nouvelle couche d'affichage graphique, \href{https://wayland.freedesktop.org}{Wayland}, a fait son apparition et il est supporté et utilisé par de plus en plus de gestionnaires de bureau.
+
+Il est possible d'utiliser une interface en ligne de commande à partir d'une interface graphique et cela permet notamment d'utiliser la souris ou le \textit{multitasking} (utilisation de plusieurs applications simultanément) via l'utilisation de fenêtres pour les programmes. Mais lorsqu'aucun gestionnaire de bureau n'est installé, la ligne de commande pure (sans fenêtre, ni souris, uniquement du texte) est incontournable.
 
 Enfin, l'interface en ligne de commande permet souvent un contrôle rapide et fin de ce que l'on souhaite faire, puisqu'aucune surcouche ne masque ce qui est réellement exécuté. L'interface en ligne de commande permet donc de mieux comprendre ce que l'on fait, ainsi que le fonctionnement du système. Elle nécessite en revanche un apprentissage plus long et moins instinctif qu'une interface graphique interactive.
 
@@ -172,4 +173,4 @@ Enfin, l'interface en ligne de commande permet souvent un contrôle rapide et fi
 \label{fig:interface}
 \end{figure} \vspace{-2mm}
 
-\note{Note :} Dans la figure \ref{fig:interface}, on peut remarquer que la couche graphique est totalement optionnelle pour utiliser le système. De plus, un seul serveur graphique peut être utilisé à la fois. De même pour les environnements de bureau, qui restent cependant indépendants du serveur graphique.
+\note{Note :} Dans la figure \ref{fig:interface}, on peut remarquer que la couche graphique est totalement optionnelle pour utiliser le système et que les environnements de bureau restent indépendants du serveur graphique.
