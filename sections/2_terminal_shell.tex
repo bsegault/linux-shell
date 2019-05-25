@@ -108,11 +108,11 @@ Hormis quelques rares exceptions, les commandes sont toutes des programmes. Cela
 
 \subsubsection{À propos du manuel -- \texttt{man}} \command{man}
 
-Le manuel regroupe la documentation de toutes les commandes installées sur le système. Il existe plusieurs sections de manuel, allant de 1 à 9. Chaque section contient les pages de manuel pour la commande ou fonction appartenant à la section en question. Le manuel de la commande \cmdref{man} explicite ces sections, on peut le consulter grâce à la commande \mintinline{bash}{man man}. La section \texttt{1} contient les pages de manuel des commandes Bash. Dans le cas ou une page de manuel a des homonymes dans d'autres sections, on peut forcer la section \texttt{X} : \mintinline{bash}{man X command}
+Le manuel regroupe la documentation de toutes les commandes installées sur le système. Il existe plusieurs sections de manuel, allant de 1 à 9. Ces sections sont décrites dans le manuel de la commande \cmdref{man}, consultable grâce à la commande \mintinline{bash}{man man}. On notera que la section \texttt{1} contient les pages de manuel des commandes Bash. Dans le cas ou une page de manuel a des homonymes dans d'autres sections, on peut forcer la section \texttt{X} : \mintinline{bash}{man X command}
 
-La plupart des pages de manuel comportent une présentation succincte de la commande (le synopsis) ainsi qu'une description de la commande, de ses cas d'usages et de ses paramètres. Il y a généralement une partie explicitant les cas d'erreurs et parfois certains exemples.
+La plupart des pages de manuel comportent une présentation succincte de la commande (le synopsis) ainsi qu'une description de la commande, de ses cas d'usages et de ses paramètres. Il y a généralement une partie définissant les codes de retour possibles et leur signification. Certaines pages on également des exemples d'utilisations et de résultats attendus.
 
-En général, lorsqu'on utilise le manuel, on dispose d'une interface dédiée. On peut naviguer dans le manuel avec les flèches directionnelles et les touches \texttt{PageUp} et \texttt{PageDown}. Pour effectuer une recherche, on tapera un \textit{slash} (\texttt{/}) suivi du mot clé à rechercher, puis \texttt{Entrée}. \texttt{N} passer à la prochaine occurrence et \texttt{P} à l'occurrence précédente. \texttt{Q} permet de quitter.
+En général, lorsqu'on utilise le manuel, on dispose d'une interface dédiée. On peut naviguer dans le manuel avec les flèches directionnelles et les touches \texttt{PageUp} et \texttt{PageDown}. Pour effectuer une recherche, on tapera un \textit{slash} (\texttt{/}) suivi du mot clé à rechercher, puis \texttt{Entrée}. \texttt{N} passera à la prochaine occurrence et \texttt{P} à l'occurrence précédente. \texttt{Q} permet de quitter.
 
 Il se peut cependant que certaines commandes ne bénéficient pas de page de manuel ni d'aide. Dans ce cas, on peut essayer d'appeler la commande avec l'option \texttt{--help} ou \texttt{-h}. Cette option affiche généralement comment utiliser la commande et les arguments qu'elle peut prendre.
 
@@ -128,19 +128,19 @@ Le terminal étant conçu pour être utilisé intégralement au clavier, il exis
     \centering
     \begin{tabularx}{\textwidth}{| c | X |}  \hline
         \textbf{Raccourci} & \textbf{Effet} \\ \hline
-        \raisebox{-1\height}{\texttt{Tab}}                  & Auto-complète la commande courante si possible. \newline                                                                                                              Appuyer deux fois de suite pour voir la liste des suggestions. \\  \hline
+        \raisebox{-1\height}{\texttt{Tab}}                  & Auto-complète le nom de commande courant ou le chemin si possible. \newline                                                                                                  Appuyer deux fois de suite pour voir la liste des suggestions. \\  \hline
         \texttt{\textuparrow} \scriptsize{(flèche haut)}    & Affiche la commande précédente dans l'historique. \\  \hline
         \texttt{\textdownarrow} \scriptsize{(flèche bas)}   & Affiche la commande suivante dans l'historique. \\  \hline
         \raisebox{-1\height}{\texttt{Ctrl + L}}             & Nettoie l'écran de tout affichage. Sous macOS, nettoie jusqu'à la commande précédente. \\  \hline
         \texttt{Ctrl + C}                                   & Interrompt l'exécution de la commande en cours. \\  \hline
-        \raisebox{-1\height}{\texttt{Ctrl + Z}}             & Mets la commande en cours d'exécution en pause, pour la reprendre plus tard. \newline                                                                                  (Voir partie \ref{sec:tasks}) \\  \hline
-        \texttt{Ctrl + D}                                   & Interrompt la saisie lorsqu'une commande en attend une. \\  \hline
+        \raisebox{-1\height}{\texttt{Ctrl + Z}}             & Mets la commande en cours d'exécution en pause, pour la reprendre plus tard. \newline                                                                                        Voir partie \ref{sec:tasks}. \\  \hline
+        \raisebox{-1\height}{\texttt{Ctrl + D}}              & Interrompt la saisie lorsqu'une commande en attend une.  \newline                                                                                                            Permet aussi de quitter le Shell. \\  \hline
         \texttt{Ctrl + \textleftarrow}                      & Déplace le curseur au mot précédent. Équivalent à \texttt{Alt+B}. \\  \hline
         \texttt{Ctrl + \textrightarrow}                     & Déplace le curseur au mot suivant. Équivalent à \texttt{Alt+F}.\\  \hline
         \raisebox{-1\height}{\texttt{Ctrl + R}}             & Recherche dans l'historique des commandes en tapant quelques caractères. \newline
                                                               Retaper le raccourci pour passer à la commande correspondante précédente. \\  \hline
         \texttt{Ctrl + S}                                   & Pause le défilement d'affichage de la commande en cours d'exécution. \\  \hline
-        \texttt{Ctrl + Q}                                   & Reprend l'exécution et l'affichage de la commande mise en pause par \texttt{Ctrl + S}. \\  \hline
+        \texttt{Ctrl + Q}                                   & Reprend l'exécution de la commande mise en pause par \texttt{Ctrl + S}. \\  \hline
     \end{tabularx}
     \caption{Principaux raccourcis clavier dans un terminal Linux}
     \label{tab:kbd_shortcuts}
@@ -175,9 +175,9 @@ Il est possible d'utiliser deux points d'exclamation (\texttt{!!}) pour réutili
 
 \newpage
 \subsection{Arborescence de fichiers} \label{sec:directories}
-Une des philosophie de Linux est que \textbf{\say{tout est fichier}}. Ainsi, tout est représenté sous forme de fichiers. Bien entendu, tous les fichiers sont classés dans des dossiers (qui sont considérés comme des fichiers particuliers), formant ainsi ce que l'on appelle une arborescence.
+Un fichier est une zone sur le disque dur pouvant contenir des données. Cette zone est définie par un début et une taille. Cette taille peut évoluer au court du temps, en fonction des actions sur le fichier. Chaque fichier est placé dans un dossier qui peut regrouper plusieurs fichiers et dossiers, formant ainsi une arborescence. Ainsi, un fichier est identifié par son chemin, c'est-à-dire les dossiers successifs qui le contiennent, et son nom. Un chemin de fichier est toujours unique. Pour gérer cette arborescence, le système d'exploitation utilise un système de fichiers qui répertorie les fichiers et gère les accès et modifications sur le disque par l'utilisateur.
 
-Les systèmes Linux ont une architecture particulière et universelle. Tous les dossiers sont (directement ou indirectement) dans le dossier racine (\textit{root}), que l'on représente par un \textit{slash} (\texttt{/}), comme illustré dans la figure \ref{fig:linux_tree}. On notera que \texttt{/} est à la fois le nom du dossier racine, mais également le séparateur des dossiers.
+Une des philosophie de Linux est que \textbf{\say{tout est fichier}}. Ainsi, tout est représenté sous forme de fichiers, y compris les dossiers, qui sont considérés comme des fichiers particuliers. Les systèmes Linux ont une architecture particulière et universelle. Tous les dossiers sont (directement ou indirectement) dans le dossier racine (\textit{root}), que l'on représente par un \textit{slash} (\texttt{/}), comme illustré dans la figure \ref{fig:linux_tree}. On notera que '\texttt{/}' est à la fois le nom du dossier racine, mais également le séparateur des dossiers.
 
 \subsubsection{Chemin de fichiers}
 
@@ -185,7 +185,7 @@ Chaque fichier est accessible par un chemin de fichier, qui peut être absolu ou
 
 \paragraph{Chemin absolu}
 
-\textbf{Un chemin absolu est un chemin qui commence par la racine}, il commence donc par un \texttt{/}. Par exemple, pour identifier le dossier \texttt{usr1} dans le dossier \texttt{home} de la racine, on aura le chemin absolu \texttt{/home/usr1}.
+\textbf{Un chemin absolu est un chemin qui commence par la racine}, il commence donc par un '\texttt{/}'. Par exemple, pour identifier le dossier \texttt{usr1} dans le dossier \texttt{home} de la racine, on aura le chemin absolu \texttt{/home/usr1}.
 
 \paragraph{Chemin relatif}
 
@@ -199,13 +199,13 @@ Ajouté à cela, il existe deux dossiers spéciaux (ou relatifs), présents dans
 
 Ainsi, si l'on se trouve dans le dossier \texttt{/bin}, le chemin relatif vers le dossier \texttt{/home/usr1} sera \texttt{../home/usr1}.
 
-\note{Note :} Bien qu'un chemin absolu puisse utiliser les dossiers \texttt{.} et \texttt{..} en restant absolu, le chemin en est rallongé (il contient plus de dossier). On dit qu'\textbf{un chemin absolu est canonique lorsqu'il ne contient aucun dossier relatif}.
+\note{Note :} Bien qu'un chemin absolu puisse utiliser les dossiers '\texttt{.}' et '\texttt{..}' en restant absolu, le chemin en est rallongé (il contient plus de dossier). On dit qu'\textbf{un chemin absolu est canonique lorsqu'il ne contient aucun dossier relatif}.
 
 \paragraph{Dossier personnel}
 
 De plus, il existe un autre caractère spécial, que l'on a déjà évoqué : \texttt{\tilde}. Il ne s'agit pas d'un véritable dossier, mais d'un alias ou raccourci vers le dossier personnel (ou \hyperref[sec:dirhome]{\texttt{home}}) de l'utilisateur courant. De plus \texttt{\tilde user} représente le dossier personnel de l'utilisateur \texttt{user}.
 
-Enfin, \textbf{les fichiers dont le nom commence par \texttt{.} sont des fichiers cachés} : ils ne sont pas visibles par défaut. On les trouve notamment dans le dossier personnel de chaque utilisateur, ils contiennent des configurations spécifiques. Les dossiers \texttt{.} et \texttt{..} sont donc des dossiers cachés.
+Enfin, \textbf{les fichiers dont le nom commence par '\texttt{.}' sont des fichiers cachés} : ils ne sont pas visibles par défaut. On les trouve notamment dans le dossier personnel de chaque utilisateur, ils contiennent généralement des configurations ou cache de différentes applications. Les dossiers \texttt{.} et \texttt{..} sont donc des dossiers cachés.
 
 \newpage
 \subsubsection{Architecture des dossiers Linux}
@@ -264,43 +264,43 @@ Enfin, \textbf{les fichiers dont le nom commence par \texttt{.} sont des fichier
 \textbf{Descriptif du contenu chaque dossier majeur}
 
 \begin{tabularx}{\textwidth}{| c | X |}  \hline
-    \texttt{/bin}           & Fichiers exécutables (\textbf{bin}aires) pour l'initialisation du système et les commandes \say{essentielles} pour sa gestion \\
+    \raisebox{-1\height}{\texttt{/bin}}                        & Fichiers exécutables (\textbf{bin}aires) pour l'initialisation du système et les commandes \say{essentielles} pour sa gestion \\
         \hline
-    \texttt{/boot}          & Le noyau dans ses différentes versions installées ainsi que les fichiers de démarrage : \newline
+    \raisebox{-1.6\height}{\texttt{/boot}}                     & Le noyau dans ses différentes versions installées ainsi que les fichiers de démarrage : \newline
             --~\texttt{grub} : Chargeur d'amorçage, utilitaire pour détecter les systèmes d'exploitation disponibles. \href{https://www.gnu.org/software/grub/}{GRUB} permet de choisir l'OS et le mode de démarrage. \\
         \hline
-    \texttt{/dev} \label{sec:dirdev}           & Fichiers spéciaux représentant les composants ou appareils (\textit{\textbf{dev}ices}) détecté par le système (disques durs, lecteurs Blu-ray, interfaces réseau\dots). \newline
+    \raisebox{-1.6\height}{\texttt{/dev}} \label{sec:dirdev}   & Fichiers spéciaux représentant les composants ou appareils (\textit{\textbf{dev}ices}) détecté par le système (disques durs, lecteurs Blu-ray, interfaces réseau\dots). \newline
             On y trouve également \texttt{null}, \texttt{zero} et \texttt{random} (voir partie \ref{sec:file_dev}). \\
         \hline
-    \texttt{/etc}           & Fichiers de configuration du système et de diverses applications : \newline
+    \raisebox{-2.7\height}{\texttt{/etc}}                        & Fichiers de configuration du système et de diverses applications : \newline
             --~\texttt{apt} : configuration du gestionnaire de paquet Aptitude, \newline
             --~\texttt{rc.d} : scripts de démarrage du système, \newline
             --~\texttt{X11} : configuration du serveur d'affichage X. \\
         \hline
-    \texttt{/home} \label{sec:dirhome} & Contient les dossiers personnels des utilisateurs. \newline À TELECOM Nancy, ce dossier est en réalité un dossier réseau contenant les dossiers des enseignants et des élèves : \newline
+    \raisebox{-4.2\height}{\texttt{/home}} \label{sec:dirhome} & Contient les dossiers personnels des utilisateurs. \newline À TELECOM Nancy, ce dossier est en réalité un dossier réseau contenant les dossiers des enseignants et des élèves : \newline
             --~\texttt{1A}, \texttt{2A}, \texttt{3A} : contient les dossiers personnels des élèves de l'année correspondante, \newline
             --~\texttt{EqPedag} : contient les dossiers personnels des enseignants, \newline
             --~\texttt{depot} : dossier commun pour les TP. \\
         \hline
     \texttt{/lib} & Bibliothèques et modules noyau. \\
         \hline
-    \texttt{/media} & Dossier des fichiers contenus sur clés USB et disques externes connectés (supports amovibles). Est parfois absent ou confondu avec \texttt{/mnt}. \\
+    \raisebox{-1\height}{\texttt{/media}}                      & Dossier des fichiers contenus sur clés USB et disques externes connectés (supports amovibles). Est parfois absent ou confondu avec \texttt{/mnt}. \\
         \hline
-    \texttt{/mnt} & Dossier des fichiers contenus périphériques internes (disques dur, lecteurs Blu-ray\dots). On dit de ces dossiers qu'ils sont des points de montage des partitions ou appareils (\textit{\textbf{m}ou\textbf{nt}} en Anglais). \\
+    \raisebox{-1.6\height}{\texttt{/mnt}}                      & Dossier des fichiers contenus périphériques internes (disques dur, lecteurs Blu-ray\dots). On dit de ces dossiers qu'ils sont des points de montage des partitions ou appareils (\textit{\textbf{m}ou\textbf{nt}} en Anglais). \\
         \hline
-    \texttt{/opt} & Dossier d'installation des applications supplémentaires \textbf{opt}ionelles. \\
+    \texttt{/opt}                                              & Dossier d'installation des applications supplémentaires \textbf{opt}ionelles. \\
         \hline
-    \texttt{/proc} & \say{Image} du système avec des informations sur le \textbf{proc}esseur, la RAM\dots \\
+    \texttt{/proc}                                             & \say{Image} du système avec des informations sur le \textbf{proc}esseur, la RAM\dots \\
         \hline
-    \texttt{/root} & Dossier personnel du super-utilisateur (nommé \textit{\textbf{root}}) (voir partie \ref{cmd:sudo}). \\
+    \texttt{/root}                                             & Dossier personnel du super-utilisateur (nommé \textit{\textbf{root}}) (voir partie \ref{cmd:sudo}). \\
         \hline
-    \texttt{/sbin} & Fichiers exécutable pour l'administration du système : gestion du disque, des interfaces réseau, des différents services\dots \\
+    \raisebox{-1\height}{\texttt{/sbin}}                       & Fichiers exécutable pour l'administration du système : gestion du disque, des interfaces réseau, des différents services\dots \\
         \hline
     \texttt{/tmp} & Fichiers \textbf{t}e\textbf{mp}oraires. \\
         \hline
-    \texttt{/usr} & Programmes accessibles à tous les utilisateurs (\textit{\textbf{us}e\textbf{r}}). Ce dossier possède une structure semblable à la racine. \\
+    \raisebox{-1\height}{\texttt{/usr}}                       & Programmes accessibles à tous les utilisateurs (\textit{\textbf{us}e\textbf{r}}). Ce dossier possède une structure semblable à la racine. \\
         \hline
-    \texttt{/var} & Données \textbf{var}iables liées à la machine et notamment des fichiers journaux, archivant les événements du systèmes dans \texttt{/var/log}. \\
+    \raisebox{-1\height}{\texttt{/var}}                       & Données \textbf{var}iables liées à la machine et notamment des fichiers journaux, archivant les événements du systèmes dans \texttt{/var/log}. \\
         \hline
 \end{tabularx}
 
@@ -308,15 +308,15 @@ Enfin, \textbf{les fichiers dont le nom commence par \texttt{.} sont des fichier
 
 
 \subsubsection{Utilisation du système de fichier}
-Plusieurs commandes sont disponibles pour pouvoir afficher, se déplacer et manipuler un système de de fichier.
+Plusieurs commandes sont disponibles pour pouvoir afficher, se déplacer et manipuler un système de fichiers.
 
 \paragraph{\texttt{ls}} \command{ls}
-Permet de \textbf{l}i\textbf{s}ter un dossier dont le chemin le chemin (absolu ou relatif) est passé en paramètre. Sans paramètre, elle affichera le contenu du dossier courant. \cmdref{ls} dispose de plusieurs options : 
-
+\textbf{L}i\textbf{s}te un dossier dont le chemin le chemin (absolu ou relatif) est passé en paramètre. Sans paramètre, elle affichera le contenu du dossier courant. Lorsque le chemin donné est celui d'un fichier qui n'est pas un dossier, il est listé seul. \newline
+\cmdref{ls} dispose de plusieurs options : 
 \begin{itemize}
     \item \texttt{-a} : Affiche tous les fichiers, y compris les fichiers cachés. 
     \item \texttt{-H} : En combinaison avec \texttt{-l}, affiche la taille des fichiers en multiples de 1024 octets plutôt qu'en octets. On parle de taille lisible par l'\textbf{h}umain.
-    \item \texttt{-l} : Affiche le contenu détaillé d'un dossier.
+    \item \texttt{-l} : Affiche les informations détaillées.
     Dans ce mode, plusieurs informations sont détaillées, avec uniquement un fichier par ligne. Chaque élément de ligne contient différentes informations (voir figure \ref{fig:lsl}). Le type est détaillé dans la partie \ref{sec:filetypes}, les droits d'usages sont détaillés dans la partie dédiée à \cmdref{chmod}, la notion de propriétaires est détaillée dans la partie \ref{sec:users}.
 \end{itemize}
 
@@ -330,14 +330,15 @@ Permet de \textbf{l}i\textbf{s}ter un dossier dont le chemin le chemin (absolu o
 \paragraph{\texttt{cd}} \command{cd}
 Permet de se déplacer vers le dossier dont le chemin (absolu ou relatif) est passé en paramètre. Si aucun paramètre n'est donné, retourne au dossier personnel (\texttt{\tilde}).
 \begin{itemize}
-    \item \texttt{-} : Retourne au dossier précédent.
+    \item \texttt{-} : Retourne au dossier précédent. Un second appel à \mintinline{bash}{cd -} retourne au premier dossier car il n'y a pas d'historique.
 \end{itemize}
+\vspace{3mm}
 
-\note{Note :} Les commandes \texttt{pushd} et \texttt{popd} permettent de gérer un historique des dossiers sous forme de pile, permettant ainsi de faciliter le retour aux dossiers précédents. \newline 
-De plus, le programme \texttt{ranger} (non installé par défaut) permet un affichage et une navigation plus visuelle, mais ne peut pas être utilisé dans un script.
+\note{Note :} Les commandes \texttt{pushd}\command{pushd} et \texttt{popd}\command{popd} permettent de gérer un historique des dossiers sous forme de pile, permettant ainsi de faciliter le retour aux dossiers précédents. \newline 
+De plus, le programme \texttt{ranger}\command{ranger} (non installé par défaut) permet un affichage et une navigation plus visuelle, mais ne peut pas être utilisé dans un script.
 
 \paragraph{\texttt{mkdir}} \command{mkdir}
-Créé les dossiers passés en paramètres.
+Créé les dossiers passés en paramètres. Il peut s'agir de chemins complets (relatifs ou absolus) ou juste de noms de dossiers à créer.
 \begin{itemize}
     \item \texttt{-p} : Créé tous les dossiers parents nécessaires et ne renvoie pas d'erreur si le dossier existe.
     \item \texttt{-m <perm>} : Créé le dossier avec les droits d'accès donnés, à la manière de \cmdref{chmod} (voir partie \ref{sec:chmod}).
@@ -348,10 +349,11 @@ Supprime les fichiers ou dossiers passés en paramètres.
 \begin{itemize}
     \item \texttt{-i} : Mode interactif. Demande confirmation avant suppression de chaque éléments.
     \item \texttt{-f} : Mode forcé. Suppression du fichier sans confirmation.
-    \item \texttt{-r} : Mode récursif. Supprime récursivement tous les sous-dossiers.
+    \item \texttt{-r} : Mode récursif. Supprime récursivement un dossier et tous ses sous-dossiers.
 \end{itemize}
+\vspace{3mm}
 
-\note{Note :} La commande \texttt{rmdir} \command{rmdir} permet de supprimer un ou plusieurs dossiers vides.
+\note{Note :} La commande \texttt{rmdir}\command{rmdir} permet de supprimer un ou plusieurs dossiers vides.
 
 \newpage
 
@@ -361,15 +363,15 @@ Copie les fichiers ou dossiers passés en paramètres vers le dernier paramètre
     \item \texttt{-i} : Mode interactif. Demande confirmation avant d'écraser le fichier de destination (s'il existe).
     \item \texttt{-f} : Mode forcé. Écrasement du fichier de destination (s'il existe) sans confirmation.
     \item \texttt{-r} : Mode récursif. Copie récursivement le contenu d'un dossier.
-    \item \texttt{-u} : Mode mise-à-jour (\textit{Update}. Ne copie les fichiers vers la destination que si la source est plus récente ou que la destination n'existe pas.
+    \item \texttt{-u} : Mode mise-à-jour (\textit{\textbf{U}pdate}). Ne copie les fichiers vers la destination que si la source est plus récente ou que la destination n'existe pas.
 \end{itemize}
 
 \paragraph{\texttt{mv}} \command{mv}
 Déplace ou renomme les fichiers ou dossiers passés en paramètres. Utilisation similaire à \cmdref{cp}.
 \begin{itemize}
-    \item \texttt{-i} : Mode interactif. Confirmation préalable avant écrasemen du fichier de destination, s'il existe.
+    \item \texttt{-i} : Mode interactif. Confirmation préalable avant écrasement du fichier de destination, s'il existe.
     \item \texttt{-f} : Mode forcé. Écrasement du fichier de destination (s'il existe) sans confirmation.
-    \item \texttt{-u} : Mode mise-à-jour (\textit{Update}. Ne copie les fichiers vers la destination que si la source est plus récente ou que la destination n'existe pas.
+    \item \texttt{-u} : Mode mise-à-jour (\textit{\textbf{U}pdate}). Ne copie les fichiers vers la destination que si la source est plus récente ou que la destination n'existe pas.
 \end{itemize}
 
 \paragraph{\texttt{touch}} \command{touch}
@@ -378,7 +380,7 @@ Modifie la date de dernier accès d'un fichier ou le créé s'il n'existe pas.
 Toutes les commandes précédentes peuvent traiter un ou plusieurs fichiers ou dossiers. De plus, si le paramètre comprend un astérisque (\texttt{*}), alors Bash fera correspondre les noms de fichiers au mieux. Ainsi si on effectue \mintinline{bash}{rm i*}, Bash supprimera l'ensemble des fichiers ou dossiers dans le dossier courant qui commencent par \texttt{i}.
 
 \paragraph{\texttt{cat}} \command{cat}
-Permet d'afficher le contenu d'un fichier directement dans le terminal.
+Affiche le contenu d'un fichier directement dans le terminal.
 \begin{itemize}
     \item \texttt{-} : Si aucun fichier n'est passé en paramètre, attends une entrée au clavier, puis l'affiche à chaque entrée. Utiliser \texttt{Ctrl+D} pour terminer la saisie. Utile au sein de boucles \cmdref{while}.
     \item \texttt{-n} : Préfixe chaque ligne du fichier par le numéro de ligne
@@ -397,7 +399,7 @@ Ces trois commandes sont des afficheurs de texte. Contrairement à \cmdref{cat},
 \note{Note :} C'est en général un de ces afficheurs qui est utilisé pour consulter le \cmdref{man}. Ce comportement est modifiable via la variable d'environnement \texttt{\$PAGER} (voir partie \ref{sec:env}).
 
 \paragraph{\texttt{nano} -- \texttt{vim} -- \texttt{emacs}}
-Il existe également des éditeurs de texte, pouvant lire et écrire des fichiers depuis la ligne de commande, les plus connus étant \cmdref{nano},  ou \cmdref{emacs}. Leur utilisation étant très spécifiques, leur fonctionnement est détaillé dans les annexes dédiées (\ref{appendix:nano},  \ref{appendix:vim} et  \ref{appendix:emacs}). \newline
+Il existe également des éditeurs de texte, pouvant lire et écrire des fichiers depuis la ligne de commande, les plus connus étant \cmdref{nano}, \cmdref{vim} et \cmdref{emacs}. Leur utilisation étant très spécifiques, leur fonctionnement est détaillé dans les annexes dédiées (\ref{appendix:nano}, \ref{appendix:vim} et \ref{appendix:emacs}). \newline
 Ces éditeurs peuvent être utilisés directement par d'autres commandes (telles que \texttt{git}) grâce à la variable d'environnement \texttt{\$EDITOR} (voir partie \ref{sec:env}).
 
 \paragraph{\texttt{ne}}\command{ne}
@@ -406,31 +408,33 @@ Ces éditeurs peuvent être utilisés directement par d'autres commandes (telles
 \newpage
 \subsubsection{Types de fichiers} \label{sec:filetypes}
 
-Comme vu dans la figure \ref{fig:lsl}, il existe différents types de fichiers sous Linux, qui ne sont pas nécessairement des fichiers à proprement parler.
+Comme vu dans la figure \ref{fig:lsl}, il existe différents types de fichiers sous Linux.
 
 \paragraph{Fichiers simples}
-Il s'agit du type de fichier le plus naturel. Un fichier simple est un fichier qui contient des données écrites sur le disque, dans l'arborescence de dossiers.
-Il est à noter qu'il existe plusieurs types de fichiers simples. On distingue généralement les fichiers textes, que l'on peut visualiser et lire dans , et les fichiers binaires, qui sont écrits en binaire et donc non conçus pour être lisibles par un éditeur de texte. \newline
+Il s'agit du type de fichier le plus naturel. Un fichier simple contient des données écrites sur le disque, qui peuvent être lues directement.
+Il existe deux types de fichiers simples : les fichiers textes et les fichiers binaires.
+
+Les fichiers textes sont composés de chaînes de caractères, écrites lignes par lignes. Il peuvent être lus dans n'importe quel afficheur ou éditeur de texte. Il faut noter que les lignes sont séparés par un caractère spécial, invisible par défaut, que l'on appelle saut de ligne (\textit{Line Feed} en anglais, abrégé en \textit{LF}). On le voit très régulièrement sous la notation \texttt{\textbackslash n}. Sous Windows, les sauts de lignes sont marqués en plus par un retour à la ligne (\textit{Carriage Return}) : abrégés en \textit{CR-LF}, notés \texttt{\textbackslash r\textbackslash n}. C'est pourquoi les fichiers Linux sont souvent mal affiché sous Windows.
+
+Il existe plusieurs encodages du texte. Le plus ancien est le code ASCII, qui définit un encodage des caractères sur 8 bits dans sa version étendue, mais ne permet donc d'encoder que 255 caractères. La plupart des encodages dédiés à notre alphabet tentent de respecter le code ASCII, pour des raisons historiques de compatibilité. On rencontre également l'encodage UTF-8 (pour \textit{\textbf{U}niversal coded character set \textbf{T}ransformation \textbf{F}ormat - 8 bits}). UTF (ou Unicode) permet de coder la quasi totalité des caractères utilisés dans le monde, y compris les emojis.
+
+Les fichiers binaires, quant à eux, sont stockés purement sous forme binaire et n'ont pas vocation à être lus comme un fichier texte. Ils peuvent contenir toute sorte d'information. Il s'agit souvent de code compilé, prévu pour être exécuté (des programmes ou bibliothèques), de données de média (image, vidéos, sons\dots), ou d'autres données, gérées par des programmes spécifiques (archives, données de jeux\dots).
+
 \textbf{Le caractère des fichiers simples dans l'affichage détaillé de \cmdref{ls} est un tiret (\texttt{-})}.
-
-Les fichiers textes sont composés de chaînes de caractères, écrites lignes par lignes, et peuvent être lus dans n'importe quel afficheur ou éditeur de texte. Il faut cependant noter que les lignes sont séparés par un caractère spécial, invisible par défaut, que l'on appelle saut de ligne (\textit{Line Feed} en anglais). Souvent abrégé en \textit{LF}, on le voit très régulièrement sous la notation \texttt{\textbackslash n}.
-
-Il existe plusieurs encodages du texte. Le plus ancien est le code ASCII, qui définit un encodage des caractères sur 8 bits dans sa version étendue, mais ne permet d'encoder que 255 caractères. La plupart des encodages dédiés à notre alphabet tentent de respecter le code ASCII, pour des raisons historiques de compatibilité. On rencontre également l'encodage UTF-8 (pour \textit{\textbf{U}niversal coded character set \textbf{T}ransformation \textbf{F}ormat - 8 bits}). UTF (ou Unicode) permet de coder la quasi totalité des caractères utilisés dans le monde, y compris les emojis.
-
-Les fichiers binaires, quant à eux, sont stockés purement sous forme binaire et n'ont pas vocation à être lus comme un fichier texte. Ils peuvent contenir toute sorte d'information. Le plus souvent, il s'agit de code compilé, prévu pour être exécuté (dans le cas d'un exécutable) ou utilisé au sein de programmes (dans le cas de bibliothèques).
 
 \paragraph{Dossiers}
 Comme évoqué précédemment, les dossiers sous considérés comme des fichiers particuliers sous Linux. Il est à noter qu'un dossier donné occupe un espace en lui-même sur le disque dur, sans parler de la taille totale des fichiers qu'il contient. En effet, l'information du dossier (emplacement, droits d'utilisation et nom) doit être stocké. Cette taille est cependant très réduite et commune à l'ensemble des dossiers. Dans la figure \ref{fig:lsl}, elle vaut 512 octets, ce qui correspond à la taille minimale d'allocation d'espace sur le disque dur.\newline 
 \textbf{Le caractère des dossiers dans l'affichage détaillé de \cmdref{ls} est \texttt{d}}.
 
 \paragraph{Liens symboliques} \label{sec:file_links}
-Les liens symboliques sont des fichiers qui ne contiennent qu'une référence (un pointeur) vers un autre fichier. Cela permet d'utiliser le lien symbolique comme s'il s'agissait du fichier, et permet ainsi d'avoir plusieurs noms ou chemin pour représenter le même fichier sans le dupliquer. Les liens symboliques sont notamment utilisés pour pouvoir changer de version entre différents programmes ou fichier facilement. De nombreuses commandes permettent de définir si l'on souhaite agir sur le lien en lui même ou sur le fichier qu'il pointe. Si le fichier pointé par le lien n'existe pas, on dit que le lien est cassé, rompu, ou orphelin. \newline
+Les liens symboliques sont des fichiers qui ne contiennent qu'une référence (un pointeur) vers un autre fichier. Cela permet d'utiliser le lien symbolique comme s'il s'agissait du fichier et ainsi d'avoir plusieurs noms ou chemin pour représenter le même fichier sans le dupliquer. Les liens symboliques sont notamment utilisés pour pouvoir changer de version entre différents programmes ou fichier facilement. De nombreuses commandes permettent de définir si l'on souhaite agir sur le lien en lui même ou sur le fichier qu'il pointe. Si le fichier pointé par le lien n'existe pas, on dit que le lien est cassé, rompu, ou orphelin. \newline
 \textbf{Le caractère des liens symboliques dans l'affichage détaillé de \cmdref{ls} est \texttt{l}}.
 
-\begin{center}
+\vspace{5mm}
+\begin{nscenter}
 \textbf{Ces types de fichiers sont les principaux à retenir.} \\
 Les types suivants sont bien moins courants et la compréhension de leur fonctionnement relève d'un usage avancé des systèmes Linux et de Bash.
-\end{center}
+\end{nscenter}
 
 \newpage
 
@@ -438,7 +442,7 @@ Les types suivants sont bien moins courants et la compréhension de leur fonctio
 Les \textit{sockets} sont des fichiers particuliers utilisés pour échanger des données entre les programmes. Une \textit{socket} ne stocke donc les données que jusqu'à ce qu'elles soient lues, paquets par paquets. C'est également un mécanisme utilisé pour la communication réseau. \newline \textbf{Le caractère des \textit{sockets} dans l'affichage détaillé de \cmdref{ls} est \texttt{s}}.
 
 \paragraph{\textit{Pipes}} \label{sec:file_pipes}
-Les \textit{pipes} (ou tubes) ont un fonctionnement similaire aux \textit{sockets}, mais agissent par flux et non pas par paquets. La lecture dans un \textit{pipe} se fait caractère par caractère. Ils permettent d'agir comme un lien entre un producteur (celui qui va écrire dans le \textit{pipe}) et un consommateur (le lecteur). L'usage des \textit{pipes} en Bash est courant et est détaillé en partie \ref{sec:pipes}. \newline
+Les \textit{pipes} (ou tubes) ont un fonctionnement similaire aux \textit{sockets}, mais agissent par flux et non pas par paquets. La lecture dans un \textit{pipe} se fait caractère par caractère. Ils permettent d'agir comme un lien entre un producteur (celui qui va écrire dans le \textit{pipe}) et un consommateur (le lecteur). L'usage des \textit{pipes} en Bash est courant. Il repose sur le même concept, avec une implémentation technique légèrement différente. Son usage est détaillé en partie \ref{sec:pipes}. \newline
 \textbf{Le caractère des \textit{pipes} dans l'affichage détaillé de \cmdref{ls} est \texttt{p}.}
 
 \paragraph{Blocs d'appareils} \label{sec:file_dev}
@@ -446,8 +450,27 @@ Les fichiers de blocs d'appareils (\textit{Block devices} en anglais) sont une r
 \textbf{Le caractère des \textit{block devices} dans l'affichage détaillé de \cmdref{ls} est \texttt{d}.}
 
 \paragraph{\textit{Character device}} \label{sec:file_char}
-Les fichiers de \textit{dharacter devices} permettent une lecture ou écriture d'un flux de données. Ils sont notamment utilisés pour représenter des appareils comme une carte son. D'autres exemples notables de ce type de fichiers sont les fichiers \texttt{/dev/zero}, qui ne laisse lire que des zéros, \texttt{/dev/null}, qui peut lire n'importe quel caractère sans rien stocker, ou \texttt{/dev/random} qui retourne des données aléatoires. Les terminaux TTY sont également des fichiers de type \textit{character devices}.  \newline
+Les fichiers de \textit{character devices} permettent une lecture ou écriture d'un flux de données. Ils sont notamment utilisés pour représenter des appareils comme une carte son. D'autres exemples notables de ce type de fichiers sont :
+\begin{itemize}
+    \item \texttt{/dev/zero}, qui ne laisse lire que des zéros,
+    \item \texttt{/dev/null}, qui peut lire n'importe quel caractère sans rien stocker,
+    \item \texttt{/dev/random} qui retourne des données aléatoires.
+\end{itemize}
+Les terminaux TTY sont également des fichiers de type \textit{character devices}. \newline
 \textbf{Le caractère des \textit{char devices} dans l'affichage détaillé de \cmdref{ls} est \texttt{c}.}
+
+\subsubsection{Informations sur un fichier}
+
+On a vu que pour obtenir des informations sur un fichier, sans le lire, on peut utiliser \mintinline{bash}{ls -l}. D'autres informations peuvent être obtenues, sur le type de fichier et son contenu grâce à la commande \cmdref{file}.
+
+\paragraph{\texttt{file}} \command{file}
+Affiche les informations sur les fichiers donnés en paramètre : le type de fichier s'il ne s'agit pas d'un fichier simple, et des informations sur le contenu du fichier (image, document, texte...) sinon.
+\begin{itemize}
+    \item \texttt{-i} : Pour les fichiers simples, affiche le type de fichier sous la forme standardisée MIME.
+    \item \texttt{-L} : Pour les liens symboliques, affiche les information sur le fichier cible plutôt que sur le lien lui-même.
+\end{itemize}
+
+\newpage
 
 \subsection{Utilisateurs, groupes et droits d'accès} \label{sec:users}
 \vspace{-2mm}
