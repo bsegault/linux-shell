@@ -9,7 +9,7 @@ Dans cette partie et les parties suivantes, on considère que l'on dispose d'un 
 
 Bien que la plupart des systèmes de bureau disposent d'une interface graphique, la gestion quotidienne du système peut se faire intégralement en ligne de commande. De nombreux programmes ne sont d'ailleurs qu'une surcouche à leur version console, pour plus de simplicité.
 
-De manière générale, la ligne de commande permet à un utilisateur de se connecter, d'exécuter des programmes et de gérer le système. Utiliser la ligne de commande permet également d'agir de façon plus uniforme, grâce à POSIX (voire partie \ref{sec:POSIX}).
+De manière générale, la ligne de commande permet à un utilisateur de se connecter, d'exécuter des programmes et d'interagir le système. Utiliser la ligne de commande permet également d'agir de façon plus uniforme, grâce à POSIX (voire partie \ref{sec:POSIX}).
 
 \subsubsection{Plusieurs terminaux}
 Il existe deux types de terminaux : 
@@ -31,10 +31,10 @@ La majeure partie des commandes et des programmes présentés ci-après respecte
 
 \subsection{Prise en main du terminal}
 \vspace{-4mm}
-Lorsque l'on lance un terminal, il n'y a généralement aucun affichage, seuls quelques caractères s'affichent au début de ligne. Il s'agit de l'invite de commande ou \textit{Prompt}.
-\subsubsection{Invite de commande -- \textit{Prompt}}
+Lorsque l'on lance un terminal, il n'y a généralement aucun affichage, seuls quelques caractères s'affichent au début de ligne. Il s'agit de l'invite de commande ou \textit{prompt}.
+\subsubsection{Invite de commande -- \textit{prompt}}
 
-Le \textit{Prompt}, lorsqu'il n'est pas personnalisé\footnote{Le prompt peut-être personnalisé par la variable d'environnement (voir partie \ref{sec:env}) \texttt{PS1}. La syntaxe pouvant être complexe, des générateurs en ligne existent comme \href{http://ezprompt.net}{ESPrompt} ou \href{http://bashrcgenerator.com}{.bashrc generator}}, est généralement de la forme suivante :
+Le \textit{prompt}, lorsqu'il n'est pas personnalisé\footnote{Le prompt peut-être personnalisé par la variable d'environnement (voir partie \ref{sec:env}) \texttt{PS1}. La syntaxe pouvant être complexe, des générateurs en ligne existent comme \href{http://ezprompt.net}{ESPrompt} ou \href{http://bashrcgenerator.com}{.bashrc generator}}, est généralement de la forme suivante :
 \begin{nscenter}
     \texttt{login@machine:\tilde~\$}
 \end{nscenter}
@@ -43,19 +43,19 @@ Si on l'analyse, peut détailler trois parties :
 \begin{itemize}
     \item \texttt{login@machine}, identifie l'utilisateur courant (via son login) et la machine courante (via son nom). Cela peut paraître superflu au premier abord mais s'avère très utile lorsque l'on se connecte à plusieurs machines à distance (voir partie \ref{cmd:ssh}).
     \item \texttt{\tilde}, correspond au dossier courant. En l'occurrence, il s'agit d'un alias qui correspond au dossier personnel de l'utilisateur courant (voir partie \ref{sec:dirhome}). En changeant de dossier, cette valeur changera pour le nom ou le chemin du nouveau dossier.
-    \item \texttt{\$}, correspond au niveau d'utilisateur. \texttt{\$} signifie utilisateur normal, \texttt{\#} signifie super-utilisateur. L'utilisateur normal peut, pendant une commande acquérir les droits de super-utilisateur (voir partie \ref{cmd:sudo}), sans que ce symbole change.
+    \item \texttt{\$}, correspond au niveau d'utilisateur. \texttt{\$} signifie utilisateur normal, \texttt{\#} signifie super-utilisateur. L'utilisateur normal peut, le temps d'une commande, acquérir les droits de super-utilisateur (voir partie \ref{cmd:sudo}), sans que ce symbole change.
 \end{itemize}\vspace{1mm}
 
-Lorsque le \textit{Prompt} est affiché, cela signifie que l'on peut entrer une commande.
+Lorsque le \textit{prompt} est affiché, cela signifie que l'on peut entrer une commande.
 
 \subsubsection{Structure d'une commande} \label{sec:command}
 
 Une commande, quel que soit le système d'exploitation, est une chaîne de caractère que l'on va taper au clavier pour réaliser une action sur le système. Elle se compose de plusieurs mots ou codes, \textbf{les arguments}, séparés par au moins un espace. On représente une commande ainsi :
 \begin{nscenter}
-    \mintinline{bash}{command [ --long-option | -o -p <detail> -t ] parameter}
+    \mintinline{bash}{command [ --long-option | -o -p <value> -t ] parameter}
 \end{nscenter}
 \begin{itemize}
-    \item \texttt{command} - La commande est toujours en minuscule, parfois composés de plusieurs mots, séparés par des tirets (\texttt{-}) ou des sous-tirets (\texttt{\_}) ;
+    \item \texttt{command} - La commande est presque toujours en minuscule, parfois composés de plusieurs mots, séparés par des tirets (\texttt{-}) ou des sous-tirets (\texttt{\_}) ;
     \item Les arguments entre crochets (\texttt{[]}) sont facultatifs, ce sont des options ;
     \item les arguments séparés par des \textit{pipes} (\texttt{|}) indiquent une alternative : ils sont exclusifs et ne peuvent être utilisés simultanément ;
     \item les argument entre chevrons (\texttt{<>}) sont à remplacer par le texte voulu. Ils ne sont pas toujours entre chevrons mais différencié des autres arguments (majuscules, couleurs\dots)
@@ -64,18 +64,16 @@ Une commande, quel que soit le système d'exploitation, est une chaîne de carac
 
 \paragraph{Notation des arguments d'options}
 
-Il existe deux types d'arguments d'options : les arguments longs et les arguments courts.
+Il existe deux types d'arguments d'options : les arguments courts et les arguments longs.
 \begin{itemize}
-    \item Les arguments longs commencent par un double tiret et comportent généralement un mot complet ou plusieurs mots séparés par des tirets (\texttt{-}) ou des sous-tirets (\texttt{\_}) :
-        \begin{center}\mintinline{bash}{command --option --long-option}\end{center} \vspace{\baselineskip}
-    \item Les arguments courts commencent par un tiret et ne comportent qu'une seule lettre (voir chiffre, dans de très rares cas), majuscule ou minuscule :
-        \begin{center}\mintinline{bash}{command -o -p -t}\end{center} \vspace{\baselineskip}
-    Il est possible de combiner les paramètres courts pour plus de simplicité :
-        \begin{center}\mintinline{bash}{command -opt}\end{center}
+    \item Les arguments courts commencent par un tiret et ne comportent qu'une seule lettre (voir chiffre, dans de très rares cas), majuscule ou minuscule.  Ils peuvent nécessiter une valeur, qui est alors précisée par le paramètre suivant : \mintinline{bash}{command -o -p -t value}.\newline
+    Il est possible de combiner les paramètres courts pour plus de simplicité : \mintinline{bash}{command -opt}\vspace{\baselineskip}
+    
+    \item Les arguments longs commencent par un double tiret et comportent généralement un mot complet ou plusieurs mots séparés par des tirets (\texttt{-}) ou des sous-tirets (\texttt{\_}). Leur valeur peut également être donnée via un signe égal (\texttt{=}): \mintinline{bash}{command --option value --long-option=true}
 \end{itemize}
-\bigskip
+\newpage
 
-Les arguments de chaque commande sont explicités dans le manuel. Pour consulter le manuel d'une commande, il suffira d'utiliser la commande \texttt{\cmdref{man} <command>}.
+Les arguments de chaque commande sont explicités dans le manuel. Pour consulter le manuel d'une commande, il suffira d'utiliser la commande \texttt{\cmdref{man} <command>} (voir partie \ref{cmd:man}).
 
 \warning{Enfin, une commande dispose toujours (même s'ils ne sont pas utilisés):}
 \begin{itemize}
