@@ -106,6 +106,8 @@
     \multicolumn{#1}{c}{}\\[-2ex]\hline
 }
 
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
+
 % Column types for header/footer
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}

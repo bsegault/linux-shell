@@ -128,17 +128,17 @@ Le terminal étant conçu pour être utilisé intégralement au clavier, il exis
     \centering
     \begin{tabularx}{\textwidth}{| c | X |}  \hline
         \textbf{Raccourci} & \textbf{Effet} \\ \hline
-        \raisebox{-1\height}{\texttt{Tab}}                  & Auto-complète le nom de commande courant ou le chemin si possible. \newline                                                                                                  Appuyer deux fois de suite pour voir la liste des suggestions. \\  \hline
+        \texttt{Tab}      & Auto-complète le nom de commande courant ou le chemin si possible. \newline                                                                                                  Appuyer deux fois de suite pour voir la liste des suggestions. \\  \hline
         \texttt{\textuparrow} \scriptsize{(flèche haut)}    & Affiche la commande précédente dans l'historique. \\  \hline
         \texttt{\textdownarrow} \scriptsize{(flèche bas)}   & Affiche la commande suivante dans l'historique. \\  \hline
-        \raisebox{-1\height}{\texttt{Ctrl + L}}             & Nettoie l'écran de tout affichage. Sous macOS, nettoie jusqu'à la commande précédente. \\  \hline
+        \texttt{Ctrl + L} & Nettoie l'écran de tout affichage. Sous macOS, nettoie jusqu'à la commande précédente. \\  \hline
         \texttt{Ctrl + C}                                   & Interrompt l'exécution de la commande en cours. \\  \hline
-        \raisebox{-1\height}{\texttt{Ctrl + Z}}             & Mets la commande en cours d'exécution en pause, pour la reprendre plus tard. \newline                                                                                        Voir partie \ref{sec:tasks}. \\  \hline
-        \raisebox{-1\height}{\texttt{Ctrl + D}}              & Interrompt la saisie lorsqu'une commande en attend une.  \newline                                                                                                            Permet aussi de quitter le Shell. \\  \hline
+        \texttt{Ctrl + Z} & Mets la commande en cours d'exécution en pause, pour la reprendre plus tard. \newline                                                                                                       Voir partie \ref{sec:tasks}. \\  \hline
+        \texttt{Ctrl + D} & Interrompt la saisie lorsqu'une commande en attend une.  \newline                                                                                                                           Permet aussi de quitter le Shell. \\  \hline
         \texttt{Ctrl + \textleftarrow}                      & Déplace le curseur au mot précédent. Équivalent à \texttt{Alt+B}. \\  \hline
         \texttt{Ctrl + \textrightarrow}                     & Déplace le curseur au mot suivant. Équivalent à \texttt{Alt+F}.\\  \hline
-        \raisebox{-1\height}{\texttt{Ctrl + R}}             & Recherche dans l'historique des commandes en tapant quelques caractères. \newline
-                                                              Retaper le raccourci pour passer à la commande correspondante précédente. \\  \hline
+        \texttt{Ctrl + R} & Recherche dans l'historique des commandes en tapant quelques caractères. \newline
+                            Retaper le raccourci pour passer à la commande correspondante précédente. \\  \hline
         \texttt{Ctrl + S}                                   & Pause le défilement d'affichage de la commande en cours d'exécution. \\  \hline
         \texttt{Ctrl + Q}                                   & Reprend l'exécution de la commande mise en pause par \texttt{Ctrl + S}. \\  \hline
     \end{tabularx}
@@ -264,43 +264,43 @@ Enfin, \textbf{les fichiers dont le nom commence par '\texttt{.}' sont des fichi
 \textbf{Descriptif du contenu chaque dossier majeur}
 
 \begin{tabularx}{\textwidth}{| c | X |}  \hline
-    \raisebox{-1\height}{\texttt{/bin}}                        & Fichiers exécutables (\textbf{bin}aires) pour l'initialisation du système et les commandes \say{essentielles} pour sa gestion \\
+    \texttt{/bin}                    & Fichiers exécutables (\textbf{bin}aires) pour l'initialisation du système et les commandes \say{essentielles} pour sa gestion \\
         \hline
-    \raisebox{-1.6\height}{\texttt{/boot}}                     & Le noyau dans ses différentes versions installées ainsi que les fichiers de démarrage : \newline
+    \texttt{/boot}                   & Le noyau dans ses différentes versions installées ainsi que les fichiers de démarrage : \newline
             --~\texttt{grub} : Chargeur d'amorçage, utilitaire pour détecter les systèmes d'exploitation disponibles. \href{https://www.gnu.org/software/grub/}{GRUB} permet de choisir l'OS et le mode de démarrage. \\
         \hline
-    \raisebox{-1.6\height}{\texttt{/dev}} \label{sec:dirdev}   & Fichiers spéciaux représentant les composants ou appareils (\textit{\textbf{dev}ices}) détecté par le système (disques durs, lecteurs Blu-ray, interfaces réseau\dots). \newline
+    \texttt{/dev}\label{sec:dirdev}  & Fichiers spéciaux représentant les composants ou appareils (\textit{\textbf{dev}ices}) détecté par le système (disques durs, lecteurs Blu-ray, interfaces réseau\dots). \newline
             On y trouve également \texttt{null}, \texttt{zero} et \texttt{random} (voir partie \ref{sec:file_dev}). \\
         \hline
-    \raisebox{-2.7\height}{\texttt{/etc}}                        & Fichiers de configuration du système et de diverses applications : \newline
+    \texttt{/etc}                     & Fichiers de configuration du système et de diverses applications : \newline
             --~\texttt{apt} : configuration du gestionnaire de paquet Aptitude, \newline
             --~\texttt{rc.d} : scripts de démarrage du système, \newline
             --~\texttt{X11} : configuration du serveur d'affichage X. \\
         \hline
-    \raisebox{-4.2\height}{\texttt{/home}} \label{sec:dirhome} & Contient les dossiers personnels des utilisateurs. \newline À TELECOM Nancy, ce dossier est en réalité un dossier réseau contenant les dossiers des enseignants et des élèves : \newline
+    \texttt{/home}\label{sec:dirhome} & Contient les dossiers personnels des utilisateurs. \newline À TELECOM Nancy, ce dossier est en réalité un dossier réseau contenant les dossiers des enseignants et des élèves : \newline
             --~\texttt{1A}, \texttt{2A}, \texttt{3A} : contient les dossiers personnels des élèves de l'année correspondante, \newline
             --~\texttt{EqPedag} : contient les dossiers personnels des enseignants, \newline
             --~\texttt{depot} : dossier commun pour les TP. \\
         \hline
     \texttt{/lib} & Bibliothèques et modules noyau. \\
         \hline
-    \raisebox{-1\height}{\texttt{/media}}                      & Dossier des fichiers contenus sur clés USB et disques externes connectés (supports amovibles). Est parfois absent ou confondu avec \texttt{/mnt}. \\
+    \texttt{/media}                   & Dossier des fichiers contenus sur clés USB et disques externes connectés (supports amovibles). Est parfois absent ou confondu avec \texttt{/mnt}. \\
         \hline
-    \raisebox{-1.6\height}{\texttt{/mnt}}                      & Dossier des fichiers contenus périphériques internes (disques dur, lecteurs Blu-ray\dots). On dit de ces dossiers qu'ils sont des points de montage des partitions ou appareils (\textit{\textbf{m}ou\textbf{nt}} en Anglais). \\
+    \texttt{/mnt}                     & Dossier des fichiers contenus périphériques internes (disques dur, lecteurs Blu-ray\dots). On dit de ces dossiers qu'ils sont des points de montage des partitions ou appareils (\textit{\textbf{m}ou\textbf{nt}} en Anglais). \\
         \hline
-    \texttt{/opt}                                              & Dossier d'installation des applications supplémentaires \textbf{opt}ionelles. \\
+    \texttt{/opt}                     & Dossier d'installation des applications supplémentaires \textbf{opt}ionelles. \\
         \hline
-    \texttt{/proc}                                             & \say{Image} du système avec des informations sur le \textbf{proc}esseur, la RAM\dots \\
+    \texttt{/proc}                    & \say{Image} du système avec des informations sur le \textbf{proc}esseur, la RAM\dots \\
         \hline
-    \texttt{/root}                                             & Dossier personnel du super-utilisateur (nommé \textit{\textbf{root}}) (voir partie \ref{cmd:sudo}). \\
+    \texttt{/root}                    & Dossier personnel du super-utilisateur (nommé \textit{\textbf{root}}) (voir partie \ref{cmd:sudo}). \\
         \hline
-    \raisebox{-1\height}{\texttt{/sbin}}                       & Fichiers exécutable pour l'administration du système : gestion du disque, des interfaces réseau, des différents services\dots \\
+    \texttt{/sbin}                    & Fichiers exécutable pour l'administration du système : gestion du disque, des interfaces réseau, des différents services\dots \\
         \hline
     \texttt{/tmp} & Fichiers \textbf{t}e\textbf{mp}oraires. \\
         \hline
-    \raisebox{-1\height}{\texttt{/usr}}                       & Programmes accessibles à tous les utilisateurs (\textit{\textbf{us}e\textbf{r}}). Ce dossier possède une structure semblable à la racine. \\
+    \texttt{/usr}                     & Programmes accessibles à tous les utilisateurs (\textit{\textbf{us}e\textbf{r}}). Ce dossier possède une structure semblable à la racine. \\
         \hline
-    \raisebox{-1\height}{\texttt{/var}}                       & Données \textbf{var}iables liées à la machine et notamment des fichiers journaux, archivant les événements du systèmes dans \texttt{/var/log}. \\
+    \texttt{/var}                     & Données \textbf{var}iables liées à la machine et notamment des fichiers journaux, archivant les événements du systèmes dans \texttt{/var/log}. \\
         \hline
 \end{tabularx}
 
@@ -474,7 +474,7 @@ Affiche les informations sur les fichiers donnés en paramètre : le type de fic
 
 \subsection{Utilisateurs, groupes et droits d'accès} \label{sec:users}
 \vspace{-2mm}
-GNU/Linux est un système multi-utilisateurs. Ainsi, plusieurs utilisateurs peuvent utiliser le système simultanément. Chaque utilisateur est membre d'un groupe du même nom (son groupe principal). Il peut également être membre de groupes additionnels. Il existe généralement des groupes dédiés à des programmes ou services particuliers. Chaque utilisateur a un identifiant unique : \textit{UID}. De même pour les groupes : \textit{GID}, consultable avec la commande \cmdref{id}.
+GNU/Linux est un système multi-utilisateurs. Ainsi, plusieurs utilisateurs peuvent utiliser le système simultanément. Chaque utilisateur a un identifiant unique : \textit{UID}. Il existe également des groupes, pouvant réunir un ou plusieurs utilisateurs. Chaque utilisateur est automatiquement membre d'un groupe du même nom : son groupe principal. De plus, il existe généralement des groupes dédiés à des programmes ou services particuliers. De même que pour les utilisateurs, un groupe possède un identifiant unique : le \textit{GID}. Les informations d'identifiants et de groupes sont consultable avec la commande \cmdref{id}.
 
 \paragraph{\texttt{id}} \command{id}
 Affiche les identifiants de l'utilisateur passé en paramètre, ou de l'utilisateur courant sinon.
@@ -483,15 +483,15 @@ Affiche les identifiants de l'utilisateur passé en paramètre, ou de l'utilisat
     \item \texttt{-u} : Affiche l'UID de l'utilisateur.
     \item \texttt{-n} (en combinaison avec \texttt{-G} ou \texttt{-u }) : affiche le nom de l'item demandé, pas l'ID.
 \end{itemize}\vspace{\baselineskip}
-La liste des utilisateurs figure dans le fichier \texttt{/etc/passwd}. Ce fichier contient, pour chaque utilisateur (un par ligne), les informations essentielles (comme le nom, le dossier personnel...) sur ceux-ci, séparés par des deux-points (\texttt{:}). De la même manière, les groupes utilisateurs sont détaillés dans le fichier \texttt{/etc/group}.
 
-Les notions d'utilisateurs et de groupes permettent d'attribuer des droits d'accès pour tous les fichiers du systèmes. Les droits accès d'utilisateurs peuvent être restreints pour plus de sécurité et éviter à un utilisateur d'accéder aux données d'un autre. Ainsi, certaines actions ou programmes systèmes peuvent requérir d'être super-utilisateur pour être effectuées ou utilisés.
+La liste des utilisateurs figure dans le fichier \texttt{/etc/passwd}. Ce fichier contient, pour chaque utilisateur (un par ligne), les informations essentielles (comme le nom, le mot de passe, le dossier personnel...) séparées par des deux-points (\texttt{:}). De la même manière, les groupes utilisateurs sont détaillés dans le fichier \texttt{/etc/group}.
 
-\newpage
+Les notions d'utilisateurs et de groupes permettent d'attribuer des droits d'accès spécifiques pour chaque fichier du système. Les droits accès d'utilisateurs peuvent être restreints pour plus de sécurité et éviter à un utilisateur d'accéder aux données d'un autre ou, au contraire, étendus pour permettre le partage de données. Ainsi, certaines actions ou programmes systèmes peuvent nécessiter d'avoir des droits spécifiques pour être effectuées ou utilisés.
+
 \subsubsection{Droits d'accès - \texttt{chmod}} \label{sec:chmod}
 \vspace{-3mm}
 
-Sous les systèmes UNIX, ceci est rendu possible grâce aux notions de droits d'accès et de groupes. Chaque utilisateur appartient à un groupe ou plusieurs groupes d'utilisateurs. Chaque utilisateur et chaque groupe dispose de droits d'accès spécifiques. On parle également de mode de fichier, car chaque fichier possède un unique propriétaire et un unique groupe propriétaire.
+Sous les systèmes UNIX, la gestion des droits utilisateurs est rendue possible grâce aux notions de droits d'accès et de groupes. Chaque utilisateur appartient à un groupe ou plusieurs groupes d'utilisateurs. Chaque utilisateur et chaque groupe dispose de droits d'accès spécifiques. On parle également de mode de fichier, car chaque fichier possède un unique propriétaire et un unique groupe propriétaire.
 
 Il existe trois niveaux de droits d'accès pour tous les fichiers : 
 \begin{enumerate}
@@ -508,13 +508,15 @@ Pour chacun de ces trois niveaux, il existe trois types d'accès :
     \item Exécution (\textit{\textbf{E}xecute}) : le droit d'ouvrir le dossier ou d'exécuter le fichier.
 \end{enumerate}
 
-Ceci peut se représenter sous forme d'un triplet Lecture-Écriture-Exécution pour chacun des trois niveaux de droits d'accès, comme illustré dans le tableau \ref{fig:chmod}.
+\newpage
+
+Ceci peut se représenter sous forme d'un triplet Lecture-Écriture-Exécution pour chacun des trois niveaux de droits d'accès. Il existe plusieurs représentations possibles de ce triplet, comme détaillé dans le tableau \ref{fig:chmod} : textuelle, binaire ou octale.
 
 \begin{table}[h!]
     \begin{tabular}{|c|c|c|l|}
         \hline
         \textbf{Utilisateur (\texttt{u})}   &   \textbf{Groupe} (\texttt{g})&   \textbf{Autres} (\texttt{o})&   \textbf{Représentation}                 \\ \hline
-        \texttt{r--}                        &   \texttt{-w-}                &   \texttt{--x}                &   Textuelle (\texttt{\cmdref{ls} -l})     \\ \hline
+        \texttt{r-{}-}                        &   \texttt{-w-}                &   \texttt{--x}                &   Textuelle (\texttt{\cmdref{ls} -l})     \\ \hline
         \texttt{100}                        &   \texttt{010}                &   \texttt{001}                &   Binaire                                 \\ \hline
         \texttt{4}                          &   \texttt{2}                  &   \texttt{1}                  &   Octale                                  \\ \hline
     \end{tabular}
@@ -523,10 +525,26 @@ Ceci peut se représenter sous forme d'un triplet Lecture-Écriture-Exécution p
     \label{fig:chmod}
 \end{table}
 
-Pour chaque niveau d'accès, si on additionne la valeur numérique des types d'accès autorisés, on obtient un triplet d'entiers compris entre 0 et 7. On représente souvent les droits d'accès sous cette forme, dite octale, car elle est plus concise.
+Pour chaque niveau d'accès, si on additionne la valeur numérique des types d'accès autorisés, on obtient un triplet d'entiers compris entre 0 et 7. On représente souvent les droits d'accès sous cette forme, dite octale, car elle est plus concise, comme l'illustrent les exemples du tableau \ref{fig:chmod_example}
+
+
+\begin{table}[h!]
+    \begin{tabularx}{\textwidth}{|X|c|c|c|c|}
+    \hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{\textbf{Droits d'accès et description}}}                                     & \multicolumn{2}{|c|}{\textbf{Propriétaire}} & \multicolumn{2}{|c|}{\textbf{Représentation}} \\
+                                                                                                                & \textbf{Utilisateur} & \textbf{Groupe}    & \textbf{Textuelle} & \textbf{Octale}        \\ \hline
+Lecture et exécution pour tous, modifiable par son propriétaire (par exemple, script partagé sans modification) & \texttt{user1}       & \texttt{user1}     & \texttt{rwxr-xr-x} & \texttt{755}           \\ \hline
+Fichier de notes partagées au sein du groupe                                                                    & \texttt{user1}       & \texttt{users}     & \texttt{rw-rw-{}-{}-{}-} & \texttt{660}           \\ \hline
+Fichier confidentiel (non éditable, lisible par son propriétaire)                                               & \texttt{user1}       & \texttt{user1}     & \texttt{r-{}-{}-{}-{}-{}-{}-{}-} & \texttt{400}           \\ \hline
+Dossier partagé (contenu visible et \texttt{cd} dans le dossier possible par tous)                              & \texttt{user2}       & \texttt{users}     & \texttt{rwxr-xr-x} & \texttt{755}           \\ \hline            
+\end{tabularx}
+    \centering
+    \caption{Exemples de représentations des droits d'accès}
+    \label{fig:chmod_example}
+\end{table}
 
 \paragraph{\texttt{chmod}} \command{chmod}
-Permet de \textbf{ch}anger le \textbf{mod}e d'un fichier, c'est à dire ces droits d'accès. Il prend en paramètre l'action à effectuer et les fichiers ou dossiers à modifier. Le mode peut être soumis sous forme octale ou textuelle.
+Permet de \textbf{ch}anger le \textbf{mod}e d'un fichier, c'est à dire ces droits d'accès. Il prend en paramètre les changements de mode à effectuer et les fichiers ou dossiers à modifier. Le mode peut être donné sous forme octale ou textuelle.
 \begin{itemize}
     \item \texttt{-R} : Mode récursif. Applique le changement récursivement à tous les fichiers et dossiers contenu dans un dossier.
 \end{itemize}\vspace{\baselineskip}
@@ -546,19 +564,19 @@ De plus, en cas de besoin, on peut également enchaîner changements : \mintinli
 
 \paragraph{\texttt{sudo}} \command{sudo}
 
-Sous les systèmes UNIX, il existe toujours un utilisateur spécial : le super-utilisateur (\textit{\textbf{s}uper \textbf{u}ser} ou \texttt{root}, parfois abrégé en \texttt{su}). Cet utilisateur peut modifier tous les fichiers et exécuter tous les programmes, il est donc particulièrement puissant. C'est la raison pour laquelle ce compte est très souvent désactivé, on ne peut pas se connecter en tant que \texttt{root}. Pour effectuer les opérations importante, il faudra que le compte utilisateur aie le droit d'obtenir les droits du super-utilisateur temporairement. C'est à cela que sert la commande \cmdref{sudo}.
+Sous les systèmes UNIX, il existe toujours un utilisateur spécial : le super-utilisateur ou administrateur ou \texttt{root}), dont l'UID est toujours \texttt{0}. Cet utilisateur peut modifier tous les fichiers et exécuter tous les programmes, indépendamment des droits d'accès. Il est donc particulièrement puissant. C'est la raison pour laquelle ce compte est parfois désactivé pour éviter la connexion en tant que \texttt{root}. Pour effectuer les opérations importante, il faudra que le compte utilisateur aie le droit d'obtenir les droits du super-utilisateur temporairement. C'est à cela que sert la commande \cmdref{sudo}.
 \vspace{1em}
 
 \begin{boxed}
 \begin{nscenter}
-\vspace{-1em}\warning{La commande \cmdref{sudo} doit uniquement être utilisée lorsque l'opération voulue nécessite les droits d'administrateur ! \newline Ce n'est en aucun cas la solution universelle à un message d'erreur !}%
+\vspace{-1em}\warning{La commande \cmdref{sudo} doit uniquement être utilisée lorsque l'opération voulue nécessite les droits d'administrateur ! \newline Ce n'est pas nécessaire une solution à un message d'erreur, même si le résultat apparaît être celui recherché ! \newline Il faut toujours penser à deux fois avant de passer en mode super-utilisateur !}%
 \end{nscenter}
 \end{boxed}
 
 La raison des limitations et mises en garde autour du super-utilisateur est simple : elles permettent de sécuriser le système en empêchant les virus, mauvaises manipulations ou individus malveillants d'endommager le système. Il est en effet bien plus difficile d'endommager un système en tant qu'utilisateur standard.
 
 \paragraph{\texttt{su}} \command{su}
-Permet de changer d'utilisateur ou d'exécuter une commande avec l'utilisateur passé en paramètre (\textit{\textbf{s}ubstitute \textbf{u}ser}). Sans nom d'utilisateur mentionné, il s'agira de \texttt{root}. Le mot de passe sera demandé si nécessaire.
+\textit{\textbf{S}ubstitute \textbf{U}ser}: permet de devenir temporairement l'utilisateur passé en paramètre. Sans nom d'utilisateur mentionné, il s'agira de \texttt{root}. Le mot de passe sera demandé si nécessaire.
 \begin{itemize}
     \item \texttt{-l} ou \texttt{-} : Le paramètre suivant mentionne le nom d'utilisateur.
     \item \texttt{-c} : les paramètres suivants mentionnent la commande à exécuter.
@@ -572,7 +590,7 @@ Comme évoqué dans la partie précédente, chaque fichier possède un unique pr
 Seul le super-utilisateur peut changer le propriétaire d'un fichier.
 
 \paragraph{\texttt{chown}}  \command{chown}
-Permet de changer le propriétaire de fichiers ou dossiers. Prends deux paramètres : le nouveau propriétaire et fichiers concernés.
+Permet de changer le propriétaire de fichiers ou dossiers. Prends au moins deux paramètres : le nouveau propriétaire et les fichiers concernés.
 Le nouveau propriétaire peut être soit le nom du nouveau propriétaire, soit ce dernier et celui du nouveau groupe propriétaire, séparés par deux-points : 
 \begin{nscenter}
     \mintinline{bash}{chown user:group file}
@@ -581,7 +599,7 @@ Le nouveau propriétaire peut être soit le nom du nouveau propriétaire, soit c
 Enfin, \cmdref{chown} dispose d'options : 
 \begin{itemize}
     \item \texttt{-R} : Mode récursif. Applique le changement récursivement à tous les fichiers et dossiers contenu dans un dossier.
-    \item \texttt{-{}-from=<current-owner>:<current-group>} : N'effectue les changements que pour les fichiers dont le propriétaire correspond à celui mentionné. On peut spécifier uniquement le propriétaire ou uniquement le groupe, ou les deux.
+    \item \texttt{-{}-from=<current-owner>:<current-group>} : N'effectue les changements que pour les fichiers dont le propriétaire correspond à celui mentionné. On peut spécifier uniquement le propriétaire ou uniquement le groupe (en le préfixant par \texttt{:}), ou les deux (en les séparant par \texttt{:}).
 \end{itemize}\vspace{\baselineskip}
 
 
@@ -605,7 +623,7 @@ Supprime l'utilisateur dont le nom est passé en paramètre, mais pas son réper
 \end{itemize}\vspace{\baselineskip}
 
 \paragraph{\texttt{passwd}} \command{passwd}
-Demande le mot de passe de l'utilisateur passé en paramètre. Lors de la saisie, aucun caractère ne s'affiche afin que le mot de passe ne puisse pas être lu.
+Modifie le mot de passe de l'utilisateur passé en paramètre. Le mot de passe sera demandé, pas passé en paramètre. Lors de la saisie, aucun caractère ne s'affiche afin que le mot de passe ne puisse pas être lu.
 \begin{itemize}
     \item \texttt{-d} : Supprime le mot de passe. L'utilisateur ne pourra pas se connecter.
 \end{itemize}\vspace{\baselineskip}
@@ -620,8 +638,16 @@ Créé le groupe dont le nom est passé en paramètre.
 \paragraph{\texttt{usermod}} \command{usermod}
 Modifie l'utilisateur dont le nom est passé en paramètre.
 \begin{itemize}
-    \item \texttt{-{}-gid <GID>} : Permet de forcer l'ID du groupe.
-\end{itemize}\vspace{\baselineskip}
+    \item \texttt{-l <LOGIN>} : Change le nom d'utilisateur.
+    \item \texttt{-u <UID>} : Change l'UID de l'utilisateur.
+    \item \texttt{-d <HOME\_DIR>} : Change le dossier de l'utilisateur (son \texttt{home}). \newline
+        \texttt{-m} : Avec \texttt{-d}, déplace le contenu du dossier.
+    \item \texttt{-d <HOME\_DIR>} : Change le dossier de l'utilisateur (son \texttt{home}).
+    \item \texttt{-g <MAIN\_GROUP>} : Change le groupe principal de l'utilisateur
+    \item \texttt{-G <GROUPS>...} : Modifie l'appartenance à une série de groupe. Si l'utilisateur fait partie du groupe, il en est enlevé. \newline
+        \texttt{-a} : Avec \texttt{-G}, n'enlève jamais l'utilisateur d'un groupe.
+\end{itemize}
+La modification du mot de passe est possible avec \cmdref{usermod}, mais n'est pas recommandée car le mot de passe sera visible dans l'historique des commandes. \cmdref{passwd} est plus adapté pour cela.\vspace{\baselineskip}
 
 \paragraph{\texttt{delgroup}} \command{delgroup}
 Supprime le groupe dont le nom est passé en paramètre. Si des utilisateurs appartiennent à ce groupe, ils n'en seront plus membres.
