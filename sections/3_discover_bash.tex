@@ -1,21 +1,22 @@
 \section{Découverte de Bash}
-
+\vspace{-4mm}
 \subsection{À propos des scripts}
+\vspace{-2mm}
+\textbf{\href{https://www.gnu.org/software/bash}{Bash} est langage de script, aussi bien qu'un interpréteur en ligne de commande}, tout comme \href{https://www.python.org}{Python} ou \href{https://nodejs.org}{Node.js}. Tous sont \textit{open-source}, libres et multi-plateforme. Chaque interpréteur a un fonctionnement et des objectifs différents. Cependant, Bash a une place spécifique au sein des interpréteurs. En effet, Bash est le successeur de \texttt{sh}\command{sh} qui est lui-même le remplaçant du premier interpréteur de commande, fourni avec les premières versions d'Unix. De plus, Bash est l'interpréteur par défaut sur la quasi-totalité des distributions Linux et systèmes d'exploitation.
 
-\textbf{\href{https://www.gnu.org/software/bash/}{Bash} est langage de script, aussi bien qu'un interpréteur en ligne de commande}, tout comme \href{https://www.zsh.org/}{ZSH} ou \href{https://docs.microsoft.com/en-us/powershell/}{PowerShell}. Tous sont open-source, libres et multi-plateforme.
+Bash dispose de différents cousins, développés après \cmdref{sh}: CSH, KSH et ZSH sont les exemples les plus notables. Ces \textit{shells} sont focalisés sur l'exécution de commandes (ce qui correspond à l'usage prévu de GNU/Linux) en plus de pouvoir interpréter des scripts.
 
-Chaque interpréteur a une syntaxe spécifique, qui varie parfois beaucoup. Python, Ruby et Node.js sont également des langages de script, plus génériques, dont le fonctionnement interne et l'interprétation diffère.
+\textbf{Un script est un fichier contenant une succession de commandes qui seront interprétées et exécutées directement} : on utilisera un interpréteur pour l’exécuter. Ce processus est différent pour des langages compilés tels que Scala, Java, ou C pour lesquels le fichier contenant le code doit être compilé avant de pouvoir exécuter le code.
 
-\textbf{Un script est un fichier contenant une succession de commandes qui seront interprétées et exécutées directement} : on utilisera un interpréteur pour l’exécuter. Ce processus est différent pour des langages compilés tels que Scala, Java, ou C : le fichier contenant le code doit être compilé avant de pouvoir être exécuté.
-
+\vspace{-4mm}
 \subsection{Édition de texte}
-
-Afin de pouvoir créer un script, il suffit d'un éditeur de texte quelconque, mais pas un logiciel de traitement de texte tel que Word ou LibreOffice Writer.
+\vspace{-2mm}
+Afin de pouvoir créer un script, il suffit d'un éditeur de texte, mais pas un logiciel de traitement de texte tel que Word ou LibreOffice Writer.
 
 \paragraph{Avec environnement graphique}
 
-Si l'on dispose d'un environnement graphique, on pourra utiliser les éditeurs par défaut de l'environnement graphique : \texttt{gedit} \command{gedit} pour Gnome, \texttt{kate} \command{kate} pour KDE ou \cmdref{leafpad} \command{leafpad} pour LXDE/Xfce. \newline 
-Pour plus de flexibilité, on pourra également installer un logiciel externe et \textit{cross-platform} tel que \href{https://code.visualstudio.com}{Visual Studio Code},  \href{https://atom.io}{Atom},\href{http://brackets.io}{Brackets}. De nombreux autres éditeurs existent, mais sont moins adaptés pour Bash, spécifiques à une seule plateforme ou payants.
+Si l'on dispose d'un environnement graphique, on pourra utiliser les éditeurs par défaut de l'environnement graphique : \texttt{gedit}\command{gedit} pour Gnome, \texttt{kate}\command{kate} pour KDE ou \cmdref{leafpad}\command{leafpad} pour LXDE/Xfce. \newline 
+Pour plus de flexibilité, on pourra également installer un logiciel externe et \textit{cross-platform} tel que \href{https://code.visualstudio.com}{Visual Studio Code},  \href{https://atom.io}{Atom} ou \href{http://brackets.io}{Brackets}. De nombreux autres éditeurs existent mais sont moins adaptés pour Bash, spécifiques à une seule plateforme ou payants.
 
 \warning{Attention :} Bien que presque n'importe quel éditeur de texte peut être utilisé pour rédiger un script, il est fortement déconseillé d'utiliser \texttt{notepad.exe} sous Windows. Celui-ci pouvant causer des problèmes de compatibilité sur l'encodage des fichiers (voir \ref{sec:filetypes}).
 
@@ -23,15 +24,17 @@ Pour plus de flexibilité, on pourra également installer un logiciel externe et
 
 En mode console, il existe également plusieurs éditeurs de texte très utilisés. Le plus simple d'entre-eux est probablement \cmdref{nano}. Son principal avantage est que les raccourcis claviers nécessaires au différentes actions (enregistrer, quitter, annuler\dots) sont directement affichés sur l'interface. Par exemple, pour quitter l'éditeur, il est clairement affiché \texttt{\string^X}, ce qui signifie \texttt{Ctrl+X}. Une présentation plus détaillée figure en annexe \ref{appendix:nano}.
 
-D'autres éditeurs de texte tels que \cmdref{vim} ou \cmdref{emacs} existe, mais ils requièrent de connaître de nombreux raccourcis clavier. Bien que leur fonctionnement soit légèrement plus complexe, ils en sont d'autant plus puissants et une fois maîtrisés, ils permettent de gagner énormément en productivité. Il n'est pas nécessaire de connaître les deux, mais \texttt{vim} est très utilisé dans la communauté car souvent considéré comme plus simple d'apprentissage, même si moins intuitif au premier abord. Une présentation plus détaillée figure en annexe \ref{appendix:vim}. \cmdref{vim} et \cmdref{emacs} existent également en versions graphiques.
+D'autres éditeurs de texte tels que \cmdref{vim} ou \cmdref{emacs} existent, mais leur fonctionnement est légèrement plus complexe. Ils en sont cependant d'autant plus puissants et une fois maîtrisés, ils permettent de gagner énormément en productivité. Il n'est pas nécessaire de connaître les deux, mais \texttt{vim} est très utilisé dans la communauté car souvent considéré comme plus simple d'apprentissage, même si moins intuitif au premier abord. Une présentation plus détaillée figure en annexe \ref{appendix:vim}. \cmdref{vim} et \cmdref{emacs} existent également en versions graphiques.
 
 \begin{nscenter}
-    \textbf{Les fichiers de scripts Bash sont enregistré avec l'extension \texttt{.sh}.}
+    \textbf{Les fichiers de scripts Bash sont enregistré avec l'extension \texttt{.sh}.}\vspace{-4mm}
 \end{nscenter}
+
+\newpage
 
 \subsection{\textit{Scripting}}
 
-Le principal avantage d'un script réside dans le fait que l'ensemble des commandes soient regroupés au sein d'un seul fichier. Il est ainsi plus facile d'exécuter une série de commandes, de les échanger ou de les sauvegarder. De plus, l'ensemble des modifications de l'environnement (voir partie \ref{sec:env}) n'affectent pas la session Bash en cours. Cependant, l'ensemble des actions réalisées dans un script peuvent l'être directement en ligne de commande, ce qui peut être utile pour un usage ponctuel.
+Le principal avantage d'un script réside dans le fait que l'ensemble des commandes soient regroupées au sein d'un seul fichier. Il est ainsi plus facile d'exécuter une série de commandes, de les échanger ou de les sauvegarder et surtout d'automatiser une série de tâches. De plus, l'ensemble des modifications de l'environnement (voir partie \ref{sec:env}) n'affectent pas la session Bash en cours. Cependant, l'ensemble des actions réalisées dans un script peuvent l'être directement en ligne de commande, ce qui peut être utile pour un usage ponctuel.
 
 De plus, il est plus lisible et aisé de laisser des commentaires au sein d'un script, afin de mieux en saisir la structure et d'en détailler les opérations. En Bash, tout ce qui ce trouve derrière un \texttt{\#} (\textit{Sharp}, \textit{Number sign} ou signe numéro) est un commentaire.
 
@@ -47,12 +50,13 @@ Cette ligne est souvent suivie d’un rapide commentaire décrivant le rôle du 
 \begin{code}
     \begin{minted}{bash}
 #!/bin/bash     # Shebang to define that our script should be executed with bash
-# This script does this stuff. It expects X arguments as strings/integers
+# This script does this stuff. It expects X arguments which means this and that
 
 set -e          # Stops execution at first error encountered
 set -x          # Writes each command that will be executed before doing so
+set -u          # Causes error when using undefined variables
 
-# Rest of the code
+# Some code...
 
 exit 0          # Everything went smoothly, return 0 as error code
     \end{minted}
@@ -62,7 +66,7 @@ exit 0          # Everything went smoothly, return 0 as error code
     \label{code:script_intro}
 \end{code}
 
-Afin de faciliter le \textit{debugging} d'un script, on peut utiliser la commande \cmdref{set} avec les paramètres \texttt{-e} ou \texttt{-x}, comme illustré dans le code \ref{code:script_intro}. Des informations détaillées concernant les erreurs de commandes figurent en partie \ref{sec:error}.
+Afin de faciliter le \textit{debugging} d'un script, on peut utiliser la commande \cmdref{set} avec les paramètres \texttt{-e} ou \texttt{-x}, comme illustré dans le code \ref{code:script_intro} et détaillé dans la partie \ref{sec:set}. Des informations détaillées concernant les erreurs de commandes figurent en partie \ref{sec:error}.
 
 
 \subsubsection{Exécution d'un script}
@@ -80,26 +84,32 @@ chmod u+x script.sh     # Allow owner to execute the script
     \label{code:exec}
 \end{code}
 
-\subsubsection{Mode d'exécution}
+\vspace{-5mm}
+\subsubsection{Mode d'exécution} \label{sec:set}
 
-\paragraph{\texttt{set}} \command{set}
-Permet de modifier le mode d'exécution de Bash. 
+\paragraph{\texttt{set}} \command{set} 
+Permet de modifier le mode d'exécution de Bash. Voir \mintinline{bash}{help set} pour plus de détails.
 \begin{itemize}
-    \item \texttt{-e} : Dès qu'une erreur est rencontrée dans un script (code de retour d'une commande différent de 0), l'interprétation du script s'arrête.
+    \item \texttt{-e} : Dès qu'une erreur est rencontrée dans un script (code de retour d'une commande différent de 0), l'interprétation du script s'arrête (mise en échec du script).
     \item \texttt{-x} : Affiche l'invocation de chaque commande (avec expansion des valeurs de variables) avant exécution.
     \item \texttt{-n} : Le Shell n'exécutera pas les commandes, mais vérifiera la justesse de la syntaxe.
     \item \texttt{-u} : Cause une erreur en cas d'utilisation de variables non définies.
+    \item \texttt{-o <option>} : Définit d'autres options telles que :
+    \begin{itemize}
+        \item \texttt{pipefail} : Force un échec du script si une erreur survient lorsqu'une commande utilisant des \textit{pipes} (voir partie \ref{sec:pipes}) échoue.
+        \item \texttt{history} : Enregistre les commandes du script dans l'historique (voir \cmdref{history}).
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{Code d'erreur} \label{sec:error}
 Sous UNIX, chaque programme et chaque commande retourne un code d'erreur. Celui-ci est représenté sous la forme d'un entier. Il n'y a pas de règle particulière concernant la correspondance d'un entier donné avec une erreur particulière, cela dépend de chaque commande et programme. En revanche, \textbf{un code d'erreur de \texttt{0} signifie \say{aucune erreur} et donc l'exécution avec succès}.
 
 \paragraph{\texttt{\$?}}
-Sous Bash, on peut consulter la variable \texttt{\$?} pour connaître le code d'erreur de la commande précédente : \mintinline{bash}{echo $?}.
+La variable \texttt{\$?} contient le code d'erreur de la commande précédente.
 
 \paragraph{\texttt{exit}}  \command{exit}
-Au sein d'un script, on utilisera la commande \cmdref{exit} suivie du code d'erreur voulu pour terminer le script courant. Sans paramètre, elle définit le code d'erreur à \texttt{\$?}.
-\cmdref{exit} peut également être utilisée dans une interface de commande afin de terminer l'exécution du Shell.
+Au sein d'un script, on utilise la commande \cmdref{exit} suivie du code d'erreur voulu pour terminer le script courant. Sans paramètre, elle définit le code d'erreur à \texttt{\$?}.
+\cmdref{exit} peut également être utilisée dans un terminal afin de terminer l'exécution du Shell.
 
 
 \subsubsection{Paramètres d'un script}
@@ -131,9 +141,7 @@ Lorsqu'un script est appelé avec des paramètres, ceux-ci sont accessibles via 
 \paragraph{\texttt{shift}} \command{shift}
 Permet de décaler les paramètres afin de pouvoir tous les utiliser. Après un appel à \cmdref{shift} : 
 \begin{itemize}
-    \item \texttt{\$1} aura l'ancienne valeur de \texttt{\$2},
-    \item \texttt{\$2} aura l'ancienne valeur de \texttt{\$3},
-    \item Et ainsi de suite\dots
+    \item \texttt{\$1} aura l'ancienne valeur de \texttt{\$2} ; \texttt{\$2} aura l'ancienne valeur de \texttt{\$3} et ainsi de suite\dots
     \item L'ancienne valeur de \texttt{\$1} est inaccessible,
     \item \texttt{\$\#} est mis à jour.
 \end{itemize}
