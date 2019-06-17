@@ -270,10 +270,10 @@ Les variables d'environnement sont des variables permettant d'obtenir des inform
 \end{table}
 \newpage
 \paragraph{\texttt{\$PATH}}
-Le \texttt{\$PATH} est probablement la variable d'environnement la plus importante. C'est grâce à elle que l'on peut exécuter des commandes simplement dans un terminal.
-En effet, \texttt{\$PATH} contient une liste de dossiers, séparés par des deux-points (\texttt{:}). Cette liste correspond à tous les dossiers dans lesquels des programmes sont installés. Ainsi, lorsque l'on tape une commande telle que \texttt{git}, le terminal va en réalité parcourir cette liste et vérifier si le programme associé se trouve dans un des dossiers mentionné. Une fois trouvé, il exécutera se programme.
+Le \texttt{\$PATH} est une des variables d'environnement les plus importantes car elle permet l'exécution de commande simplement dans un terminal. \newline
+En effet, \texttt{\$PATH} contient une liste de dossiers, séparés par des deux-points (\texttt{:}). Lorsque l'on tape une commande telle que \texttt{git}, le terminal va en réalité parcourir cette liste et vérifier si le programme associé se trouve dans un des dossiers. Une fois trouvé, il exécutera ce programme. Si plusieurs programmes du même nom se trouvent dans des dossiers contenus dans le \texttt{\$PATH}, seul le premier pourra être exécuté.
 
-Ainsi, si plusieurs programmes du même nom se trouvent dans des dossiers contenu dans le \texttt{\$PATH}, seul le premier pourra être exécuté. Pour exécuter les autres, il faudra alors exécuter explicitement le programme en mentionnant son chemin.
+Pour exécuter un programme non détecté par ce mécanisme (car hors du \texttt{\$PATH} ou \say{caché} par un autre, il faudra mentionner explicitement le chemin (absolu ou relatif) du programme. C'est la raison pour laquelle un script sera souvent lancé en étant préfixé par \texttt{./script.sh} : dans le dossier courant, on exécute le script \texttt{script.sh}. Le dossier courant ne doit jamais être dans le \texttt{\$PATH}, pour éviter le lancement implicite de programmes non désirés.
 
 \warning{Attention :} Bien que de très nombreuses commandes soient des programmes (\cmdref{ls}, \cmdref{mkdir}\dots), toutes ne le sont pas. Ainsi, \cmdref{echo} et \cmdref{cd} sont des commandes intégrée à l'interpréteur et ne sont pas concernées par ce mécanisme.
 
@@ -285,6 +285,7 @@ Permet d'afficher la résolution effectuée par l'interpréteur de commande grâ
 
 \paragraph{Afficher et modifier l'environnement}
 Deux commandes existent pour afficher et modifier l'environnement : \texttt{export}\command{export} et \texttt{env}\command{env}. La première est une commande interne à Bash tandis que la seconde est un programme existant. Le code \ref{code:export} illustre le changement d'environnement courant et spécifique à une commande.
+\vspace{3mm}
 \begin{code}
     \centering
     \noindent\begin{minipage}{.475\textwidth}
@@ -356,7 +357,7 @@ Certaines fonctions prédéfinies existent, telles que :
 \subsubsection{Filtres de texte}
 
 \paragraph{\texttt{head} / \texttt{tail}} \command{head}\command{tail}
-Permet d'affiche le début (\cmdref{head}) ou la fin d'un fichier (\cmdref{tail}). Utile pour afficher notamment les fichiers de \textit{logs}.
+Affiche le début (\cmdref{head}) ou la fin d'un fichier (\cmdref{tail}) ou de l'entrée standard. Utile pour afficher notamment les fichiers de \textit{logs}.
 \begin{itemize}
     \item \texttt{-n <ligne>} : Spécifie le nombre de lignes à afficher.
     \item \texttt{-n +<ligne>} : Afficher toutes les lignes à partir de (\cmdref{tail}) ou jusqu'à (\cmdref{head}) la ligne mentionnée.
@@ -365,30 +366,30 @@ Permet d'affiche le début (\cmdref{head}) ou la fin d'un fichier (\cmdref{tail}
 \note{Note :} La commande \texttt{multitail} (non installée par défaut) permet de surveiller l'ajout de lignes pour plusieurs fichiers simultanément. Elle est notamment utilisée pour l'analyse de fichiers journaux (\textit{logs}).
 
 \paragraph{\texttt{cut}} \command{cut}
-Permet de découper les les lignes du fichier donné en paramètre
+Découpe les lignes du fichier donné en paramètre ou de l'entrée standard. 
 \begin{itemize}
     \item \texttt{-d <delimiter>} : Définit le caractère à utiliser pour découper une ligne. La ligne sera segmentée en champs séparés par le délimiteur.
     \item \texttt{-f <field>,<field>\dots} : Définit les numéro champs à afficher. 
 \end{itemize}
 
 \paragraph{\texttt{tr}} \command{tr}
-Permet de transformer la chaîne de caractères passée en premier paramètre par celle passée en second paramètre. Cette commande ne fonctionne que sur l'entrée et la sortie standard.
+Transformer la chaîne de caractères passée en premier paramètre par celle passée en second paramètre. Cette commande ne fonctionne que sur l'entrée et la sortie standard.
 \begin{itemize}
-    \item \texttt{-d} : Supprime toute les occurence du première paramètre (le second ne soit alors pas être mentionné).
+    \item \texttt{-d} : Supprime toute les occurrence du première paramètre (le second ne soit alors pas être mentionné).
 \end{itemize}
 
 \paragraph{\texttt{sort}} \command{sort}
-Permet de découper les les lignes du fichier donné en paramètre
+Trie les lignes du fichier donné en paramètre ou de l'entrée standard.
 \begin{itemize}
     \item \texttt{-d} : Le tri est insensible à la casse.
     \item \texttt{-h} : Le tri de nombres se fait dans l'ordre naturel et non lexicographique. Permet de comparer \texttt{3M} et \texttt{1G} dans l'ordre croissant de leur valeur.
-    \item \texttt{-o <file>} : Ecrit dans le fichier \texttt{file} plutôt que sur la sortie standard.
+    \item \texttt{-o <file>} : Écrit dans le fichier \texttt{file} plutôt que sur la sortie standard.
     \item \texttt{-r} : Inverse l'ordre du tri.
     \item \texttt{-u} : N'affiche qu'une unique ligne si plusieurs sont identiques lors du tri.
 \end{itemize}
 
 \paragraph{\texttt{uniq}} \command{uniq}
-Permet de filtrer les lignes d'un fichier pour n'avoir que des lignes uniques. Les données doivent déjà être triées, il est donc courant d'utiliser \cmdref{sort} conjointement avec \cmdref{uniq} : \newline \mintinline{bash}{sort monfichier | uniq}
+Permet de filtrer les lignes d'un fichier pour n'avoir que des lignes uniques. Les données doivent déjà être triées, il est donc courant d'utiliser \cmdref{sort} conjointement avec \cmdref{uniq} : \newline \mintinline{bash}{sort myfile | uniq}
 \begin{itemize}
     \item \texttt{-c} : Affiche le nombre d'occurrences de chaque ligne.
     \item \texttt{-d} : N'affiche que les lignes en double.
@@ -437,15 +438,15 @@ Par défaut, si l'archive existe déjà, \cmdref{zip} ajoutera l'ensemble des fi
 \end{nscenter}
 \begin{itemize}
     \item \texttt{-r} : Mode récursif. Ajoute tout le contenu d'un dossier plutôt que le dossier lui-même.
-    \item \texttt{-d <fichiers>} : Permet de supprimer un fichier d'une archive existante.
-    \item \texttt{-u <fichiers>} : Permet de remplacer (mettre à jour) un fichier déjà existant au sein de l'archive.
+    \item \texttt{-d <fichiers>} : Supprimer des fichiers d'une archive existante.
+    \item \texttt{-u <fichiers>} : Remplacer (mettre à jour) un fichier déjà existant au sein de l'archive.
 \end{itemize}
 
 \paragraph{\texttt{unzip}} \command{unzip}
 Extrait une archive au format ZIP.
 \begin{itemize}
-    \item \texttt{-d <dossier>} : Permet d'extraire les fichiers dans un dossier donné.
-    \item \texttt{-x <fichiers>} : Permet de spécifier les fichiers à extraire de l'archive, plutôt que de tout extraire.
+    \item \texttt{-d <dossier>} : Spécifie le dossier d'extraction des fichiers.
+    \item \texttt{-x <fichiers>} : Spécifie les fichiers à extraire de l'archive, plutôt que de tout extraire.
 \end{itemize}
 
 \newpage
@@ -455,9 +456,9 @@ Extrait une archive au format ZIP.
 \paragraph{\texttt{wc}} \command{wc}
 Permet de compter le nombre de mots, de lignes ou de caractères du fichier passé en paramètre
 \begin{itemize}
-    \item \texttt{-l} : Affiche le nombre de ligne.
-    \item \texttt{-m} : Affiche le nombre de caractères.
-    \item \texttt{-w} : Affiche le nombre de mots.
+    \item \texttt{-l} : Affiche uniquement le nombre de ligne.
+    \item \texttt{-m} : Affiche uniquement le nombre de caractères.
+    \item \texttt{-w} : Affiche uniquement le nombre de mots.
 \end{itemize}
 
 \paragraph{\texttt{du}} \command{du}
@@ -465,7 +466,7 @@ Affiche la taille de fichiers et dossiers.
 \begin{itemize}
     \item \texttt{-c} : Affiche la somme des tailles de tous les fichiers.
     \item \texttt{-h} : Affiche la taille de manière lisible pour un humain.
-    \item \texttt{-s} : N'affiche pas la taille de chacund des éléments d'un dossier, juste la somme de la taille des fichiers qu'il contient.
+    \item \texttt{-s} : N'affiche pas la taille de chacun des éléments d'un dossier, juste la somme de la taille des fichiers qu'il contient.
 \end{itemize}
 
 \subsection{Comparer des fichiers}
@@ -475,7 +476,7 @@ Compare deux fichiers (binaires ou texte) dont les chemins sont passés en param
 \begin{itemize}
     \item \texttt{-b} : Montre le premier octet différent.
     \item \texttt{-l} : Montre les valeurs des fichiers octet par octet.
-    \item \texttt{-s} : N'affiche pas de message (incompatible avec les options précédentes).
+    \item \texttt{-s} : N'affiche pas de message (incompatible avec les options précédentes). Utile notamment dans les scripts pour certains tests.
 \end{itemize}
 
 \paragraph{\texttt{diff}} \command{diff}
@@ -492,6 +493,7 @@ Affiche les différences entre deux fichiers textes passés en paramètres, lign
     \item \texttt{-y} : Permet un affiche cote-à-cote plutôt que linéaire.
     \item \texttt{-{}-color=auto} : Permet de forcer un affichage en couleur
 \end{itemize}
+\vspace{5mm}
 
 \note{Note :} C'est une variante de \cmdref{diff} qui est utilisée conjointement avec \texttt{git} pour afficher les différences entre les fichiers et permettre la résolution de conflits. Lorsqu'une ligne est modifiée, on considère que la ligne est supprimée dans le premier fichier pour être ajoutée dans le second.
 
@@ -507,14 +509,12 @@ Le premier processus est toujours \texttt{init} et il a toujours un PID de 1. C'
 \subsubsection{Affichage des processus -- \texttt{top} et \texttt{ps}}
 
 \paragraph{\texttt{top}} \command{top}
-Permet de visualiser les processus qui sont les plus actifs, de façon dynamique, pour effectuer un diagnostique rapide. Il s'agit d'une sorte de gestionnaire de tâches en console.
-
-\note{Note:} La commande \texttt{htop} (non installée par défaut), fonctionne comme \cmdref{top}, mais dispose d'un affichage plus visuel et les actions possibles sont mises en évidence (recherche, tri, fin de tâche\dots)
+Permet de visualiser les processus qui sont les plus actifs, de façon dynamique, pour effectuer un diagnostique rapide. Il s'agit d'une sorte de gestionnaire de tâches en console.\newline
+\note{Note:} La commande \texttt{htop} (non installée par défaut), fonctionne comme \cmdref{top}, mais dispose d'un affichage plus et de plus de possibilités : recherche, tri, fin de tâche\dots
 
 \paragraph{\texttt{ps}} \command{ps}
-Permet d'afficher les processus en cours d'exécution. \cmdref{ps} effectue une image des processus courants et l'affiche ensuite (d'où son nom, \textit{\textbf{P}rocessus \textbf{S}napshot}). De même que pour \cmdref{tar}, les tirets précédant les arguments courts ne sont pas obligatoire, mais leur effet varie quelque peut dans ce cas, à cause des différences entre l'implémentation BSD et standard POSIX.
-\note{Note :} On utilise générale \cmdref{top} conjointement avec \cmdref{grep} afin de facilement obtenir les informations voulues sur un processus donné.
-
+\cmdref{ps} effectue une image des processus courants et l'affiche ensuite (d'où son nom, \textit{\textbf{P}rocessus \textbf{S}napshot}). De même que pour \cmdref{tar}, les tirets précédant les arguments courts ne sont pas obligatoire, mais leur effet varie dans ce cas ; leur fonctionnement n'est pas définit par le standard POSIX.
+On utilise souvent \cmdref{top} avec \cmdref{grep}, pour obtenir les informations voulues sur un programme en cours d'exécution, mais on peut aussi utiliser \cmdref{pgrep} pour cela.
 \begin{itemize}
     \item \texttt{-f} : Affiche l'arborescence de chaque processus qui a un parent en cours d'exécution.
     \item \texttt{-a} : Affiche les processus utilisant un terminal, pour tous les utilisateurs .
@@ -540,10 +540,17 @@ Au sein de la figure \ref{fig:ps}, on pourra noter que :
 \begin{itemize}
     \item \texttt{VSZ} et \texttt{RSS} sont deux modes de calcul de la mémoire occupée par un processus,
     \item \texttt{TTY} est le terminal utilisé (ici, terminaux graphiques),
-    \item \texttt{STAT} est le statut du processus (\texttt{+} pour un processus actif, \textit{\textbf{S}leeping}, \textit{\textbf{R}unning}, \textit{\textbf{D}isk blocked}\dots),
+    \item \texttt{STAT} est le statut du processus (\texttt{+}: processus actif, \textit{\textbf{S}leeping}, \textit{\textbf{R}unning}, \textit{\textbf{D}isk blocked}\dots),
     \item \texttt{START} est la heure de démarrage du processus,
     \item \texttt{TIME} est le temps réel que le CPU a passé sur le processus,
     \item \texttt{COMMAND} est la commande saisie au sein du terminal.
+\end{itemize}
+
+\paragraph{\texttt{pgrep}} \command{pgrep}
+Affiche les PID de processus correspondant au nom de programme donné en paramètre.
+\begin{itemize}
+    \item \texttt{-a} : Affiche la ligne de commande utilisée pour démarrer le processus.
+    \item \texttt{-l} : Affiche le nom du programme en plus du PID.
 \end{itemize}
 
 
@@ -559,14 +566,14 @@ Chaque commande entrée au sein du terminal créé un nouveau processus. La plup
 
 Afin de pouvoir gérer les tâches plus facilement, Bash propose quelques outils et commandes. 
 
-\note{Note :} Lorsqu'un processus est suspendu, repris ou terminé, le terminal affiche un message qui peut parfois être placé au milieu de celui d'une autre commande.
+\note{Note :} Lorsqu'un processus est suspendu, repris ou terminé, le terminal affiche un message qui peut parfois être placé au milieu de l'affichage d'une autre commande.
 
 \paragraph{\texttt{\&}} \command{fork}
-Utilisé à la fin d'un commande, le symbole \texttt{\&} (\say{Et} commercial, esperluette ou \textit{ampersand} en anglais)) permet de faire passer cette commande en tâche de fond. L'effet est identique à celui d'utiliser \texttt{Ctrl+Z} puis \cmdref{bg}. Il est également possible d'enchaîner les commandes avec cet opérateur.
+Utilisé à la fin d'un commande, le symbole \texttt{\&} (\say{Et} commercial, esperluette ou \textit{ampersand} en anglais) permet de faire passer cette commande en tâche de fond. L'effet est identique à celui d'utiliser \texttt{Ctrl+Z} puis \cmdref{bg}. Il est également possible d'enchaîner les commandes avec cet opérateur.
 
 
 \paragraph{\texttt{jobs}} \command{jobs}
-Permet d'afficher la pile tâches en cours d'exécution,  leur statut, leur PID et leur nom. Les programmes affichés par jobs sont uniquement ceux liés au terminal courant. Chaque tâche possède un identifiant dédié (son ordre d'arrivée dans la pile), commençant par 1, et pouvant être réutilisé par d'autres tâches plus tard.
+Permet d'afficher la pile tâches en cours d'exécution,  leur statut, leur PID et leur nom. Les programmes affichés par \cmref{jobs} sont uniquement ceux liés au terminal courant. Chaque tâche possède un identifiant dédié (son ordre d'arrivée dans la pile), commençant par 1, et pouvant être réutilisé par d'autres tâches plus tard.
 
 \paragraph{\texttt{bg}} \command{bg}
 Permet de reprendre en arrière-plan (\textit{\textbf{b}ack\textbf{g}round}) l'exécution de la dernière tâche suspendue par \texttt{Ctrl+Z}.
@@ -584,6 +591,7 @@ Permet d'envoyer un signal à un programme dont le PID est passé en paramètre.
     \item \texttt{-<SIG>} : Identique à \texttt{-s <SIG>}
 \end{itemize}
 
+\note{Note :} \command{pkill}\texttt{pkill} permet d'envoyer un signal à la manière de \cmdref{kill}, mais en ne fournissant que le nom du programme, à la manière de \cmdref{pgrep}. \newline
 \note{Note :} La notion de signal et de gestion de processus est abordée au sein du module de Réseaux et Systèmes (RS) de TELECOM Nancy, en 2A. 
 
 \paragraph{\texttt{nohup}} \command{nohup}
