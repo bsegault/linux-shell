@@ -175,9 +175,11 @@ Enfin, la souris peut être utile si l'on dispose d'un environnement graphique :
 Il est possible d'utiliser deux points d'exclamation (\texttt{!!}) pour réutiliser la dernière commande. On peut la compléter et la combiner avec n'importe quelle autre commande. Ce raccourci est notamment utilisé pour rappeler la dernière commande avec les droits du super-utilisateur : \texttt{sudo !!} (voir partie \ref{sec:su}).
 
 \newpage
-\subsection{Utilisation du système de fichier}
+\subsection{Système de fichier}
 \vspace{-2mm}
 Plusieurs commandes sont disponibles pour pouvoir afficher, se déplacer et manipuler l'arborescence de fichiers détaillée dans la partie \ref{sec:directories}).
+
+\subsubsection{Commandes de manipulation}
 
 \paragraph{\texttt{ls}} \command{ls}
 \textbf{L}i\textbf{s}te un dossier dont le chemin le chemin (absolu ou relatif) est passé en paramètre. Sans paramètre, elle affichera le contenu du dossier courant. Lorsque le chemin donné est celui d'un fichier qui n'est pas un dossier, il est listé seul. \newline
@@ -327,8 +329,6 @@ Les fichiers de \textit{character devices} permettent une lecture ou écriture d
 \end{itemize}
 Les terminaux TTY sont également des fichiers de type \textit{character devices}. \newline
 \textbf{Le caractère des \textit{char devices} dans l'affichage détaillé de \cmdref{ls} est \texttt{c}.}
-
-\subsubsection{Informations sur un fichier}
 
 On a vu que pour obtenir des informations sur un fichier, sans le lire, on peut utiliser \mintinline{bash}{ls -l}. D'autres informations peuvent être obtenues, sur le type de fichier et son contenu grâce à la commande \cmdref{file}.
 
