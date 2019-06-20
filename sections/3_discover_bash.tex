@@ -155,34 +155,56 @@ Permet de décaler les paramètres afin de pouvoir tous les utiliser. Après un 
 
 Comme dans tout langage de programmation, Bash permet la création de variable. \textbf{En Bash, une variable existe jusqu'à ce que le Shell soit terminé ou jusqu'à ce qu'elle soit supprimée.} Il existe cependant des variables particulières, définies dès l'initialisation du système : les variables d'environnement.
 
-Une fois définie, une variable s'utilise toujours en la préfixant du signe \texttt{\$}. Une variable n'a pas de type donné en Bash, la conversion d'un type à un autre se fait automatiquement et il n'y a pas de distinction entre caractères et chaîne de caractères.
+Une fois définie, une variable s'utilise toujours en la préfixant du signe \texttt{\$}. Afin d'éviter toute confusion entre l'utilisation d'une variable et d'autres caractères qui l'entourent, les versions récentes de Bash recommandent d'entourer le nom des variables d'accolades : \mintinline{bash}{${mavariable}}.
+
+En Bash, il n'y a pas de typage fort des variables. Ainsi, même si un entier est affecté à une variable, on peut la traiter comme une chaîne de caractères : la conversion de type se fait automatiquement. La notion de type existe toutefois, mais il ne s'agit que d'attributs d'une variable. Il y a quelques cas particuliers dans lesquels ces attributs sont importants :
+\begin{itemize}
+    \item La comparaison de valeurs (voir partie \ref{cmd:test} sur \cmdref{if}) ;
+    \item Les opérations arithmétiques (voir partie \ref{cmd:expr} sur \cmdref{expr} et \ref{cmd:let} sur \cmdref{let}) ;
+    \item Les tableaux (voir partie \ref{sec:arrays}) ;
+    \item Les variables d'environnement (voir partie \ref{sec:env}) ;
+    \item Les fonctions (voir partie \ref{sec:functions}).
+\end{itemize}
 
 \subsubsection{Déclaration de variables} \command{unset}
 
-Une variable se déclare simplement en lui affectant une valeur. Pour supprimer une variable, on utilisera la commande \cmdref{unset} (voir \ref{code:variables}). Si on utilise une variable qui n'existe pas, elle sera remplacée (sans erreur visible par défaut, voir \cmdref{set}) par une chaîne vide.
+Une variable se déclare simplement en lui affectant une valeur. Pour supprimer une variable, on utilisera la commande \cmdref{unset} (voir code \ref{code:variables}). Si on utilise une variable qui n'existe pas, elle sera remplacée (sans erreur visible par défaut, voir \cmdref{set}) par une chaîne vide.
 \begin{code}
     \begin{minted}{bash}
 #!/bin/bash
 
-i=you               # Creates the i variable and gives it "you"
-a=1.5               # Creates the a variable and gives it 1.5
-echo $i $a          # Displays "you 1.5"
+i=you                   # Creates the i variable and gives it "you"
+a=1.5                   # Creates the a variable and gives it 1.5
+echo $i $a              # Displays "you 1.5" (legacy syntax)
 
-a="Hello"           # Gives the string value "Hello" to a (quotes are ignored)
-d=$a                # Creates the d variable and gives it the value of the a variable
+a="Hello"               # Gives the string value "Hello" to a (quotes are ignored)
+d="${a}o"               # Creates d and gives it the value of the a variable, followed by o
 
-echo "$a $d, $i!"   # Displays "Hello Hello, you!"
-unset a             # Deletes (unsets) the a variable
-echo "$a $d, $i!"   # Displays " Hello, you!" (note the leading space)
-unset -v "i"        # Deletes (unsets) the i variable
-echo "$a $d, $i!"   # Displays " Hello, !" (note the leading space)
+echo "${a} ${d}, ${i}!"   # Displays "Hello Helloo, you!"
+unset a                 # Deletes (unsets) the a variable
+echo "${a} ${d}, ${i}!" # Displays " Hello, you!" (note the leading space)
+unset -v "i"            # Deletes (unsets) the i variable
+echo "${a} ${d}, ${i}!" # Displays " Hello, !" (note the leading space)
     \end{minted}
 
     \vspace{-0.5cm}
     \captionof{listing}{Affectation, utilisation et affichage de variables}
     \label{code:variables}
 \end{code}
-%%TODO Arrays
+
+\paragraph{\texttt{declare}\command{declare}}
+\cmdref{declare} permet de gérer les attributs de variables dont le nom est passé en paramètre. La variable peut avoir déjà été définie ou non. On peut aussi l'affecter simultanément. Une variable déclarée avec \cmdref{declare} est locale (voir \cmdref{local}).
+\begin{itemize}
+    \item \texttt{-p} : Affiche les attributs.
+    \item \texttt{-r} : Définit l'attribut de constante (voir \cmdref{readonly}).
+    \item \texttt{-a} : Définit l'attribut de type tableau.
+    \item \texttt{-g} : Définit l'attribut de variable globale.
+    \item \texttt{+X} : Supprime l'attribut \texttt{X}.
+\end{itemize}
+
+\newpage
+
+\paragraph{Déclarations par une commande - \texttt{let} et \texttt{read}}
 
 Il est également possible de créer une variable grâce aux commandes \cmdref{let} et \cmdref{read}.
 \paragraph{\texttt{let}} \command{let}
@@ -190,11 +212,11 @@ Permet d'affecter à une variable le résultat d'une opération arithmétique.
 Chaque paramètre doit être une affectation valide. Le code \ref{code:let} montre des exemples de syntaxes valides.
 \begin{code}
     \begin{minted}{bash}
-let a=3*5             # a=15
-let b=16/2 c=2+2      # b=8, c=4
+let a=3*5                 # a=15
+let b=16/2 c=2+2          # b=8, c=4
 # c is not replaced in the computation of d
-let c=$a+5 "d = $c%3" # c=15+5=20, d= 4 mod 3 = 1
-echo $a $b $c $d      # Displays 15 8 20 1
+let c=${a}+5 "d = ${c}%3" # c= 15+5 = 20, d = 4 mod 3 = 1
+echo ${a} ${b} ${c} ${d}  # Displays 15 8 20 1
     \end{minted}
     
     \vspace{-0.5cm}
@@ -203,11 +225,54 @@ echo $a $b $c $d      # Displays 15 8 20 1
 \end{code}
 
 \paragraph{\texttt{read}} \command{read}
-Affecte à la variable, dont le nom est passé en paramètre, la ligne saisie au clavier
+Affecte à la variable, dont le nom est passé en paramètre, la ligne saisie au clavier.
 \begin{itemize}
     \item \texttt{-d <delim>} : Lit l'entrée clavier jusqu'à rencontrer le caractère \texttt{<delim>}.
     \item \texttt{-n <count>} : Lit jusqu'à \texttt{<count>} caractères.
+    \item \texttt{-p "<prompt>"} : Affiche \texttt{<prompt>} avant d'attendre l'entrée de l'utilisateur.
     \item \texttt{-s} : Ce que saisit l'utilisateur ne sera pas affiché.
+\end{itemize}
+
+\paragraph{Constantes - \texttt{readonly}} \label{sec:readonly} \command{readonly}
+
+Parfois, lorsque l'on utilise des variables, on ne veut jamais les modifier car elles ne sont utilisées que pour simplifier le code ou éviter une répétition. Il faut alors marquer cette variable comme étant constante. En Bash, cela se fait avec le mot-clé \cmdref{readonly}. Un exemple d'utilisation de \cmdref{readonly} figure dans le code \ref{code:readonly}.
+\begin{code}
+    \begin{minted}{bash}
+readonly MAX_VALUE=5
+read -p "Please enter a value lower than ${MAX_VALUE}: " value
+readonly let difference=${MAX_VALUE}-${value}
+echo "The difference between ${MAX_VALUE} and ${value} is ${difference}"
+
+#difference=0 # Can't assign the difference variable as it is readonly
+    \end{minted}
+    
+    \vspace{-0.5cm}
+    \captionof{listing}{Utilisation de \cmdref{readonly} pour définir des constantes}
+    \label{code:readonly}
+\end{code}
+
+\subsubsection{Tableaux} \label{sec:arrays}
+
+Bash permet également de définir des tableaux, qui peuvent s'utiliser comme des listes. La syntaxe est illustrée dans le code \ref{code:arrays}.
+\begin{code}
+    \begin{minted}{bash}
+array=("hello" "world" "!") # Creates an array with 3 elements
+array[1]="you"              # Changes the content of the second element of the array
+array[3]="\n"               # Appends an element containing a line feed
+other_array[2]=3            # Creates an array with 2 null elements, the third one is 3
+    \end{minted}
+    
+    \vspace{-0.5cm}
+    \captionof{listing}{Utilisation des tableaux en Bash}
+    \label{code:arrays}
+\end{code}
+
+L'élément d'un tableau s'utilise comme une variable normale. Plusieurs opérations sont possibles sur des tableaux : 
+\begin{itemize}
+    \item L'accès à un élément: \mintinline{bash}{echo "array[0]: ${array[0]}"}
+    \item La taille du tableau: \mintinline{bash}{echo "size: ${#array[*]}"}
+    \item La décomposition (similaire à \texttt{\$@}) : \mintinline{bash}{echo "${array[@]}"} \newline
+    Elle est notamment utilisable dans les itérations (voir \cmdref{for}, partie \ref{cmd:for}).
 \end{itemize}
 
 \newpage
@@ -223,9 +288,9 @@ En Bash, comme dans la plupart des autres langages de \textit{scripting}, on peu
 \begin{code}
     \begin{minted}{bash}
 #!/bin/bash
-s=string                       # $s is usable as a 'string'
-a='This is a simple-quoted $s' # no interpretation
-b="This is a double-quoted $s" # $s is interpreted, see syntax coloration
+s=string                         # $s is usable as a 'string'
+a='This is a simple-quoted ${s}' # no interpretation
+b="This is a double-quoted ${s}" # $s is interpreted, see syntax coloration
     \end{minted}
 
     \vspace{-0.5cm}
@@ -235,7 +300,7 @@ b="This is a double-quoted $s" # $s is interpreted, see syntax coloration
 
 Enfin, lors du lancement d'un script ou de l'appel d'une fonction, si l'on souhaite passer des paramètres qui contiennent des espaces, il faudra utiliser des chaînes de caractères : 
 \begin{nscenter}
-    \mintinline{bash}{./script.sh one 'second parameter' "third=$s"}
+    \mintinline{bash}{./script.sh one 'second parameter' "third=${s}"}
 \end{nscenter}
 
 \subsubsection{Environnement}
@@ -472,7 +537,7 @@ Affiche la taille de fichiers et dossiers.
 \subsection{Comparer des fichiers}
 
 \paragraph{\texttt{cmp}} \command{cmp}
-Compare deux fichiers (binaires ou texte) dont les chemins sont passés en paramètres. Le code de retour sera 0 si les fichiers sont identiques 1 en cas de différence. Par défaut, un message indique si les fichiers sont différents.
+Compare deux fichiers (binaires ou textuels) dont les chemins sont passés en paramètres. Le code de retour sera 0 si les fichiers sont identiques ; 1 en cas de différence. Par défaut, un message indique si les fichiers sont différents.
 \begin{itemize}
     \item \texttt{-b} : Montre le premier octet différent.
     \item \texttt{-l} : Montre les valeurs des fichiers octet par octet.
@@ -513,8 +578,7 @@ Permet de visualiser les processus qui sont les plus actifs, de façon dynamique
 \note{Note:} La commande \texttt{htop} (non installée par défaut), fonctionne comme \cmdref{top}, mais dispose d'un affichage plus et de plus de possibilités : recherche, tri, fin de tâche\dots
 
 \paragraph{\texttt{ps}} \command{ps}
-\cmdref{ps} effectue une image des processus courants et l'affiche ensuite (d'où son nom, \textit{\textbf{P}rocessus \textbf{S}napshot}). De même que pour \cmdref{tar}, les tirets précédant les arguments courts ne sont pas obligatoire, mais leur effet varie dans ce cas ; leur fonctionnement n'est pas définit par le standard POSIX.
-On utilise souvent \cmdref{top} avec \cmdref{grep}, pour obtenir les informations voulues sur un programme en cours d'exécution, mais on peut aussi utiliser \cmdref{pgrep} pour cela.
+\cmdref{ps} effectue une image des processus courants et l'affiche ensuite (d'où son nom, \textit{\textbf{P}rocessus \textbf{S}napshot}). De même que pour \cmdref{tar}, les tirets précédant les arguments courts ne sont pas obligatoire, mais leur effet varie dans ce cas ; leur fonctionnement n'est pas définit par POSIX.
 \begin{itemize}
     \item \texttt{-f} : Affiche l'arborescence de chaque processus qui a un parent en cours d'exécution.
     \item \texttt{-a} : Affiche les processus utilisant un terminal, pour tous les utilisateurs .
@@ -523,6 +587,7 @@ On utilise souvent \cmdref{top} avec \cmdref{grep}, pour obtenir les information
     \item \texttt{-x} : Affiche également les processus qui n'ont pas de terminal associé.
 \end{itemize}
 
+\vspace{3mm}
 \begin{figure}[bh!]
     \centering
     \begin{minted}{text}
@@ -546,6 +611,8 @@ Au sein de la figure \ref{fig:ps}, on pourra noter que :
     \item \texttt{COMMAND} est la commande saisie au sein du terminal.
 \end{itemize}
 
+Pour obtenir les informations voulues sur un programme en cours d'exécution, on utilise souvent \cmdref{top} avec \cmdref{grep}. En fonction des cas, utiliser \cmdref{pgrep} peut être plus simple.
+
 \paragraph{\texttt{pgrep}} \command{pgrep}
 Affiche les PID de processus correspondant au nom de programme donné en paramètre.
 \begin{itemize}
@@ -564,7 +631,7 @@ Chaque commande entrée au sein du terminal créé un nouveau processus. La plup
     \item On passe le programme en tache de fond avec \texttt{Ctrl+Z}.
 \end{itemize}
 
-Afin de pouvoir gérer les tâches plus facilement, Bash propose quelques outils et commandes. 
+Afin de pouvoir gérer les tâches plus facilement, Bash propose quelques outils et commandes détaillés ci-dessous.
 
 \note{Note :} Lorsqu'un processus est suspendu, repris ou terminé, le terminal affiche un message qui peut parfois être placé au milieu de l'affichage d'une autre commande.
 
@@ -573,7 +640,7 @@ Utilisé à la fin d'un commande, le symbole \texttt{\&} (\say{Et} commercial, e
 
 
 \paragraph{\texttt{jobs}} \command{jobs}
-Permet d'afficher la pile tâches en cours d'exécution,  leur statut, leur PID et leur nom. Les programmes affichés par \cmref{jobs} sont uniquement ceux liés au terminal courant. Chaque tâche possède un identifiant dédié (son ordre d'arrivée dans la pile), commençant par 1, et pouvant être réutilisé par d'autres tâches plus tard.
+Permet d'afficher la pile tâches en cours d'exécution,  leur statut, leur PID et leur nom. Les programmes affichés par \cmdref{jobs} sont uniquement ceux liés au terminal courant. Chaque tâche possède un identifiant dédié (son ordre d'arrivée dans la pile), commençant par 1, et pouvant être réutilisé par d'autres tâches plus tard.
 
 \paragraph{\texttt{bg}} \command{bg}
 Permet de reprendre en arrière-plan (\textit{\textbf{b}ack\textbf{g}round}) l'exécution de la dernière tâche suspendue par \texttt{Ctrl+Z}.
