@@ -1,9 +1,16 @@
-\section{Terminal et Shell}
+\section{Manipulation d'un système GNU/Linux}
 Dans cette partie et les parties suivantes, on considère que l'on dispose d'un système GNU/Linux avec la distribution \href{https://linuxmint.com}{Linux Mint}, le gestionnaire de bureau \href{https://github.com/linuxmint/Cinnamon}{Cinnamon} et l'interpréteur de commande Bash. L'ensemble des exemples et commandes devraient fonctionner sans problèmes sous toutes \href{https://www.debian.org/derivatives/index.fr.html}{les distributions basées sur Debian}. La plupart des commandes seront également identiques sous les autres distributions, sous macOS et même avec le \href{https://docs.microsoft.com/fr-fr/windows/wsl/install-win10}{sous-système Linux sur Windows} (\textit{Windows sub-system for Linux}, WSL), à condition d'utiliser Bash.
 
 \note{Note:} On parlera de \say{terminal} ou de \say{console} pour l'interface en ligne de commande (ou de \say{CLI}, pour \textit{Command Line Interface}), mais de \say{Shell} pour parler du programme sous-jacent permettant l'interprétation des commandes (Bash).
 
-\subsection{Usage de la ligne de commande}
+\vspace{-3mm}
+\subsection{POSIX} \label{sec:POSIX}
+\vspace{-3mm}
+Si l'ensemble des outils GNU/Linux sont similaires sur tous les systèmes et dérivés d'UNIX, ce n'est pas un hasard. Devant la multiplication des variantes d'UNIX, \textbf{les standards POSIX (pour \textit{Portable Operating System Interface}) ont été établis en 1988} pour proposer une \textbf{interface d'utilisation commune à tous les systèmes UNIX}.
+
+La majeure partie des commandes et des programmes présentés ci-après respectent les dernières versions de  POSIX et peuvent donc être utilisés comme indiqué sur tous les systèmes qui les proposent. \textbf{Il existe cependant quelques rares cas dans lesquels le standard n'est pas respecté} (pour des raisons philosophiques ou historiques), mais ils sont explicités au sein de leur documentation.
+
+\subsection{Ligne de commande}
 
 \subsubsection{Usages et intérêt}
 
@@ -21,12 +28,6 @@ Il existe deux types de terminaux :
 
 Il existe plusieurs terminaux, identifié par un numéro, et accessible grâce au raccourci clavier \texttt{Ctrl+Alt+<FX>}. \textbf{Par défaut, l'interface graphique s'exécute dans un terminal}, généralement le TTY7 ou le TTY1. Ainsi, le raccourci clavier \texttt{Ctrl+Alt+F2} permet de passer au TTY2 à tout moment, passant en mode terminal pur, si celui-ci existe bien.
 
-\vspace{-3mm}
-\subsection{POSIX} \label{sec:POSIX}
-\vspace{-3mm}
-Si l'ensemble des outils GNU/Linux sont similaires sur tous les systèmes et dérivés d'UNIX, ce n'est pas un hasard. Devant la multiplication des variantes d'UNIX, \textbf{les standards POSIX (pour \textit{Portable Operating System Interface}) ont été établis en 1988} pour proposer une \textbf{interface d'utilisation commune à tous les systèmes UNIX}.
-
-La majeure partie des commandes et des programmes présentés ci-après respectent les dernières versions de  POSIX et peuvent donc être utilisés comme indiqué sur tous les systèmes qui les proposent. \textbf{Il existe cependant quelques rares cas dans lesquels le standard n'est pas respecté} (pour des raisons philosophiques ou historiques), mais ils sont explicités au sein de leur documentation.
 \newpage
 
 \subsection{Prise en main du terminal}
@@ -174,141 +175,8 @@ Enfin, la souris peut être utile si l'on dispose d'un environnement graphique :
 Il est possible d'utiliser deux points d'exclamation (\texttt{!!}) pour réutiliser la dernière commande. On peut la compléter et la combiner avec n'importe quelle autre commande. Ce raccourci est notamment utilisé pour rappeler la dernière commande avec les droits du super-utilisateur : \texttt{sudo !!} (voir partie \ref{sec:su}).
 
 \newpage
-\subsection{Arborescence de fichiers} \label{sec:directories}
-Un fichier est une zone sur le disque dur pouvant contenir des données. Cette zone est définie par un début et une taille. Cette taille peut évoluer au court du temps, en fonction des actions sur le fichier. Chaque fichier est placé dans un dossier qui peut regrouper plusieurs fichiers et dossiers, formant ainsi une arborescence. Ainsi, un fichier est identifié par son chemin, c'est-à-dire les dossiers successifs qui le contiennent, et son nom. Un chemin de fichier est toujours unique. Pour gérer cette arborescence, le système d'exploitation utilise un système de fichiers qui répertorie les fichiers et gère les accès et modifications sur le disque par l'utilisateur.
-
-Une des philosophie de Linux est que \textbf{\say{tout est fichier}}. Ainsi, tout est représenté sous forme de fichiers, y compris les dossiers, qui sont considérés comme des fichiers particuliers. Les systèmes Linux ont une architecture particulière et universelle. Tous les dossiers sont (directement ou indirectement) dans le dossier racine (\textit{root}), que l'on représente par un \textit{slash} (\texttt{/}), comme illustré dans la figure \ref{fig:linux_tree}. On notera que '\texttt{/}' est à la fois le nom du dossier racine, mais également le séparateur des dossiers.
-
-\subsubsection{Chemin de fichiers}
-
-Chaque fichier est accessible par un chemin de fichier, qui peut être absolu ou relatif. Un chemin de fichier est une suite de nom de dossiers séparés par des \textit{slash}.
-
-\paragraph{Chemin absolu}
-
-\textbf{Un chemin absolu est un chemin qui commence par la racine}, il commence donc par un '\texttt{/}'. Par exemple, pour identifier le dossier \texttt{usr1} dans le dossier \texttt{home} de la racine, on aura le chemin absolu \texttt{/home/usr1}.
-
-\paragraph{Chemin relatif}
-
-Un chemin relatif est un chemin relatif au dossier courant. Pour le même dossier que précédemment, si on se trouve dans le dossier \texttt{/home}, alors le chemin relatif sera \texttt{usr1}, tandis que si on se trouve dans la racine, il sera \texttt{home/usr1}.
-
-Ajouté à cela, il existe deux dossiers spéciaux (ou relatifs), présents dans tous les dossiers et utilisables au sein des chemins absolus et relatifs : 
-\begin{itemize}
-    \item \texttt{.} (point) : il représente le dossier courant,
-    \item \texttt{..} (point point) : il représente le dossier parent.
-\end{itemize}
-
-Ainsi, si l'on se trouve dans le dossier \texttt{/bin}, le chemin relatif vers le dossier \texttt{/home/usr1} sera \texttt{../home/usr1}.
-
-\note{Note :} Bien qu'un chemin absolu puisse utiliser les dossiers '\texttt{.}' et '\texttt{..}' en restant absolu, le chemin en est rallongé (il contient plus de dossier). On dit qu'\textbf{un chemin absolu est canonique lorsqu'il ne contient aucun dossier relatif}.
-
-\paragraph{Dossier personnel}
-
-De plus, il existe un autre caractère spécial, que l'on a déjà évoqué : \texttt{\tilde}. Il ne s'agit pas d'un véritable dossier, mais d'un alias ou raccourci vers le dossier personnel (ou \hyperref[sec:dirhome]{\texttt{home}}) de l'utilisateur courant. De plus \texttt{\tilde user} représente le dossier personnel de l'utilisateur \texttt{user}.
-
-Enfin, \textbf{les fichiers dont le nom commence par '\texttt{.}' sont des fichiers cachés} : ils ne sont pas visibles par défaut. On les trouve notamment dans le dossier personnel de chaque utilisateur, ils contiennent généralement des configurations ou cache de différentes applications. Les dossiers \texttt{.} et \texttt{..} sont donc des dossiers cachés.
-
-\newpage
-\subsubsection{Architecture des dossiers Linux}
-
-\begin{figure}[hb!]
-    \centering
-\begin{forest}
-  my label/.style={
-    label={[font=\sffamily]right:{#1}},
-  },
-  for tree={
-    text=white,
-    minimum height=0.75cm,
-    font=\footnotesize\ttfamily,
-    if level=0{fill=dirblue2}{fill/.wrap pgfmath arg={dirblue#1}{int(4-(mod((level()-1),4)))}},
-    if level=1{l=20mm}{l=15mm},
-    rounded corners=4pt,
-    edge={gray,rounded corners,line width=0.5pt},
-    child anchor=north,
-    parent anchor=south,
-  },
-[/
-  [bin]
-  [boot
-    [grub]
-  ]
-  [dev]
-  [etc
-    [apt]
-    [init.d]
-    [X11]
-  ]
-  [home
-    [1A]
-    [depot]
-    [\dots]
-  ]
-  [lib]
-  [mnt
-    [usb]
-  ]
-  [root]
-  [tmp]
-  [usr
-    [bin]
-    [lib]
-  ]
-  [var]
-]
-\end{forest}
-    \caption{Extrait de l'arborescence commune aux différents systèmes Linux}
-    \label{fig:linux_tree}
-\end{figure}
-
-
-\textbf{Descriptif du contenu chaque dossier majeur}
-
-\begin{tabularx}{\textwidth}{| c | X |}  \hline
-    \texttt{/bin}                    & Fichiers exécutables (\textbf{bin}aires) pour l'initialisation du système et les commandes \say{essentielles} pour sa gestion \\
-        \hline
-    \texttt{/boot}                   & Le noyau dans ses différentes versions installées ainsi que les fichiers de démarrage : \newline
-            --~\texttt{grub} : Chargeur d'amorçage, utilitaire pour détecter les systèmes d'exploitation disponibles. \href{https://www.gnu.org/software/grub/}{GRUB} permet de choisir l'OS et le mode de démarrage. \\
-        \hline
-    \texttt{/dev}\label{sec:dirdev}  & Fichiers spéciaux représentant les composants ou appareils (\textit{\textbf{dev}ices}) détecté par le système (disques durs, lecteurs Blu-ray, interfaces réseau\dots). \newline
-            On y trouve également \texttt{null}, \texttt{zero} et \texttt{random} (voir partie \ref{sec:file_dev}). \\
-        \hline
-    \texttt{/etc}                     & Fichiers de configuration du système et de diverses applications : \newline
-            --~\texttt{apt} : configuration du gestionnaire de paquet Aptitude, \newline
-            --~\texttt{rc.d} : scripts de démarrage du système, \newline
-            --~\texttt{X11} : configuration du serveur d'affichage X. \\
-        \hline
-    \texttt{/home}\label{sec:dirhome} & Contient les dossiers personnels des utilisateurs. \newline À TELECOM Nancy, ce dossier est en réalité un dossier réseau contenant les dossiers des enseignants et des élèves : \newline
-            --~\texttt{1A}, \texttt{2A}, \texttt{3A} : contient les dossiers personnels des élèves de l'année correspondante, \newline
-            --~\texttt{EqPedag} : contient les dossiers personnels des enseignants, \newline
-            --~\texttt{depot} : dossier commun pour les TP. \\
-        \hline
-    \texttt{/lib} & Bibliothèques et modules noyau. \\
-        \hline
-    \texttt{/media}                   & Dossier des fichiers contenus sur clés USB et disques externes connectés (supports amovibles). Est parfois absent ou confondu avec \texttt{/mnt}. \\
-        \hline
-    \texttt{/mnt}                     & Dossier des fichiers contenus périphériques internes (disques dur, lecteurs Blu-ray\dots). On dit de ces dossiers qu'ils sont des points de montage des partitions ou appareils (\textit{\textbf{m}ou\textbf{nt}} en Anglais). \\
-        \hline
-    \texttt{/opt}                     & Dossier d'installation des applications supplémentaires \textbf{opt}ionelles. \\
-        \hline
-    \texttt{/proc}                    & \say{Image} du système avec des informations sur le \textbf{proc}esseur, la RAM\dots \\
-        \hline
-    \texttt{/root}                    & Dossier personnel du super-utilisateur (nommé \textit{\textbf{root}}) (voir partie \ref{cmd:sudo}). \\
-        \hline
-    \texttt{/sbin}                    & Fichiers exécutable pour l'administration du système : gestion du disque, des interfaces réseau, des différents services\dots \\
-        \hline
-    \texttt{/tmp} & Fichiers \textbf{t}e\textbf{mp}oraires. \\
-        \hline
-    \texttt{/usr}                     & Programmes accessibles à tous les utilisateurs (\textit{\textbf{us}e\textbf{r}}). Ce dossier possède une structure semblable à la racine. \\
-        \hline
-    \texttt{/var}                     & Données \textbf{var}iables liées à la machine et notamment des fichiers journaux, archivant les événements du systèmes dans \texttt{/var/log}. \\
-        \hline
-\end{tabularx}
-
-\newpage
-
-
-\subsubsection{Utilisation du système de fichier}
-Plusieurs commandes sont disponibles pour pouvoir afficher, se déplacer et manipuler un système de fichiers.
+\subsection{Utilisation du système de fichier}
+Plusieurs commandes sont disponibles pour pouvoir afficher, se déplacer et manipuler l'arborescence de fichiers détaillée dans la partie \ref{sec:directories}).
 
 \paragraph{\texttt{ls}} \command{ls}
 \textbf{L}i\textbf{s}te un dossier dont le chemin le chemin (absolu ou relatif) est passé en paramètre. Sans paramètre, elle affichera le contenu du dossier courant. Lorsque le chemin donné est celui d'un fichier qui n'est pas un dossier, il est listé seul. \newline
@@ -654,3 +522,105 @@ Supprime le groupe dont le nom est passé en paramètre. Si des utilisateurs app
 \begin{itemize}
     \item \texttt{-{}-only-if-empty} : Ne supprime le groupe que si aucun utilisateur n'en est membre.
 \end{itemize}\vspace{\baselineskip}
+
+\newpage
+
+\subsection{Gestion des tâches -- processus}
+
+Un processus représente un programme en cours d'exécution. Il dispose d'un identifiant, le PID, ainsi que d'un parent, représenté par son PID : le PPID. On peut donc établir une arborescence des processus.
+Sous Linux, les PID sont attribués par ordre croissant, et un PID donné ne peut jamais être réutilisé, sauf exceptions.
+
+Le premier processus est toujours \texttt{init} et il a toujours un PID de 1. C'est lui qui est en charge de démarrer les différents programmes requis pour l'initialisation du système : gestionnaire de disques, drivers, journaux systèmes\dots
+
+\subsubsection{Affichage des processus -- \texttt{top} et \texttt{ps}}
+
+\paragraph{\texttt{top}} \command{top}
+Permet de visualiser les processus qui sont les plus actifs, de façon dynamique, pour effectuer un diagnostique rapide. Il s'agit d'une sorte de gestionnaire de tâches en console.\newline
+\note{Note:} La commande \texttt{htop} (non installée par défaut), fonctionne comme \cmdref{top}, mais dispose d'un affichage plus et de plus de possibilités : recherche, tri, fin de tâche\dots
+
+\paragraph{\texttt{ps}} \command{ps}
+\cmdref{ps} effectue une image des processus courants et l'affiche ensuite (d'où son nom, \textit{\textbf{P}rocessus \textbf{S}napshot}). De même que pour \cmdref{tar}, les tirets précédant les arguments courts ne sont pas obligatoire, mais leur effet varie dans ce cas ; leur fonctionnement n'est pas définit par POSIX.
+\begin{itemize}
+    \item \texttt{-f} : Affiche l'arborescence de chaque processus qui a un parent en cours d'exécution.
+    \item \texttt{-a} : Affiche les processus utilisant un terminal, pour tous les utilisateurs .
+    \item \texttt{-e} : Affiche tous les processus en cours de tous les utilisateurs.
+    \item \texttt{-u} : Affiche l'utilisateur de chaque processus.
+    \item \texttt{-x} : Affiche également les processus qui n'ont pas de terminal associé.
+\end{itemize}
+
+\vspace{3mm}
+\begin{figure}[bh!]
+    \centering
+    \begin{minted}{text}
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+loginusr  5379  0.0  0.0  43608  5708 pts/1    Ss+  09:37   0:00 /usr/bin/zsh
+loginusr 13002  0.2  0.0  43608  5956 pts/2    Ss   10:31   0:00 /usr/bin/zsh
+loginusr 13056 33.6  0.0   5940   792 pts/2    S+   10:31   0:04 yes
+loginusr 13111  0.0  0.0  35896  3340 pts/1    R+   10:31   0:00 ps u
+loginusr 13112  0.0  0.0   5948   856 pts/1    S+   10:31   0:00 head
+\end{minted}
+    \vspace{-\baselineskip}\caption{Aperçu du rendu de \cmdref{ps} \texttt{-u}}
+    \label{fig:ps}
+\end{figure}
+Au sein de la figure \ref{fig:ps}, on pourra noter que : 
+\begin{itemize}
+    \item \texttt{VSZ} et \texttt{RSS} sont deux modes de calcul de la mémoire occupée par un processus,
+    \item \texttt{TTY} est le terminal utilisé (ici, terminaux graphiques),
+    \item \texttt{STAT} est le statut du processus (\texttt{+}: processus actif, \textit{\textbf{S}leeping}, \textit{\textbf{R}unning}, \textit{\textbf{D}isk blocked}\dots),
+    \item \texttt{START} est la heure de démarrage du processus,
+    \item \texttt{TIME} est le temps réel que le CPU a passé sur le processus,
+    \item \texttt{COMMAND} est la commande saisie au sein du terminal.
+\end{itemize}
+
+Pour obtenir les informations voulues sur un programme en cours d'exécution, on utilise souvent \cmdref{top} avec \cmdref{grep}. En fonction des cas, utiliser \cmdref{pgrep} peut être plus simple.
+
+\paragraph{\texttt{pgrep}} \command{pgrep}
+Affiche les PID de processus correspondant au nom de programme donné en paramètre.
+\begin{itemize}
+    \item \texttt{-a} : Affiche la ligne de commande utilisée pour démarrer le processus.
+    \item \texttt{-l} : Affiche le nom du programme en plus du PID.
+\end{itemize}
+
+
+\newpage
+\subsubsection{Gestion des tâches -- \texttt{\&}, \texttt{jobs} et \texttt{kill}} \label{sec:tasks}
+
+Chaque commande entrée au sein du terminal créé un nouveau processus. La plupart du temps, il sera très difficile de voir ce processus avec \cmdref{top} ou \cmdref{ps}, car il s'exécute et se termine immédiatement. En revanche, si l'on souhaite utiliser un programme graphique, cela sera plus visible : le terminal sera inaccessible jusqu'à ce que, au choix : 
+\begin{itemize}
+    \item Le programme se termine,
+    \item On force l'arrêt du programme via \texttt{Ctrl+C},
+    \item On passe le programme en tache de fond avec \texttt{Ctrl+Z}.
+\end{itemize}
+
+Afin de pouvoir gérer les tâches plus facilement, Bash propose quelques outils et commandes détaillés ci-dessous.
+
+\note{Note :} Lorsqu'un processus est suspendu, repris ou terminé, le terminal affiche un message qui peut parfois être placé au milieu de l'affichage d'une autre commande.
+
+\paragraph{\texttt{\&}} \command{fork}
+Utilisé à la fin d'un commande, le symbole \texttt{\&} (\say{Et} commercial, esperluette ou \textit{ampersand} en anglais) permet de faire passer cette commande en tâche de fond. L'effet est identique à celui d'utiliser \texttt{Ctrl+Z} puis \cmdref{bg}. Il est également possible d'enchaîner les commandes avec cet opérateur.
+
+
+\paragraph{\texttt{jobs}} \command{jobs}
+Permet d'afficher la pile tâches en cours d'exécution,  leur statut, leur PID et leur nom. Les programmes affichés par \cmdref{jobs} sont uniquement ceux liés au terminal courant. Chaque tâche possède un identifiant dédié (son ordre d'arrivée dans la pile), commençant par 1, et pouvant être réutilisé par d'autres tâches plus tard.
+
+\paragraph{\texttt{bg}} \command{bg}
+Permet de reprendre en arrière-plan (\textit{\textbf{b}ack\textbf{g}round}) l'exécution de la dernière tâche suspendue par \texttt{Ctrl+Z}.
+
+\paragraph{\texttt{fg}} \command{fg}
+Permet de reprendre au premier plan (\textit{\textbf{f}ore\textbf{g}round}) l'exécution de la dernière tâche, quel que soit son état.
+
+
+
+\paragraph{\texttt{kill}} \command{kill}
+Permet d'envoyer un signal à un programme dont le PID est passé en paramètre. Par défaut, le signal demande au processus de se terminer.
+\begin{itemize}
+    \item \texttt{-l [<num>]} : Liste tous les signaux. Si le paramètre est mentionné, affiche le nom signal correspondant.
+    \item \texttt{-s <SIG>} : Spécifie le signal à envoyer par son numéro ou son nom
+    \item \texttt{-<SIG>} : Identique à \texttt{-s <SIG>}
+\end{itemize}
+
+\note{Note :} \command{pkill}\texttt{pkill} permet d'envoyer un signal à la manière de \cmdref{kill}, mais en ne fournissant que le nom du programme, à la manière de \cmdref{pgrep}. \newline
+\note{Note :} La notion de signal et de gestion de processus est abordée au sein du module de Réseaux et Systèmes (RS) de TELECOM Nancy, en 2A. 
+
+\paragraph{\texttt{nohup}} \command{nohup}
+Permet d'ignorer l'affichage d'une commande. Principalement utilisé avec \hyperref[cmd:fork]{\texttt{\&}} pour lancer une commande en arrière plan sans être perturbé par son affichage.
