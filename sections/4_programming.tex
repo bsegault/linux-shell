@@ -166,7 +166,7 @@ done < list.txt                   # Read from list.txt
 La boucle \cmdref{while} est généralement utilisée pour lire une série d'entrées (au clavier ou via un fichier), conjointement avec la commande \cmdref{read}, illustré dans le code \ref{code:while}. Cette technique utilise les notions d'entrées et sorties évoquées partie \ref{sec:redirect}.
 
 \paragraph{\texttt{for}} \command{for}
-La boucle \cmdref{for} itère sur les champs donnés en paramètres, séparés par des espaces (voir code \ref{code:for}. Pour itérer sur une suite d’entiers, on utilisera la commande \texttt{seq} \command{seq} en la substituant en paramètre du \cmdref{for} (voir partie \ref{sec:backquotes}) : \mintinline{bash}{for i in $(seq 1 10)}.
+La boucle \cmdref{for} itère sur les champs donnés en paramètres, séparés par des espaces (voir code \ref{code:for}. Pour itérer sur une suite d’entiers, on utilisera la commande \texttt{seq}\command{seq} en la substituant en paramètre du \cmdref{for} (voir partie \ref{sec:backquotes}) : \mintinline{bash}{for i in $(seq 1 10)}.
 
 \begin{code}
     \centering
@@ -285,11 +285,15 @@ C'est un mécanisme particulièrement utile pour modifier ou filtrer l'affichage
     {\addtolength{\parskip}{-1cm}\caption{Exemples courants d'utilisation du \textit{pipe}}\label{tab:pipe}}
 \end{table}
 
-\subsection{Substitution de commandes - \textit{Backquotes} et \texttt{\$()}} \label{sec:backquotes}
+\subsection{Compositions de commandes} \label{sec:backquotes}
 
 
-Il est parfois utile de pouvoir récupérer immédiatement le résultat d’une commande pour l’utiliser dans une autre commande ou structure de contrôle. Cela peut être fait en entourant la commande de \textit{backquotes} (\texttt{``}) ou par \texttt{\$(} et \texttt{)} (voir code \ref{code:backquotes}).
-Les deux notations sont strictement équivalentes, même si la seconde est plus récente.
+Il est parfois utile de pouvoir récupérer immédiatement le résultat d’une commande pour l’utiliser dans une autre commande ou structure de contrôle. On peut distinguer deux cas d'usages principaux : utiliser résultat d'une commande en tant que paramètre d'une autre ou utiliser le résultat d'une commande comme si c'était un fichier à passer en paramètre d'une autre commande.
+
+\subsubsection{Substitution de commande - \textit{backquotes} et \texttt{\$()}}
+La substitution de commande consiste à utiliser la sortie standard d'une commande fille comme paramètre d'une autre (la commande mère).
+Cela peut être fait en entourant la commande fille de \textit{backquotes} (\texttt{``}) ou par \texttt{\$(} et \texttt{)} (voir code \ref{code:command_substitution}).
+Les deux notations sont strictement équivalentes, même si la seconde est plus récente et recommandée car plus visuelle.
 
 \begin{code}
 \begin{minted}{bash}
@@ -299,12 +303,36 @@ if [[ "$(head f.txt)" == "title" ]] # Tests if the first line of f.txt is "title
 \end{minted}
 \vspace{-5mm}
 \caption{Exemple d'utilisation de la substitution de commande}
-    \label{code:backquotes}
+    \label{code:command_substitution}
 \end{code}
 
 \warning{Attention :} Cette syntaxe permet la substitution d'une commande mais est également perméable à l'interprétation des variables. Il faut donc ne pas confondre quand utiliser les \textit{double quotes} ou les \textit{simple quotes} (voir partie \ref{sec:string}) et les \textit{backquotes} !
 
-\note{Note :} En fonction du contexte dans lequel elle est utilisée, il est parfois nécessaire d'entourer la substitution de commande de \textit{double quotes}. Par exemple, dans le code \ref{code:backquotes}, si jamais le fichier \texttt{f.txt} est vide, \cmdref{head} ne retournera rien, et la ligne sera alors interprétée comme \mintinline{bash}{if [[ "" == "title" ]]}. \textbf{Sans les \textit{doubles quotes}, il y aurait une erreur de syntaxe.}
+\note{Note :} En fonction du contexte dans lequel elle est utilisée, il est parfois nécessaire d'entourer la substitution de commande de \textit{double quotes}. Par exemple, dans le code \ref{code:command_substitution}, si jamais le fichier \texttt{f.txt} est vide, \cmdref{head} ne retournera rien, et la ligne sera alors interprétée comme \mintinline{bash}{if [[ "" == "title" ]]}. \textbf{Sans les \textit{doubles quotes}, il y aurait une erreur de syntaxe.}
+
+\subsubsection{Substitution de processus - \texttt{<()} et \texttt{>()}}
+La substitution de processus consiste à utiliser la sortie standard d'une commande fille comme s'il s'agissait d'un fichier à passer en paramètre d'une autre (la commande mère). Un fichier pouvant être lu ou écrit, il existe deux types de substitution de processus. L'un permet à la commande mère de lire la sortie de la commande fille, l'autre lui permet d'écrire dans son entrée standard.
+Cela peut être fait en entourant la commande de \textit{<(} (pour lire) ou \texttt{>(} (pour écrire) et de \texttt{)}. Comme l'illustre le code \ref{code:process_substitution}, c'est particulièrement utile pour faire un \cmdref{diff} de deux commandes.
+
+\begin{code}
+\begin{minted}{bash}
+# shows differences in the content of folder and other_folder
+diff <(ls folder) <(ls other_folder)
+# show the temporary file created by >()
+ls >(echo)
+# Does the exact same thing as ls or ls | cat:
+# - Run ls  and redirect the output to the temporary file
+# - Display the content of the temporary file with cat
+ls > >(cat)
+\end{minted}
+\vspace{-5mm}
+\caption{Exemple d'utilisation de la substitution de processus}
+    \label{code:process_substitution}
+\end{code}
+
+Concrètement, la substitution de commande créé un fichier temporaire dans lequel la commande fille va écrire, et la commande mère lire, ou vice-versa. Les cas d'usages de \texttt{>()} sont assez limités, car son rôle est très proche du \textit{pipe} (\texttt{|}).
+
+\newpage
 
 \vspace{-5mm}
 \subsection{Fonctions} \label{sec:functions}
